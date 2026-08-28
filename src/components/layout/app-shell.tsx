@@ -17,7 +17,8 @@ export function AppShell({ children }: AppShellProps) {
 
       <header className={styles.topbar}>
         <Link className={styles.brand} href="/" aria-label="ClaimSaathi home">
-          CLAIMSAATHI
+          <span className={styles.brandEn}>CLAIM</span>
+          <span className={styles.brandHi}>साथी</span>
         </Link>
         <span className={styles.environmentTag}>SIMULATION ENVIRONMENT</span>
       </header>
