@@ -10,19 +10,6 @@
 html {
   min-width: 20rem;
   background-color: var(--color-canvas);
-  background-image:
-    radial-gradient(at 10% 10%, rgba(12, 35, 64, 0.05) 0px, transparent 40%),
-    radial-gradient(at 90% 5%, rgba(230, 107, 0, 0.04) 0px, transparent 45%),
-    radial-gradient(at 50% 95%, rgba(10, 126, 88, 0.04) 0px, transparent 50%),
-    linear-gradient(to right, rgba(15, 23, 42, 0.015) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(15, 23, 42, 0.015) 1px, transparent 1px);
-  background-size:
-    100% 100%,
-    100% 100%,
-    100% 100%,
-    32px 32px,
-    32px 32px;
-  background-attachment: fixed;
   color-scheme: light;
   scroll-behavior: smooth;
 }
@@ -33,7 +20,7 @@ body {
   color: var(--color-ink);
   font-family: var(--font-body), sans-serif;
   font-size: var(--text-body);
-  line-height: 1.6;
+  line-height: 1.55;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -47,19 +34,24 @@ select {
 }
 
 a {
-  color: inherit;
-  text-decoration-thickness: 1.5px;
+  color: var(--color-brand);
+  text-decoration-thickness: 2px;
   text-underline-offset: 3px;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-signal);
 }
 
 ::selection {
-  background: var(--color-brand-soft);
-  color: var(--color-brand-strong);
+  background: var(--color-signal);
+  color: #ffffff;
 }
 
 :focus-visible {
-  outline: 2.5px solid var(--color-focus);
-  outline-offset: 2.5px;
+  outline: var(--border-thick) solid var(--color-focus);
+  outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {

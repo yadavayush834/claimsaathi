@@ -1,21 +1,21 @@
 import type { Metadata } from "next";
 import {
-  Inter,
+  IBM_Plex_Sans,
+  JetBrains_Mono,
   Noto_Sans_Devanagari,
-  Plus_Jakarta_Sans,
 } from "next/font/google";
 import type { ReactNode } from "react";
 
 import "./globals.css";
 
-const displayFont = Plus_Jakarta_Sans({
+const displayFont = JetBrains_Mono({
   variable: "--font-display",
   subsets: ["latin"],
   display: "swap",
-  weight: ["500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
-const bodyFont = Inter({
+const bodyFont = IBM_Plex_Sans({
   variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
