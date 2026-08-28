@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import DemoPage from "./page";
 
 describe("DemoPage", () => {
-  it("opens without credentials and states the Phase 03 boundary", () => {
+  it("opens the synthetic demo without asking for credentials", () => {
     render(<DemoPage />);
 
     expect(

@@ -5,6 +5,7 @@ import { ActionLink } from "@/components/ui/action-link";
 import { Callout } from "@/components/ui/callout";
 import { StatusBadge } from "@/components/ui/status-badge";
 
+import { DemoSessionManager } from "./demo-session-manager";
 import styles from "./demo.module.css";
 
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ const demoChecks = [
   ["Account", "Not required"],
   ["Personal data", "Not requested"],
   ["Government connection", "None"],
+  ["Session recovery", "This browser only"],
 ] as const;
 
 export default function DemoPage() {
@@ -30,11 +32,12 @@ export default function DemoPage() {
           </p>
         </header>
 
-        <Callout title="Phase boundary">
-          Synthetic citizen profiles and mock claim behavior arrive in Phase 04.
-          This phase proves that anyone can enter the demo without sharing
-          credentials.
+        <Callout title="Synthetic data only">
+          Every citizen, amount, claim reference, and event below comes from a
+          versioned local fixture. It cannot look up a real member or claim.
         </Callout>
+
+        <DemoSessionManager />
 
         <dl className={styles.checks}>
           {demoChecks.map(([term, description]) => (
