@@ -23,8 +23,11 @@ export default function DemoPage() {
   return (
     <AppShell currentStep={1}>
       <div className={styles.page}>
-        <header>
-          <StatusBadge tone="success">No login required</StatusBadge>
+        <header className={styles.header}>
+          <div className={styles.badgeRow}>
+            <StatusBadge tone="success">No login required</StatusBadge>
+            <span className={styles.modeChip}>Sandbox Mode</span>
+          </div>
           <h1>You&apos;re in demo mode.</h1>
           <p className={styles.lede}>
             No account was created and no government service was contacted. This
@@ -39,17 +42,25 @@ export default function DemoPage() {
 
         <DemoSessionManager />
 
-        <dl className={styles.checks}>
-          {demoChecks.map(([term, description]) => (
-            <div key={term}>
-              <dt>{term}</dt>
-              <dd>{description}</dd>
-            </div>
-          ))}
-        </dl>
+        <div className={styles.checksWrapper}>
+          <p className={styles.checksTitle}>Demo Guarantees</p>
+          <dl className={styles.checks}>
+            {demoChecks.map(([term, description]) => (
+              <div key={term} className={styles.checkCard}>
+                <dt>
+                  <span className={styles.checkIcon} aria-hidden="true">
+                    ✓
+                  </span>
+                  {term}
+                </dt>
+                <dd>{description}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
 
-        <ActionLink href="/" variant="secondary">
-          Return to overview
+        <ActionLink href="/" variant="secondary" className={styles.backBtn}>
+          ← Return to overview
         </ActionLink>
       </div>
     </AppShell>

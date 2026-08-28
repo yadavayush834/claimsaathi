@@ -1,7 +1,29 @@
 .page {
   display: grid;
-  max-width: 68rem;
+  max-width: 70rem;
   gap: var(--space-6);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+}
+
+.badgeRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.modeChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-brand-soft);
+  color: var(--color-brand-strong);
+  font-size: var(--text-caption);
+  font-weight: 750;
 }
 
 .page h1 {
@@ -15,11 +37,27 @@
 }
 
 .lede {
-  max-width: 42rem;
+  max-width: 44rem;
   margin: var(--space-3) 0 0;
   color: var(--color-ink-muted);
   font-size: var(--text-lede);
-  line-height: 1.5;
+  line-height: 1.55;
+}
+
+.checksWrapper {
+  display: grid;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-line);
+}
+
+.checksTitle {
+  margin: 0;
+  color: var(--color-brand-accent);
+  font-size: var(--text-caption);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .checks {
@@ -30,7 +68,7 @@
   padding: 0;
 }
 
-.checks > div {
+.checkCard {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -40,22 +78,44 @@
   border-radius: var(--radius-card);
   background: var(--color-paper-muted);
   box-shadow: var(--shadow-xs);
+  transition: all var(--transition-fast);
 }
 
-.checks dt {
+.checkCard:hover {
+  border-color: var(--color-brand-accent);
+  background: var(--color-paper);
+  box-shadow: var(--shadow-sm);
+}
+
+.checkCard dt {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
   color: var(--color-ink-muted);
   font-size: var(--text-small);
   font-weight: 650;
 }
 
-.checks dd {
+.checkIcon {
+  display: grid;
+  width: 1.15rem;
+  height: 1.15rem;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  background: var(--color-success-soft);
+  color: var(--color-success);
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.checkCard dd {
   margin: 0;
   color: var(--color-brand-strong);
   font-size: var(--text-small);
   font-weight: 750;
 }
 
-.page > a {
+.backBtn {
   justify-self: start;
 }
 
@@ -64,7 +124,7 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .page > a {
+  .backBtn {
     width: 100%;
   }
 }

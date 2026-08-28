@@ -2,41 +2,48 @@
   color-scheme: light;
 
   /* Surfaces & Canvas */
-  --color-canvas: #f4f7fb;
-  --color-canvas-subtle: #eef3f8;
+  --color-canvas: #f8fafc;
+  --color-canvas-subtle: #f1f5f9;
   --color-paper: #ffffff;
   --color-paper-muted: #f8fafc;
   --color-paper-subtle: #f1f5f9;
+  --color-paper-elevated: #ffffff;
 
   /* Typography & Ink */
-  --color-ink: #0b1d33;
+  --color-ink: #0f172a;
+  --color-ink-strong: #020617;
   --color-ink-muted: #475569;
   --color-ink-subtle: #64748b;
   --color-line: #e2e8f0;
   --color-line-strong: #cbd5e1;
-  --color-line-soft: #edf2f7;
+  --color-line-soft: #f1f5f9;
 
-  /* Bharat Digital Brand Palette: Ashoka Indigo & Deep Navy */
-  --color-brand: #0f3b61;
-  --color-brand-strong: #09233b;
-  --color-brand-soft: #eaf2f9;
-  --color-brand-accent: #1e5a8f;
+  /* Brand Palette: Modern Ashoka Navy & Royal Indigo */
+  --color-brand: #0c2340;
+  --color-brand-strong: #071526;
+  --color-brand-mid: #143a68;
+  --color-brand-soft: #edf4fb;
+  --color-brand-accent: #1e528d;
+  --color-brand-gradient: linear-gradient(135deg, #0c2340 0%, #174276 100%);
+  --color-brand-glow: rgba(12, 35, 64, 0.15);
 
-  /* Saffron / Warm Amber Signal */
-  --color-signal: #d97706;
-  --color-signal-strong: #b45309;
-  --color-signal-soft: #fef3c7;
-  --color-signal-glow: rgba(217, 119, 6, 0.16);
+  /* Saffron / Sunlit Amber Signal */
+  --color-signal: #e66b00;
+  --color-signal-strong: #c25700;
+  --color-signal-soft: #fff3e6;
+  --color-signal-glow: rgba(230, 107, 0, 0.2);
+  --color-signal-gradient: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
 
   /* Forest / Jade Emerald Success */
-  --color-success: #0d825c;
-  --color-success-strong: #065f46;
-  --color-success-soft: #dcfce7;
+  --color-success: #0a7e58;
+  --color-success-strong: #065f43;
+  --color-success-soft: #eafaf4;
+  --color-success-glow: rgba(10, 126, 88, 0.18);
 
   /* Civic Blue Info */
-  --color-info: #1d6fa5;
-  --color-info-strong: #1e40af;
-  --color-info-soft: #e0f2fe;
+  --color-info: #1769aa;
+  --color-info-strong: #0f4c7f;
+  --color-info-soft: #eef6fc;
 
   /* Warning */
   --color-warning: #b45309;
@@ -49,17 +56,21 @@
   --color-critical-soft: #fee2e2;
 
   /* Focus Outline */
-  --color-focus: #1d6fa5;
+  --color-focus: #1769aa;
 
   /* Typography Scale */
-  --font-display: "Anek Devanagari", "Nirmala UI", sans-serif;
-  --font-body: "Noto Sans Devanagari", "Nirmala UI", sans-serif;
+  --font-display:
+    var(--font-display), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  --font-body:
+    var(--font-body), var(--font-devanagari), -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
 
   --text-caption: 0.75rem;
   --text-small: 0.875rem;
   --text-body: 1rem;
-  --text-lede: clamp(1.05rem, 0.98rem + 0.35vw, 1.25rem);
-  --text-title: clamp(2.35rem, 1.75rem + 3vw, 4.25rem);
+  --text-lede: clamp(1.05rem, 0.95rem + 0.35vw, 1.25rem);
+  --text-title: clamp(2.4rem, 1.8rem + 3vw, 4.25rem);
 
   /* Spacing Scale */
   --space-1: 0.25rem;
@@ -72,26 +83,27 @@
   --space-8: 4rem;
 
   /* Border Radii */
-  --radius-xs: 0.25rem;
-  --radius-control: 0.5rem;
-  --radius-card: 0.75rem;
-  --radius-panel: 1rem;
+  --radius-xs: 0.375rem;
+  --radius-control: 0.625rem;
+  --radius-card: 0.875rem;
+  --radius-panel: 1.25rem;
   --radius-pill: 9999px;
 
   /* Shadows & Elevation */
-  --shadow-xs: 0 1px 2px 0 rgb(15 23 42 / 0.05);
+  --shadow-xs: 0 1px 2px 0 rgb(15 23 42 / 0.04);
   --shadow-sm:
-    0 2px 4px 0 rgb(15 23 42 / 0.06), 0 1px 2px -1px rgb(15 23 42 / 0.04);
+    0 2px 4px -1px rgb(15 23 42 / 0.06), 0 1px 2px -1px rgb(15 23 42 / 0.04);
   --shadow-md:
-    0 6px 16px -2px rgb(15 23 42 / 0.08), 0 2px 6px -2px rgb(15 23 42 / 0.04);
+    0 8px 20px -4px rgb(15 23 42 / 0.08), 0 2px 6px -1px rgb(15 23 42 / 0.04);
   --shadow-lg:
-    0 14px 30px -4px rgb(15 23 42 / 0.1), 0 4px 10px -4px rgb(15 23 42 / 0.05);
+    0 16px 36px -6px rgb(15 23 42 / 0.12), 0 4px 12px -2px rgb(15 23 42 / 0.06);
   --shadow-paper:
-    0 16px 40px -8px rgb(11 34 56 / 0.08), 0 2px 8px 0 rgb(11 34 56 / 0.03);
-  --shadow-glow-signal: 0 0 0 4px rgba(217, 119, 6, 0.18);
-  --shadow-glow-brand: 0 0 0 4px rgba(15, 59, 97, 0.15);
+    0 20px 48px -12px rgb(12 35 64 / 0.1), 0 2px 10px 0 rgb(12 35 64 / 0.04);
+  --shadow-glow-signal: 0 0 0 4px rgba(230, 107, 0, 0.2);
+  --shadow-glow-brand: 0 0 0 4px rgba(12, 35, 64, 0.15);
 
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }

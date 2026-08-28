@@ -52,6 +52,15 @@ function formatDate(date: string) {
   return dateFormatter.format(new Date(`${date}T00:00:00Z`));
 }
 
+function getInitials(name: string) {
+  return name
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+}
+
 export function ClaimWorkspace({
   demoCase,
   onSwitch,
@@ -65,20 +74,52 @@ export function ClaimWorkspace({
   const claimHeading =
     claim.status === "settled" ? "Latest claim" : "Active claim";
 
+  const employeeSharePct = Math.round(
+    (workspace.balance.employeeShareRupees / totalBalance) * 100,
+  );
+  const employerSharePct = Math.round(
+    (workspace.balance.employerShareRupees / totalBalance) * 100,
+  );
+  const pensionSharePct = 100 - employeeSharePct - employerSharePct;
+
   return (
     <section className={styles.workspace} aria-labelledby="workspace-title">
       <header className={styles.workspaceHeader}>
-        <div>
-          <p>Fictional claim workspace · fixture v{demoCase.fixtureVersion}</p>
-          <h2 id="workspace-title">{persona.displayName}</h2>
-          <span>{persona.scenarioTitle}</span>
+        <div className={styles.personaBanner}>
+          <div className={styles.personaAvatar} aria-hidden="true">
+            {getInitials(persona.displayName)}
+          </div>
+          <div className={styles.personaDetails}>
+            <p className={styles.fixtureEyebrow}>
+              Fictional claim workspace · fixture v{demoCase.fixtureVersion}
+            </p>
+            <h2 id="workspace-title">{persona.displayName}</h2>
+            <div className={styles.scenarioRow}>
+              <span className={styles.scenarioTitle}>
+                {persona.scenarioTitle}
+              </span>
+              <span className={styles.stateChip}>{persona.homeState}</span>
+            </div>
+          </div>
         </div>
-        <StatusBadge tone="success">Demo session active</StatusBadge>
+        <div className={styles.headerBadges}>
+          <StatusBadge tone="success">Demo session active</StatusBadge>
+          <Button
+            variant="secondary"
+            onClick={onSwitch}
+            className={styles.switchTopBtn}
+          >
+            Switch citizen
+          </Button>
+        </div>
       </header>
 
-      <p className={styles.sessionNote} aria-live="polite">
-        {sessionMessage}
-      </p>
+      <div className={styles.sessionBanner}>
+        <span className={styles.sessionDot} aria-hidden="true" />
+        <p className={styles.sessionNote} aria-live="polite">
+          {sessionMessage}
+        </p>
+      </div>
 
       <section
         className={styles.nextAction}
@@ -88,13 +129,15 @@ export function ClaimWorkspace({
           <span aria-hidden="true">→</span>
           <p>What to do next</p>
         </div>
-        <div>
+        <div className={styles.nextActionBody}>
           <div className={styles.nextActionHeading}>
             <h3 id="next-action-title">{workspace.nextAction.title}</h3>
             <StatusBadge tone="neutral">Journey preview</StatusBadge>
           </div>
-          <p>{workspace.nextAction.description}</p>
-          <small>
+          <p className={styles.nextActionDesc}>
+            {workspace.nextAction.description}
+          </p>
+          <small className={styles.nextActionHint}>
             This workspace identifies the next step; the guided action is added
             in its later build phase.
           </small>
@@ -114,25 +157,63 @@ export function ClaimWorkspace({
           <strong className={styles.balanceTotal}>
             {currencyFormatter.format(totalBalance)}
           </strong>
+
+          {/* Visual Distribution Progress Bar */}
+          <div className={styles.balanceBar} aria-hidden="true">
+            <span
+              className={styles.employeeBar}
+              style={{ width: `${employeeSharePct}%` }}
+              title={`Employee: ${employeeSharePct}%`}
+            />
+            <span
+              className={styles.employerBar}
+              style={{ width: `${employerSharePct}%` }}
+              title={`Employer: ${employerSharePct}%`}
+            />
+            <span
+              className={styles.pensionBar}
+              style={{ width: `${pensionSharePct}%` }}
+              title={`Pension: ${pensionSharePct}%`}
+            />
+          </div>
+
           <dl className={styles.balanceBreakdown}>
-            <div>
-              <dt>Employee share</dt>
+            <div className={styles.shareRow}>
+              <dt>
+                <span
+                  className={`${styles.shareDot} ${styles.employeeDot}`}
+                  aria-hidden="true"
+                />
+                Employee share
+              </dt>
               <dd>
                 {currencyFormatter.format(
                   workspace.balance.employeeShareRupees,
                 )}
               </dd>
             </div>
-            <div>
-              <dt>Employer share</dt>
+            <div className={styles.shareRow}>
+              <dt>
+                <span
+                  className={`${styles.shareDot} ${styles.employerDot}`}
+                  aria-hidden="true"
+                />
+                Employer share
+              </dt>
               <dd>
                 {currencyFormatter.format(
                   workspace.balance.employerShareRupees,
                 )}
               </dd>
             </div>
-            <div>
-              <dt>Pension share</dt>
+            <div className={styles.shareRow}>
+              <dt>
+                <span
+                  className={`${styles.shareDot} ${styles.pensionDot}`}
+                  aria-hidden="true"
+                />
+                Pension share
+              </dt>
               <dd>
                 {currencyFormatter.format(workspace.balance.pensionShareRupees)}
               </dd>
@@ -157,7 +238,7 @@ export function ClaimWorkspace({
           <dl className={styles.claimDetails}>
             <div>
               <dt>Reference</dt>
-              <dd>{claim.id}</dd>
+              <dd className={styles.refCode}>{claim.id}</dd>
             </div>
             <div>
               <dt>Request type</dt>
@@ -193,7 +274,7 @@ export function ClaimWorkspace({
         >
           <div className={styles.sectionLabel}>
             <p>Recent activity</p>
-            <span>Newest first</span>
+            <span className={styles.eventsMeta}>Newest first</span>
           </div>
           <h3 id="events-title">Recent events</h3>
           <ol>
