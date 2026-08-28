@@ -4,13 +4,13 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.65rem 1.25rem;
-  border: var(--border-thick) solid var(--color-ink);
+  padding: 0.65rem 1.35rem;
+  border: 1.5px solid transparent;
   cursor: pointer;
-  font-family: var(--font-display), monospace;
-  font-size: var(--text-small);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   line-height: 1.25;
   text-align: center;
   text-decoration: none;
@@ -20,51 +20,51 @@
 }
 
 .button:hover:not(:disabled) {
-  box-shadow: var(--shadow-offset-sm);
-  transform: translate(-2px, -2px);
+  transform: translateY(-1px);
 }
 
 .button:active:not(:disabled) {
-  box-shadow: none;
-  transform: translate(0, 0);
+  transform: translateY(0);
 }
 
 .button:disabled {
   cursor: not-allowed;
-  opacity: 0.4;
+  opacity: 0.35;
 }
 
+/* ── PRIMARY: Solid White background, Black text ── */
 .primary {
-  background: var(--color-signal);
-  color: #ffffff;
-  border-color: var(--color-ink);
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
 }
 
 .primary:hover:not(:disabled) {
-  background: var(--color-signal-strong);
-  box-shadow: var(--shadow-offset-signal);
+  background: #e5e5e5;
+  border-color: #e5e5e5;
 }
 
+/* ── SECONDARY: Transparent background, 1.5px solid white border, White text ── */
 .secondary {
-  background: var(--color-paper);
-  color: var(--color-ink);
-  border-color: var(--color-ink);
+  background: transparent;
+  color: #ffffff;
+  border-color: #ffffff;
 }
 
 .secondary:hover:not(:disabled) {
-  background: var(--color-ink);
-  color: #ffffff;
-  box-shadow: var(--shadow-offset-sm);
+  background: #ffffff;
+  color: #000000;
 }
 
+/* ── QUIET ── */
 .quiet {
   border-color: transparent;
   background: transparent;
-  color: var(--color-ink);
+  color: #b0b0b0;
 }
 
 .quiet:hover:not(:disabled) {
-  background: var(--color-paper-subtle);
-  border-color: var(--color-ink);
-  box-shadow: none;
+  color: #ffffff;
+  border-color: #333333;
+  background: #111111;
 }

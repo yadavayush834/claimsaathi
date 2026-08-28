@@ -3,9 +3,10 @@
   grid-template-columns: auto minmax(0, 1fr);
   gap: var(--space-3);
   padding: var(--space-4);
-  border: var(--border-thick) solid var(--color-ink);
-  background: var(--color-paper);
-  color: var(--color-ink);
+  border: 1px solid #333333;
+  border-left: 3px solid #ffffff;
+  background: #0a0a0a;
+  color: #ffffff;
 }
 
 .marker {
@@ -13,10 +14,10 @@
   width: 1.6rem;
   height: 1.6rem;
   place-items: center;
-  border: var(--border-thin) solid var(--color-ink);
-  background: var(--color-ink);
-  color: #ffffff;
-  font-family: var(--font-display), monospace;
+  border: 1px solid #ffffff;
+  background: #ffffff;
+  color: #000000;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-caption);
   font-weight: 800;
 }
@@ -24,17 +25,17 @@
 .callout strong {
   display: block;
   margin-bottom: var(--space-1);
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
 }
 
 .callout p {
   margin: 0;
-  color: var(--color-ink-muted);
+  color: #b0b0b0;
   font-size: var(--text-small);
   line-height: 1.5;
 }

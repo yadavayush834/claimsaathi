@@ -1,76 +1,76 @@
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 
-  /* ── Surfaces & Canvas ── */
-  --color-canvas: #ffffff;
-  --color-canvas-subtle: #f5f5f5;
-  --color-paper: #ffffff;
-  --color-paper-muted: #fafafa;
-  --color-paper-subtle: #f0f0f0;
-  --color-paper-elevated: #ffffff;
+  /* ── Surfaces & Canvas: Pure Black & Terminal Slate ── */
+  --color-canvas: #000000;
+  --color-canvas-subtle: #0a0a0a;
+  --color-paper: #000000;
+  --color-paper-muted: #0d0d0d;
+  --color-paper-subtle: #141414;
+  --color-paper-elevated: #111111;
 
-  /* ── Typography & Ink ── */
-  --color-ink: #0a0a0a;
-  --color-ink-strong: #000000;
-  --color-ink-muted: #3d3d3d;
-  --color-ink-subtle: #6b6b6b;
-  --color-line: #0a0a0a;
-  --color-line-strong: #000000;
-  --color-line-soft: #d4d4d4;
+  /* ── Typography & Ink: High-Contrast Pure White & Silver ── */
+  --color-ink: #ffffff;
+  --color-ink-strong: #ffffff;
+  --color-ink-muted: #b0b0b0;
+  --color-ink-subtle: #787878;
+  --color-line: #ffffff;
+  --color-line-strong: #ffffff;
+  --color-line-soft: #2a2a2a;
+  --color-line-subtle: #1a1a1a;
 
-  /* ── Brand: Electric Indigo ── */
-  --color-brand: #4f19d6;
-  --color-brand-strong: #3a0ca3;
-  --color-brand-mid: #6930e8;
-  --color-brand-soft: #ede5ff;
-  --color-brand-accent: #6930e8;
+  /* ── Brand & Terminal Accents ── */
+  --color-brand: #ffffff;
+  --color-brand-strong: #ffffff;
+  --color-brand-mid: #cccccc;
+  --color-brand-soft: #141c2b;
+  --color-brand-accent: #2e4368;
   --color-brand-gradient: none;
   --color-brand-glow: none;
 
-  /* ── Signal: Vermillion ── */
-  --color-signal: #e63312;
-  --color-signal-strong: #c4280d;
-  --color-signal-soft: #fff0ed;
+  /* ── Signal: Vibrant Amber/Orange Accent (Used selectively) ── */
+  --color-signal: #ff8c00;
+  --color-signal-strong: #ffa500;
+  --color-signal-soft: #261600;
   --color-signal-glow: none;
   --color-signal-gradient: none;
 
-  /* ── Success: Acid Green ── */
-  --color-success: #0d9e3f;
-  --color-success-strong: #087a2f;
-  --color-success-soft: #e8fce8;
+  /* ── Success: Terminal Green ── */
+  --color-success: #22c55e;
+  --color-success-strong: #4ade80;
+  --color-success-soft: #052e16;
   --color-success-glow: none;
 
-  /* ── Info: Black ── */
-  --color-info: #0a0a0a;
-  --color-info-strong: #000000;
-  --color-info-soft: #f0f0f0;
+  /* ── Info: Terminal Blue Slate ── */
+  --color-info: #60a5fa;
+  --color-info-strong: #93c5fd;
+  --color-info-soft: #141c2b;
 
-  /* ── Warning: Raw Amber ── */
-  --color-warning: #cc7a00;
-  --color-warning-strong: #995c00;
-  --color-warning-soft: #fff8e6;
+  /* ── Warning: Amber ── */
+  --color-warning: #f59e0b;
+  --color-warning-strong: #fbbf24;
+  --color-warning-soft: #271a00;
 
-  /* ── Critical: Vermillion ── */
-  --color-critical: #e63312;
-  --color-critical-strong: #a82410;
-  --color-critical-soft: #fff0ed;
+  /* ── Critical: Terminal Red ── */
+  --color-critical: #ef4444;
+  --color-critical-strong: #f87171;
+  --color-critical-soft: #2d0b0b;
 
   /* ── Focus ── */
-  --color-focus: #4f19d6;
+  --color-focus: #ffffff;
 
-  /* ── Typography ── */
-  --font-display: var(--font-display), "Courier New", Courier, monospace;
-  --font-body:
-    var(--font-body), var(--font-devanagari), -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, sans-serif;
+  /* ── Typography Scale ── */
+  --font-display: var(--font-display), "Space Grotesk", sans-serif;
+  --font-body: var(--font-mono), "Space Mono", monospace;
+  --font-mono: var(--font-mono), "Space Mono", monospace;
 
   --text-caption: 0.75rem;
   --text-small: 0.875rem;
   --text-body: 1rem;
-  --text-lede: clamp(1.05rem, 0.95rem + 0.35vw, 1.25rem);
-  --text-title: clamp(2.6rem, 2rem + 3vw, 4.5rem);
+  --text-lede: clamp(1rem, 0.92rem + 0.35vw, 1.15rem);
+  --text-title: clamp(2.4rem, 1.8rem + 3.2vw, 4.4rem);
 
-  /* ── Spacing ── */
+  /* ── Spacing Scale ── */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -80,14 +80,14 @@
   --space-7: 3rem;
   --space-8: 4rem;
 
-  /* ── Border Radii: ALL ZERO ── */
+  /* ── Border Radii: Strict Zero ── */
   --radius-xs: 0;
   --radius-control: 0;
   --radius-card: 0;
   --radius-panel: 0;
   --radius-pill: 0;
 
-  /* ── Shadows: NONE (brutalist = borders only) ── */
+  /* ── Shadows: Hard Offset Lines ── */
   --shadow-xs: none;
   --shadow-sm: none;
   --shadow-md: none;
@@ -95,18 +95,16 @@
   --shadow-paper: none;
   --shadow-glow-signal: none;
   --shadow-glow-brand: none;
-  --shadow-offset: 4px 4px 0 #0a0a0a;
-  --shadow-offset-sm: 2px 2px 0 #0a0a0a;
-  --shadow-offset-brand: 4px 4px 0 #4f19d6;
-  --shadow-offset-signal: 4px 4px 0 #e63312;
+  --shadow-offset: 4px 4px 0 #ffffff;
+  --shadow-offset-sm: 2px 2px 0 #ffffff;
 
   /* ── Transitions ── */
-  --transition-fast: 100ms ease;
-  --transition-base: 150ms ease;
-  --transition-smooth: 200ms ease;
+  --transition-fast: 120ms ease;
+  --transition-base: 180ms ease;
+  --transition-smooth: 240ms ease;
 
-  /* ── Brutalist border widths ── */
-  --border-thin: 1.5px;
-  --border-thick: 2.5px;
-  --border-heavy: 3.5px;
+  /* ── Border Widths ── */
+  --border-thin: 1px;
+  --border-thick: 1.5px;
+  --border-heavy: 2px;
 }

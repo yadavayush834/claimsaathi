@@ -18,32 +18,32 @@
 .modeChip {
   display: inline-flex;
   align-items: center;
-  padding: 0.15rem 0.5rem;
-  border: var(--border-thin) solid var(--color-brand);
-  background: var(--color-brand-soft);
-  color: var(--color-brand-strong);
-  font-family: var(--font-display), monospace;
-  font-size: 0.65rem;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid #333333;
+  background: #111111;
+  color: #888888;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.7rem;
   font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
 }
 
 .page h1 {
   margin: var(--space-3) 0 0;
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
+  color: #ffffff;
+  font-family: var(--font-display), "Space Grotesk", sans-serif;
   font-size: clamp(2rem, 1.6rem + 1.4vw, 3rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   line-height: 1.05;
-  text-transform: uppercase;
 }
 
 .lede {
   max-width: 44rem;
   margin: var(--space-3) 0 0;
-  color: var(--color-ink-muted);
+  color: #888888;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-lede);
   line-height: 1.55;
 }
@@ -51,15 +51,15 @@
 .checksWrapper {
   display: grid;
   gap: var(--space-3);
-  padding-top: var(--space-4);
-  border-top: var(--border-thick) solid var(--color-ink);
+  padding-top: var(--space-5);
+  border-top: 1px solid #222222;
 }
 
 .checksTitle {
   margin: 0;
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
-  font-size: 0.7rem;
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -68,7 +68,7 @@
 .checks {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0;
+  gap: var(--space-3);
   margin: 0;
   padding: 0;
 }
@@ -79,36 +79,26 @@
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
-  border: var(--border-thin) solid var(--color-ink);
-  background: var(--color-paper);
+  border: 1px solid #222222;
+  background: #0d0d0d;
   transition: all var(--transition-fast);
 }
 
 .checkCard:hover {
-  background: var(--color-ink);
-  color: #ffffff;
-}
-
-.checkCard:hover dt,
-.checkCard:hover dd {
-  color: #ffffff;
-}
-
-.checkCard:hover .checkIcon {
-  background: #ffffff;
-  color: var(--color-ink);
+  border-color: #555555;
+  background: #141414;
 }
 
 .checkCard dt {
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  color: var(--color-ink-muted);
-  font-family: var(--font-display), monospace;
+  color: #888888;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.06em;
 }
 
 .checkIcon {
@@ -116,17 +106,17 @@
   width: 1.15rem;
   height: 1.15rem;
   place-items: center;
-  border: 1px solid var(--color-ink);
-  background: var(--color-success);
-  color: #ffffff;
+  border: 1px solid #22c55e;
+  background: #052e16;
+  color: #4ade80;
   font-size: 0.65rem;
   font-weight: 800;
 }
 
 .checkCard dd {
   margin: 0;
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
   font-weight: 700;
 }

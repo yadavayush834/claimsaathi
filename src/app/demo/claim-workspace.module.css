@@ -10,7 +10,7 @@
   justify-content: space-between;
   gap: var(--space-4);
   padding-bottom: var(--space-5);
-  border-bottom: var(--border-thick) solid var(--color-ink);
+  border-bottom: 1px solid #222222;
 }
 
 .personaBanner {
@@ -25,13 +25,13 @@
   height: 3.5rem;
   flex: 0 0 auto;
   place-items: center;
-  border: var(--border-thick) solid var(--color-ink);
-  background: var(--color-brand);
+  border: 1px solid #ffffff;
+  background: #111111;
   color: #ffffff;
-  font-family: var(--font-display), monospace;
-  font-size: 1.2rem;
+  font-family: var(--font-display), "Space Grotesk", sans-serif;
+  font-size: 1.25rem;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.04em;
 }
 
 .personaDetails {
@@ -43,9 +43,9 @@
 .sectionLabel p,
 .nextActionLabel p {
   margin: 0;
-  color: var(--color-brand);
-  font-family: var(--font-display), monospace;
-  font-size: 0.65rem;
+  color: #888888;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -53,11 +53,11 @@
 
 .workspaceHeader h2 {
   margin: 0.15rem 0 0;
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
+  color: #ffffff;
+  font-family: var(--font-display), "Space Grotesk", sans-serif;
   font-size: clamp(1.85rem, 1.5rem + 1.2vw, 2.75rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   line-height: 1.05;
   text-transform: uppercase;
 }
@@ -71,21 +71,22 @@
 }
 
 .scenarioTitle {
-  color: var(--color-ink-muted);
+  color: #b0b0b0;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
   font-weight: 600;
 }
 
 .stateChip {
   padding: 0.1rem 0.4rem;
-  border: 1px solid var(--color-ink);
-  background: var(--color-paper-muted);
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
+  border: 1px solid #333333;
+  background: #111111;
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
   font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
 }
 
 .headerBadges {
@@ -98,7 +99,7 @@
 .switchTopBtn {
   min-height: 2.2rem !important;
   padding: 0.35rem 0.75rem !important;
-  font-size: 0.65rem !important;
+  font-size: 0.7rem !important;
 }
 
 /* ── SESSION BANNER ── */
@@ -107,23 +108,22 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.4rem 0.85rem;
-  border: var(--border-thin) solid var(--color-ink);
-  background: var(--color-paper);
+  border: 1px solid #222222;
+  background: #0a0a0a;
   width: fit-content;
 }
 
 .sessionDot {
-  width: 0.5rem;
-  height: 0.5rem;
-  background: var(--color-success);
-  border: 1px solid var(--color-ink);
+  width: 0.45rem;
+  height: 0.45rem;
+  background: #22c55e;
 }
 
 .sessionNote {
   margin: 0;
-  color: var(--color-ink-muted);
-  font-family: var(--font-display), monospace;
-  font-size: 0.7rem;
+  color: #888888;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -135,8 +135,8 @@
   grid-template-columns: minmax(9rem, 0.28fr) minmax(0, 1fr);
   gap: var(--space-4);
   padding: var(--space-5);
-  border: var(--border-thick) solid var(--color-signal);
-  background: var(--color-signal-soft);
+  border: 1px solid #ffffff;
+  background: #0d0d0d;
 }
 
 .nextActionLabel {
@@ -150,10 +150,10 @@
   width: 1.85rem;
   height: 1.85rem;
   place-items: center;
-  border: var(--border-thick) solid var(--color-ink);
-  background: var(--color-signal);
-  color: #ffffff;
-  font-family: var(--font-display), monospace;
+  border: 1px solid #ffffff;
+  background: #ffffff;
+  color: #000000;
+  font-family: var(--font-mono), monospace;
   font-size: 1rem;
   font-weight: 900;
 }
@@ -175,11 +175,11 @@
 .issueSection h3,
 .eventsSection h3 {
   margin: 0;
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
+  color: #ffffff;
+  font-family: var(--font-display), "Space Grotesk", sans-serif;
   font-size: clamp(1.15rem, 1.05rem + 0.5vw, 1.5rem);
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.02em;
   line-height: 1.15;
   text-transform: uppercase;
 }
@@ -187,7 +187,8 @@
 .nextActionDesc {
   max-width: 44rem;
   margin: var(--space-2) 0 0;
-  color: var(--color-ink-muted);
+  color: #b0b0b0;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
   line-height: 1.55;
 }
@@ -195,7 +196,8 @@
 .nextActionHint {
   display: block;
   margin-top: var(--space-2);
-  color: var(--color-ink-subtle);
+  color: #666666;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-caption);
 }
 
@@ -204,7 +206,7 @@
 .detailGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0;
+  gap: var(--space-4);
 }
 
 .ledgerSection,
@@ -212,15 +214,15 @@
 .eventsSection {
   min-width: 0;
   padding: var(--space-5);
-  border: var(--border-thin) solid var(--color-ink);
-  background: var(--color-paper);
-  transition: all var(--transition-fast);
+  border: 1px solid #222222;
+  background: #000000;
+  transition: border-color var(--transition-fast);
 }
 
 .ledgerSection:hover,
 .issueSection:hover,
 .eventsSection:hover {
-  background: var(--color-paper-muted);
+  border-color: #555555;
 }
 
 .sectionLabel {
@@ -233,12 +235,12 @@
 }
 
 .eventsMeta {
-  color: var(--color-ink-subtle);
-  font-family: var(--font-display), monospace;
-  font-size: 0.65rem;
+  color: #777777;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
 }
 
 /* ── BALANCE ── */
@@ -246,11 +248,11 @@
 .claimAmount {
   display: block;
   margin-top: var(--space-3);
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
   font-size: clamp(1.85rem, 1.5rem + 1.2vw, 2.65rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   line-height: 1;
 }
 
@@ -259,29 +261,29 @@
   display: flex;
   height: 0.5rem;
   width: 100%;
-  margin-top: var(--space-3);
+  margin-top: var(--space-4);
   overflow: hidden;
-  border: 1px solid var(--color-ink);
-  background: var(--color-paper-subtle);
+  border: 1px solid #333333;
+  background: #141414;
 }
 
 .employeeBar {
-  background: var(--color-ink);
+  background: #ffffff;
 }
 
 .employerBar {
-  background: var(--color-signal);
+  background: #60a5fa;
 }
 
 .pensionBar {
-  background: var(--color-brand);
+  background: #22c55e;
 }
 
 /* ── BREAKDOWN ROWS ── */
 .balanceBreakdown,
 .claimDetails {
   margin: var(--space-4) 0 0;
-  border-top: var(--border-thin) solid var(--color-ink);
+  border-top: 1px solid #222222;
 }
 
 .shareRow,
@@ -291,37 +293,39 @@
   align-items: center;
   gap: var(--space-4);
   padding: 0.65rem 0;
-  border-bottom: 1px solid var(--color-line-soft);
+  border-bottom: 1px solid #1a1a1a;
 }
 
 .shareRow dt {
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  color: var(--color-ink-muted);
+  color: #888888;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
   font-weight: 600;
 }
 
 .shareDot {
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 0.45rem;
+  height: 0.45rem;
 }
 
 .employeeDot {
-  background: var(--color-ink);
+  background: #ffffff;
 }
 
 .employerDot {
-  background: var(--color-signal);
+  background: #60a5fa;
 }
 
 .pensionDot {
-  background: var(--color-brand);
+  background: #22c55e;
 }
 
 .claimDetails dt {
-  color: var(--color-ink-muted);
+  color: #888888;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
   font-weight: 600;
 }
@@ -329,48 +333,47 @@
 .balanceBreakdown dd,
 .claimDetails dd {
   margin: 0;
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
   font-weight: 700;
   text-align: right;
 }
 
 .refCode {
-  font-family: var(--font-display), monospace;
-  background: var(--color-paper-muted);
+  font-family: var(--font-mono), monospace;
+  background: #141c2b;
+  color: #93c5fd;
   padding: 0.15rem 0.5rem;
-  border: 1px solid var(--color-ink);
+  border: 1px solid #2e4368;
 }
 
 .scopeNote {
   margin: var(--space-3) 0 0;
-  color: var(--color-signal);
-  font-family: var(--font-display), monospace;
+  color: #888888;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-caption);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
 }
 
 /* ── ISSUE SECTION ── */
 .issueSection {
-  border-left: var(--border-heavy) solid var(--color-success);
+  border-left: 3px solid #22c55e;
 }
 
 .issueSection[data-tone="attention"] {
-  border-left-color: var(--color-signal);
-  background: var(--color-signal-soft);
+  border-left-color: #ef4444;
+  background: #130505;
 }
 
 .issueSection[data-tone="review"] {
-  border-left-color: var(--color-warning);
-  background: var(--color-warning-soft);
+  border-left-color: #f59e0b;
+  background: #140e02;
 }
 
 .issueSection > p {
   margin: var(--space-3) 0 0;
-  color: var(--color-ink-muted);
+  color: #888888;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
   line-height: 1.55;
 }
@@ -390,8 +393,8 @@
   top: 0.5rem;
   bottom: 0.5rem;
   left: 0.4rem;
-  width: var(--border-thick);
-  background: var(--color-ink);
+  width: 1px;
+  background: #333333;
   content: "";
 }
 
@@ -406,17 +409,17 @@
 .eventsSection li::before {
   position: absolute;
   top: 0.3rem;
-  left: 0.1rem;
-  width: 0.7rem;
-  height: 0.7rem;
-  border: var(--border-thin) solid var(--color-ink);
-  background: var(--color-brand);
+  left: 0.15rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 1px solid #ffffff;
+  background: #ffffff;
   content: "";
 }
 
 .eventsSection time {
-  color: var(--color-ink-subtle);
-  font-family: var(--font-display), monospace;
+  color: #777777;
+  font-family: var(--font-mono), monospace;
   font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -425,8 +428,8 @@
 
 .eventsSection strong {
   display: block;
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
   font-weight: 700;
   text-transform: uppercase;
@@ -434,7 +437,8 @@
 
 .eventsSection li p {
   margin: 0.15rem 0 0;
-  color: var(--color-ink-muted);
+  color: #888888;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
   line-height: 1.4;
 }
@@ -445,14 +449,15 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  padding-top: var(--space-3);
-  border-top: var(--border-thick) solid var(--color-ink);
+  padding-top: var(--space-4);
+  border-top: 1px solid #222222;
 }
 
 .workspaceFooter p {
   max-width: 34rem;
   margin: 0;
-  color: var(--color-ink-muted);
+  color: #777777;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
 }
 
@@ -464,7 +469,7 @@
   }
 }
 
-@media (max-width: 42rem) {
+@media (max-width: 44rem) {
   .workspaceHeader {
     flex-direction: column;
   }

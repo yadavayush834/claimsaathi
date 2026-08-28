@@ -1,490 +1,417 @@
-/* ── HERO ── */
+/* ── HERO SECTION: 2-column layout matching reference image ── */
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
+  grid-template-columns: minmax(0, 1.25fr) minmax(20rem, 0.85fr);
   align-items: start;
-  gap: clamp(var(--space-6), 5vw, var(--space-8));
+  gap: clamp(var(--space-6), 4.5vw, var(--space-8));
   padding-bottom: var(--space-7);
-  border-bottom: var(--border-thick) solid var(--color-ink);
 }
 
 .heroCopy {
   min-width: 0;
 }
 
-.badgeWrapper {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.heroSpark {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.2rem 0.5rem;
-  border: var(--border-thin) solid var(--color-signal);
-  background: var(--color-signal-soft);
-  color: var(--color-signal-strong);
-  font-family: var(--font-display), monospace;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
 .hero h1 {
-  max-width: 16ch;
-  margin: var(--space-4) 0 0;
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
-  font-size: var(--text-title);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1;
+  margin: 0;
+  color: #ffffff;
+  font-family: var(--font-display), "Space Grotesk", sans-serif;
+  font-size: clamp(2.3rem, 1.8rem + 2.8vw, 3.8rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
   text-transform: uppercase;
 }
 
 .lede {
-  max-width: 38rem;
-  margin: var(--space-4) 0 0;
-  color: var(--color-ink-muted);
+  max-width: 36rem;
+  margin: var(--space-5) 0 0;
+  color: #b0b0b0;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-lede);
-  line-height: 1.55;
+  line-height: 1.65;
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-3);
+  gap: 1.25rem;
   margin-top: var(--space-6);
 }
 
 .primaryCta {
-  background: var(--color-signal) !important;
-  color: #ffffff !important;
-  border-color: var(--color-ink) !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1.5px solid #ffffff !important;
+  font-family: var(--font-mono), monospace !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
 }
 
 .primaryCta:hover {
-  background: var(--color-signal-strong) !important;
-  box-shadow: var(--shadow-offset-signal) !important;
-  transform: translate(-2px, -2px) !important;
+  background: #e5e5e5 !important;
 }
 
-.securityNote {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: var(--space-4);
-  padding: var(--space-3);
-  border: var(--border-thin) solid var(--color-line-soft);
-  background: var(--color-paper-muted);
+.secondaryCta {
+  background: transparent !important;
+  color: #ffffff !important;
+  border: 1.5px solid #ffffff !important;
+  font-family: var(--font-mono), monospace !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
 }
 
-.lockIcon {
-  font-size: 0.85rem;
+.secondaryCta:hover {
+  background: #ffffff !important;
+  color: #000000 !important;
 }
 
-.actionNote {
-  max-width: 38rem;
-  margin: 0;
-  color: var(--color-ink-subtle);
-  font-size: var(--text-small);
-  line-height: 1.4;
-}
-
-/* ── ROUTE CARD ── */
+/* ── THE GUIDED ROUTE CARD: matching reference image ── */
 .routeCard {
   position: relative;
-  overflow: hidden;
-  padding: var(--space-5);
-  border: var(--border-thick) solid var(--color-ink);
-  border-top: var(--border-heavy) solid var(--color-brand);
-  background: var(--color-paper);
+  border: 1px solid #ffffff;
+  background: #000000;
 }
 
 .routeHeader {
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid #ffffff;
+}
+
+.routeEyebrow {
+  margin: 0;
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.routeList {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.routeItem {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  padding-bottom: var(--space-3);
-  border-bottom: var(--border-thin) solid var(--color-ink);
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  transition: background var(--transition-fast);
 }
 
-.routeEyebrow,
-.eyebrow {
-  margin: 0;
-  color: var(--color-brand);
-  font-family: var(--font-display), monospace;
+.routeItem:last-child {
+  border-bottom: none;
+}
+
+.routeItem:hover {
+  background: #0d121c;
+}
+
+.stepLeft {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+}
+
+.stepNum {
+  color: #888888;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.stepName {
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.stepBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 7.5rem;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid #2e4368;
+  background: #141c2b;
+  color: #a9c5f2;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* ── WIREFRAME SHOWCASE FRAME: matching reference image ── */
+.showcaseSection {
+  padding: var(--space-4) 0 var(--space-7);
+}
+
+.showcaseFrame {
+  position: relative;
+  width: 100%;
+  min-height: 14rem;
+  border: 1px solid #ffffff;
+  background: #000000;
+}
+
+.showcaseFrame::after {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: -6px;
+  bottom: -6px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  content: "";
+  pointer-events: none;
+  z-index: -1;
+}
+
+.showcaseInner {
+  min-height: 14rem;
+  background: #000000;
+}
+
+/* ── TRUST STRIP: matching reference image ── */
+.trustStrip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-6);
+  padding: var(--space-6) 0;
+  border-top: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+}
+
+.trustCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.trustHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.trustBar {
+  width: 2px;
+  height: 2.25rem;
+  background: #ffffff;
+  flex: 0 0 auto;
+}
+
+.trustTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.trustIcon {
+  font-size: 0.85rem;
+}
+
+.trustCard strong {
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.trustTag {
+  display: block;
+  margin-top: 0.15rem;
+  color: #888888;
+  font-family: var(--font-mono), monospace;
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-.routePill {
-  display: inline-block;
-  padding: 0.15rem 0.45rem;
-  border: var(--border-thin) solid var(--color-brand);
-  background: var(--color-brand-soft);
-  color: var(--color-brand-strong);
-  font-family: var(--font-display), monospace;
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.routeCard ol {
-  position: relative;
-  display: grid;
-  gap: var(--space-3);
-  margin: var(--space-4) 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.routeCard ol::before {
-  position: absolute;
-  top: 1.2rem;
-  bottom: 1.2rem;
-  left: 1.05rem;
-  width: var(--border-thick);
-  background: var(--color-ink);
-  content: "";
-}
-
-.routeCard li {
-  position: relative;
-  display: grid;
-  grid-template-columns: 2.1rem minmax(0, 1fr);
-  gap: var(--space-3);
-  padding: var(--space-3);
-  border: var(--border-thin) solid var(--color-line-soft);
-  background: var(--color-paper);
-  transition: all var(--transition-fast);
-}
-
-.routeCard li:hover {
-  border-color: var(--color-ink);
-  background: var(--color-paper-muted);
-  box-shadow: var(--shadow-offset-sm);
-  transform: translate(-2px, -2px);
-}
-
-.routeCard li > span {
-  z-index: 1;
-  display: grid;
-  width: 2.1rem;
-  height: 2.1rem;
-  place-items: center;
-  border: var(--border-thick) solid var(--color-ink);
-  background: var(--color-ink);
-  color: #ffffff;
-  font-family: var(--font-display), monospace;
+.trustDesc {
+  margin: var(--space-3) 0 0;
+  color: #888888;
+  font-family: var(--font-mono), monospace;
   font-size: 0.75rem;
-  font-weight: 800;
-}
-
-.stepContent {
-  display: flex;
-  flex-direction: column;
-}
-
-.stepRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
-}
-
-.routeCard strong {
-  display: block;
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
-  font-size: var(--text-small);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-.stepBadge {
-  color: var(--color-brand);
-  font-family: var(--font-display), monospace;
-  font-size: 0.6rem;
-  font-weight: 600;
-  background: var(--color-brand-soft);
-  padding: 0.1rem 0.35rem;
-  border: 1px solid var(--color-brand);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.routeCard li p {
-  margin: 0.2rem 0 0;
-  color: var(--color-ink-muted);
-  font-size: var(--text-small);
-  line-height: 1.4;
-}
-
-/* ── TRUST STRIP ── */
-.trustStrip {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
-  padding: 0;
-  border-top: var(--border-thick) solid var(--color-ink);
-  border-bottom: var(--border-thick) solid var(--color-ink);
-}
-
-.trustCard {
-  padding: var(--space-4);
-  border-right: var(--border-thin) solid var(--color-ink);
-  background: var(--color-paper);
-  transition: all var(--transition-fast);
-}
-
-.trustCard:last-child {
-  border-right: none;
-}
-
-.trustCard:hover {
-  background: var(--color-ink);
-  color: #ffffff;
-}
-
-.trustCard:hover strong,
-.trustCard:hover p {
-  color: #ffffff;
-}
-
-.trustCard:hover .trustTag {
-  border-color: #ffffff;
-  background: transparent;
-  color: #ffffff;
-}
-
-.trustHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
-}
-
-.trustCard strong {
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
-  font-size: var(--text-small);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-.trustTag {
-  padding: 0.1rem 0.4rem;
-  border: 1px solid var(--color-ink);
-  background: var(--color-paper-muted);
-  color: var(--color-ink-muted);
-  font-family: var(--font-display), monospace;
-  font-size: 0.6rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.trustCard p {
-  margin: var(--space-2) 0 0;
-  color: var(--color-ink-muted);
-  font-size: var(--text-small);
   line-height: 1.5;
 }
 
-/* ── PROBLEM SECTION ── */
+/* ── CITIZEN PROBLEM SECTION ── */
 .problem,
 .safety {
   display: grid;
-  grid-template-columns: minmax(14rem, 0.5fr) minmax(0, 1fr);
-  gap: clamp(var(--space-6), 5vw, var(--space-8));
+  grid-template-columns: minmax(14rem, 0.45fr) minmax(0, 1fr);
+  gap: clamp(var(--space-6), 4.5vw, var(--space-8));
   padding: var(--space-7) 0;
 }
 
-.problem > header {
-  align-self: start;
+.eyebrow {
+  margin: 0;
+  color: #888888;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .problem h2,
 .safety h2 {
   margin: var(--space-2) 0 0;
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
-  font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.2rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  color: #ffffff;
+  font-family: var(--font-display), "Space Grotesk", sans-serif;
+  font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
   text-transform: uppercase;
 }
 
 .problemSubhead {
   margin: var(--space-3) 0 0;
-  color: var(--color-ink-muted);
-  font-size: var(--text-small);
+  color: #888888;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.8rem;
   line-height: 1.55;
 }
 
 .problemRows {
   display: grid;
-  gap: 0;
+  gap: var(--space-3);
 }
 
 .problemCard {
   display: grid;
-  grid-template-columns: minmax(9.5rem, 0.32fr) minmax(0, 1fr);
+  grid-template-columns: minmax(10rem, 0.3fr) minmax(0, 1fr);
   gap: var(--space-4);
   padding: var(--space-4) var(--space-5);
-  border: var(--border-thin) solid var(--color-ink);
-  border-bottom: none;
-  background: var(--color-paper);
-  transition: all var(--transition-fast);
-}
-
-.problemCard:last-child {
-  border-bottom: var(--border-thin) solid var(--color-ink);
+  border: 1px solid #222222;
+  background: #000000;
+  transition: border-color var(--transition-fast);
 }
 
 .problemCard:hover {
-  background: var(--color-paper-muted);
-  box-shadow: var(--shadow-offset-sm);
-  transform: translate(-2px, -2px);
+  border-color: #555555;
 }
 
 .problemPhase {
   display: inline-block;
   align-self: start;
   padding: 0.2rem 0.5rem;
-  border: var(--border-thin) solid var(--color-brand);
-  background: var(--color-brand-soft);
-  color: var(--color-brand-strong);
-  font-family: var(--font-display), monospace;
+  border: 1px solid #333333;
+  background: #111111;
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
   font-size: 0.65rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .problemCard h3 {
   margin: 0;
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
-  font-size: 1rem;
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.95rem;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.35;
 }
 
 .problemCard p {
   margin: var(--space-2) 0 0;
-  color: var(--color-ink-muted);
-  font-size: var(--text-small);
+  color: #888888;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.8rem;
   line-height: 1.5;
 }
 
-/* ── SAFETY SECTION ── */
+/* ── SAFETY / TRUST BOUNDARY SECTION ── */
 .safety {
-  padding-bottom: 0;
-  border-top: var(--border-thick) solid var(--color-ink);
+  border-top: 1px solid #222222;
   scroll-margin-top: var(--space-4);
 }
 
 .safetyIntro > p:last-child {
   max-width: 32rem;
   margin: var(--space-3) 0 0;
-  color: var(--color-ink-muted);
-  font-size: var(--text-small);
+  color: #888888;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.8rem;
   line-height: 1.55;
 }
 
 .safetyLedger {
   display: grid;
-  gap: 0;
+  gap: var(--space-3);
 }
 
 .safetyCardSimulate,
 .safetyCardAvoid,
 .safetyCardBoundary {
   padding: var(--space-4) var(--space-5);
-  border: var(--border-thin) solid var(--color-ink);
-  border-bottom: none;
-  background: var(--color-paper);
-}
-
-.safetyCardBoundary {
-  border-bottom: var(--border-thin) solid var(--color-ink);
+  border: 1px solid #222222;
+  background: #000000;
 }
 
 .safetyCardSimulate {
-  border-left: var(--border-heavy) solid var(--color-success);
+  border-left: 3px solid #22c55e;
 }
 
 .safetyCardAvoid {
-  border-left: var(--border-heavy) solid var(--color-signal);
+  border-left: 3px solid #ef4444;
 }
 
 .safetyCardBoundary {
-  border-left: var(--border-heavy) solid var(--color-brand);
+  border-left: 3px solid #ffffff;
 }
 
 .safetyCardHeader {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.35rem;
 }
 
 .safetyIcon {
   display: grid;
-  width: 1.4rem;
-  height: 1.4rem;
+  width: 1.35rem;
+  height: 1.35rem;
   place-items: center;
-  border: var(--border-thin) solid var(--color-ink);
-  font-family: var(--font-display), monospace;
-  font-size: 0.75rem;
+  border: 1px solid #ffffff;
+  background: #000000;
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.7rem;
   font-weight: 800;
 }
 
-.safetyCardSimulate .safetyIcon {
-  background: var(--color-success);
-  color: #ffffff;
-  border-color: var(--color-success);
-}
-
-.safetyCardAvoid .safetyIcon {
-  background: var(--color-signal);
-  color: #ffffff;
-  border-color: var(--color-signal);
-}
-
-.safetyCardBoundary .safetyIcon {
-  background: var(--color-brand);
-  color: #ffffff;
-  border-color: var(--color-brand);
-}
-
 .safetyLedger strong {
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
-  font-size: var(--text-small);
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.8rem;
   font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
 }
 
 .safetyLedger p {
   margin: 0;
-  color: var(--color-ink-muted);
-  font-size: var(--text-small);
-  line-height: 1.45;
+  color: #888888;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.8rem;
+  line-height: 1.5;
 }
 
 /* ── RESPONSIVE ── */
@@ -496,52 +423,22 @@
   }
 
   .routeCard {
-    max-width: 38rem;
+    max-width: 32rem;
   }
 }
 
-@media (max-width: 42rem) {
-  .hero {
-    padding-bottom: var(--space-5);
-  }
-
-  .hero h1 {
-    font-size: clamp(2rem, 10vw, 2.85rem);
-  }
-
-  .actions > * {
-    width: 100%;
-  }
-
-  .routeCard {
-    padding: var(--space-4);
-  }
-
+@media (max-width: 44rem) {
   .trustStrip {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .trustCard {
-    border-right: none;
-    border-bottom: var(--border-thin) solid var(--color-ink);
-  }
-
-  .trustCard:last-child {
-    border-bottom: none;
-  }
-
-  .problem,
-  .safety {
-    gap: var(--space-5);
-    padding: var(--space-6) 0;
-  }
-
-  .safety {
-    padding-bottom: 0;
+    gap: var(--space-4);
   }
 
   .problemCard {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-2);
+  }
+
+  .actions > * {
+    width: 100%;
   }
 }

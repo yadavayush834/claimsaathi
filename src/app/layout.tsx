@@ -1,25 +1,25 @@
 import type { Metadata } from "next";
 import {
-  IBM_Plex_Sans,
-  JetBrains_Mono,
   Noto_Sans_Devanagari,
+  Space_Grotesk,
+  Space_Mono,
 } from "next/font/google";
 import type { ReactNode } from "react";
 
 import "./globals.css";
 
-const displayFont = JetBrains_Mono({
+const displayFont = Space_Grotesk({
   variable: "--font-display",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["500", "600", "700"],
 });
 
-const bodyFont = IBM_Plex_Sans({
-  variable: "--font-body",
+const monoFont = Space_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "700"],
 });
 
 const devanagariFont = Noto_Sans_Devanagari({
@@ -43,7 +43,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
       lang="en"
-      className={`${displayFont.variable} ${bodyFont.variable} ${devanagariFont.variable}`}
+      className={`${displayFont.variable} ${monoFont.variable} ${devanagariFont.variable}`}
     >
       <body>{children}</body>
     </html>
