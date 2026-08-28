@@ -3,14 +3,12 @@ import type { ReactNode } from "react";
 
 import styles from "./app-shell.module.css";
 
-const journeySteps = ["Start", "Prepare", "Review", "Track"] as const;
-
 type AppShellProps = Readonly<{
   children: ReactNode;
   currentStep?: number;
 }>;
 
-export function AppShell({ children, currentStep = 1 }: AppShellProps) {
+export function AppShell({ children }: AppShellProps) {
   return (
     <div className={styles.shell}>
       <a className={styles.skipLink} href="#main-content">
@@ -45,40 +43,6 @@ export function AppShell({ children, currentStep = 1 }: AppShellProps) {
       </header>
 
       <div className={styles.frame}>
-        <aside className={styles.rail}>
-          <div className={styles.railHeader}>
-            <span className={styles.railDot} aria-hidden="true" />
-            <p className={styles.railLabel}>YOUR CLAIM ROUTE</p>
-          </div>
-          <nav aria-label="Claim journey">
-            <ol className={styles.steps}>
-              {journeySteps.map((step, index) => {
-                const stepNumber = index + 1;
-                const state =
-                  stepNumber < currentStep
-                    ? "complete"
-                    : stepNumber === currentStep
-                      ? "current"
-                      : "upcoming";
-
-                return (
-                  <li className={styles.step} data-state={state} key={step}>
-                    <span className={styles.stepDot} aria-hidden="true">
-                      {state === "complete" ? "✓" : `0${stepNumber}`}
-                    </span>
-                    <span
-                      className={styles.stepLabel}
-                      aria-current={state === "current" ? "step" : undefined}
-                    >
-                      {step}
-                    </span>
-                  </li>
-                );
-              })}
-            </ol>
-          </nav>
-        </aside>
-
         <main className={styles.main} id="main-content">
           {children}
         </main>
