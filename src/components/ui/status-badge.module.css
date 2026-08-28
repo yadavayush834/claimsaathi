@@ -1,0 +1,64 @@
+.badge {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  background: var(--color-paper-muted);
+  color: var(--color-ink);
+  font-size: var(--text-caption);
+  font-weight: 750;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: var(--color-ink-muted);
+}
+
+.badge[data-tone="success"] {
+  border-color: color-mix(in srgb, var(--color-success) 35%, white);
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+
+.badge[data-tone="success"] .dot {
+  background: var(--color-success);
+}
+
+.badge[data-tone="info"] {
+  border-color: color-mix(in srgb, var(--color-info) 35%, white);
+  background: var(--color-info-soft);
+  color: var(--color-info);
+}
+
+.badge[data-tone="info"] .dot {
+  background: var(--color-info);
+}
+
+.badge[data-tone="warning"] {
+  border-color: color-mix(in srgb, var(--color-warning) 35%, white);
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+
+.badge[data-tone="warning"] .dot {
+  background: var(--color-warning);
+}
+
+.badge[data-tone="critical"] {
+  border-color: color-mix(in srgb, var(--color-critical) 35%, white);
+  background: var(--color-critical-soft);
+  color: var(--color-critical);
+}
+
+.badge[data-tone="critical"] .dot {
+  background: var(--color-critical);
+}

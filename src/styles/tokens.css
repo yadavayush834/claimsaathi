@@ -1,0 +1,46 @@
+:root {
+  color-scheme: light;
+
+  --color-canvas: #edf3f7;
+  --color-paper: #ffffff;
+  --color-paper-muted: #e4edf3;
+  --color-ink: #13263f;
+  --color-ink-muted: #536274;
+  --color-line: #c6d4df;
+  --color-brand: #0e5c61;
+  --color-brand-strong: #08484c;
+  --color-brand-soft: #d9ebea;
+  --color-signal: #e4a72c;
+  --color-signal-soft: #f8e7bd;
+  --color-success: #146c57;
+  --color-success-soft: #d9eee7;
+  --color-info: #245f92;
+  --color-info-soft: #deebf5;
+  --color-warning: #8b5605;
+  --color-warning-soft: #faebc8;
+  --color-critical: #a33b3b;
+  --color-critical-soft: #f7dfdf;
+  --color-focus: #245fd6;
+
+  --font-display: "Anek Devanagari", "Nirmala UI", sans-serif;
+  --font-body: "Noto Sans Devanagari", "Nirmala UI", sans-serif;
+
+  --text-caption: 0.75rem;
+  --text-small: 0.875rem;
+  --text-body: 1rem;
+  --text-lede: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-title: clamp(2.25rem, 1.65rem + 3vw, 4.25rem);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  --radius-control: 0.5rem;
+  --radius-panel: 0.875rem;
+  --shadow-paper: 0 1.25rem 3.75rem rgb(19 38 63 / 9%);
+}
