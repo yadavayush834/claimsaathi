@@ -46,20 +46,6 @@
   letter-spacing: -0.02em;
   text-transform: uppercase;
   text-decoration: none;
-  /* Tricolor Animation for whole text */
-  background: linear-gradient(
-    90deg,
-    #ff9933 0%,
-    #ffffff 33%,
-    #138808 66%,
-    #ff9933 100%
-  );
-  background-size: 300% 100%;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: tricolorFlow 3s linear infinite;
 }
 .brand:hover {
   text-decoration: underline;
@@ -67,7 +53,7 @@
 }
 
 .brandEn {
-  /* Inherits space grotesk */
+  color: var(--color-fg);
 }
 
 .brandHi {
@@ -75,14 +61,35 @@
   font-size: 1.65rem;
   font-weight: 700;
   letter-spacing: 0;
+  /* Tricolor flag base with sweeping shine animation */
+  background:
+    linear-gradient(
+      60deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.7) 50%,
+      transparent 80%
+    ),
+    linear-gradient(90deg, #ff9933 0%, #ffffff 50%, #138808 100%);
+  background-size:
+    200% 100%,
+    100% 100%;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shineSweep 3s linear infinite;
 }
 
-@keyframes tricolorFlow {
+@keyframes shineSweep {
   0% {
-    background-position: 0% center;
+    background-position:
+      200% center,
+      0% center;
   }
   100% {
-    background-position: 300% center;
+    background-position:
+      -200% center,
+      0% center;
   }
 }
 
