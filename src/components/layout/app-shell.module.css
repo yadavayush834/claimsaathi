@@ -11,13 +11,15 @@
   left: var(--space-3);
   padding: var(--space-2) var(--space-4);
   transform: translateY(-180%);
-  border-radius: var(--radius-control);
-  background: var(--color-brand-strong);
-  color: var(--color-paper);
+  background: var(--color-ink);
+  color: #ffffff;
+  font-family: var(--font-display), monospace;
   font-size: var(--text-small);
   font-weight: 700;
   text-decoration: none;
-  box-shadow: var(--shadow-lg);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: var(--border-thick) solid var(--color-ink);
   transition: transform var(--transition-fast);
 }
 
@@ -25,49 +27,45 @@
   transform: translateY(0);
 }
 
+/* ── TOPBAR: flat white, thick black bottom border ── */
 .topbar {
   display: flex;
-  min-height: 5.25rem;
+  min-height: 4.5rem;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  padding: var(--space-4) clamp(var(--space-4), 4vw, var(--space-7));
-  border-bottom: 1px solid var(--color-line);
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  padding: var(--space-3) clamp(var(--space-4), 4vw, var(--space-7));
+  border-bottom: var(--border-heavy) solid var(--color-ink);
+  background: var(--color-paper);
   position: sticky;
   top: 0;
   z-index: 30;
 }
 
+/* ── BRAND: raw text, no gradients ── */
 .brand {
   display: inline-flex;
   min-width: 0;
   align-items: center;
-  gap: 0.85rem;
+  gap: 0.75rem;
   color: var(--color-ink);
   text-decoration: none;
   transition: opacity var(--transition-fast);
 }
 
 .brand:hover {
-  opacity: 0.9;
+  opacity: 0.7;
 }
 
 .brandMark {
   display: grid;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 2.5rem;
+  height: 2.5rem;
   flex: 0 0 auto;
   place-items: center;
-  border: 1px solid rgba(12, 35, 64, 0.15);
-  border-radius: 0.5rem 1.25rem 0.5rem 0.5rem;
-  background: linear-gradient(135deg, #0c2340 0%, #164377 100%);
+  border: var(--border-thick) solid var(--color-ink);
+  background: var(--color-ink);
   color: #ffffff;
-  box-shadow:
-    0 4px 12px rgba(12, 35, 64, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .brandIcon {
@@ -81,12 +79,13 @@
 
 .brandText strong {
   display: block;
-  font-family: var(--font-display), sans-serif;
-  font-size: 1.35rem;
+  font-family: var(--font-display), monospace;
+  font-size: 1.3rem;
   font-weight: 800;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
   line-height: 1.1;
-  color: var(--color-brand-strong);
+  color: var(--color-ink);
+  text-transform: uppercase;
 }
 
 .brandText small {
@@ -94,9 +93,9 @@
   overflow: hidden;
   margin-top: 0.1rem;
   color: var(--color-ink-muted);
-  font-size: var(--text-caption);
+  font-size: 0.65rem;
   font-weight: 600;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.1em;
   line-height: 1.2;
   text-overflow: ellipsis;
   text-transform: uppercase;
@@ -113,20 +112,20 @@
   display: none;
 }
 
+/* ── FRAME: sidebar + main grid ── */
 .frame {
   display: grid;
-  grid-template-columns: minmax(13rem, 16.5rem) minmax(0, 1fr);
-  gap: clamp(var(--space-5), 3.5vw, var(--space-8));
-  padding: clamp(var(--space-5), 3.5vw, var(--space-8));
+  grid-template-columns: minmax(12rem, 15rem) minmax(0, 1fr);
+  gap: 0;
+  padding: 0;
 }
 
+/* ── RAIL: left sidebar stepper ── */
 .rail {
-  align-self: start;
+  align-self: stretch;
   padding: var(--space-5);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-panel);
+  border-right: var(--border-thick) solid var(--color-ink);
   background: var(--color-paper);
-  box-shadow: var(--shadow-sm);
 }
 
 .railHeader {
@@ -137,22 +136,23 @@
 }
 
 .railDot {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: var(--radius-pill);
+  width: 0.6rem;
+  height: 0.6rem;
   background: var(--color-signal);
-  box-shadow: 0 0 0 2px var(--color-signal-soft);
+  border: 1px solid var(--color-ink);
 }
 
 .railLabel {
   margin: 0;
-  color: var(--color-brand-strong);
-  font-size: var(--text-caption);
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  color: var(--color-ink);
+  font-family: var(--font-display), monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
+/* ── STEPPER: square blocks, thick line ── */
 .steps {
   position: relative;
   display: grid;
@@ -167,8 +167,8 @@
   top: 1.1rem;
   bottom: 1.1rem;
   left: 1rem;
-  width: 2px;
-  background: var(--color-line);
+  width: var(--border-thick);
+  background: var(--color-ink);
   content: "";
 }
 
@@ -178,7 +178,7 @@
   grid-template-columns: 2.1rem minmax(0, 1fr);
   align-items: center;
   gap: var(--space-3);
-  min-height: 3.75rem;
+  min-height: 3.5rem;
 }
 
 .stepDot {
@@ -187,59 +187,59 @@
   width: 2.1rem;
   height: 2.1rem;
   place-items: center;
-  border: 2px solid var(--color-line);
-  border-radius: var(--radius-pill);
+  border: var(--border-thick) solid var(--color-ink);
   background: var(--color-paper);
   color: var(--color-ink-subtle);
+  font-family: var(--font-display), monospace;
   font-size: var(--text-caption);
-  font-weight: 750;
-  box-shadow: var(--shadow-xs);
+  font-weight: 700;
   transition: all var(--transition-fast);
 }
 
 .step[data-state="current"] .stepDot {
   border-color: var(--color-signal);
   background: var(--color-signal);
-  color: var(--color-paper);
-  box-shadow: var(--shadow-glow-signal);
+  color: #ffffff;
 }
 
 .step[data-state="complete"] .stepDot {
   border-color: var(--color-success);
   background: var(--color-success);
-  color: var(--color-paper);
+  color: #ffffff;
 }
 
 .stepLabel {
   color: var(--color-ink-muted);
-  font-size: var(--text-small);
-  font-weight: 600;
+  font-family: var(--font-display), monospace;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   transition: color var(--transition-fast);
 }
 
 .step[data-state="current"] .stepLabel {
-  color: var(--color-brand-strong);
-  font-weight: 800;
+  color: var(--color-ink);
+  font-weight: 700;
 }
 
 .step[data-state="complete"] .stepLabel {
   color: var(--color-ink);
-  font-weight: 600;
+  font-weight: 500;
 }
 
+/* ── MAIN CONTENT: thick top border, no rounding ── */
 .main {
   min-width: 0;
   padding: clamp(var(--space-5), 4vw, var(--space-7));
-  border: 1px solid var(--color-line);
-  border-top: 0.4rem solid var(--color-signal);
-  border-radius: var(--radius-panel);
+  border-top: var(--border-heavy) solid var(--color-signal);
   background: var(--color-paper);
-  box-shadow: var(--shadow-paper);
 }
 
+/* ── RESPONSIVE ── */
 @media (max-width: 52rem) {
   .topbar {
-    min-height: 4.75rem;
+    min-height: 4rem;
   }
 
   .brandText small {
@@ -248,11 +248,11 @@
 
   .frame {
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-5);
-    padding: var(--space-4);
   }
 
   .rail {
+    border-right: none;
+    border-bottom: var(--border-thick) solid var(--color-ink);
     padding: var(--space-4);
   }
 
@@ -271,7 +271,7 @@
     bottom: auto;
     left: calc(12.5% - 0.5rem);
     width: auto;
-    height: 2px;
+    height: var(--border-thick);
   }
 
   .step {
@@ -285,7 +285,7 @@
 
   .stepLabel {
     max-width: 100%;
-    font-size: 0.725rem;
+    font-size: 0.65rem;
     line-height: 1.2;
     overflow-wrap: anywhere;
   }
@@ -301,12 +301,12 @@
   }
 
   .brandMark {
-    width: 2.35rem;
-    height: 2.35rem;
+    width: 2.2rem;
+    height: 2.2rem;
   }
 
   .brandText strong {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   .demoLong {

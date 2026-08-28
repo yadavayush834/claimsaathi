@@ -1,67 +1,65 @@
 :root {
   color-scheme: light;
 
-  /* Surfaces & Canvas */
-  --color-canvas: #f8fafc;
-  --color-canvas-subtle: #f1f5f9;
+  /* ── Surfaces & Canvas ── */
+  --color-canvas: #ffffff;
+  --color-canvas-subtle: #f5f5f5;
   --color-paper: #ffffff;
-  --color-paper-muted: #f8fafc;
-  --color-paper-subtle: #f1f5f9;
+  --color-paper-muted: #fafafa;
+  --color-paper-subtle: #f0f0f0;
   --color-paper-elevated: #ffffff;
 
-  /* Typography & Ink */
-  --color-ink: #0f172a;
-  --color-ink-strong: #020617;
-  --color-ink-muted: #475569;
-  --color-ink-subtle: #64748b;
-  --color-line: #e2e8f0;
-  --color-line-strong: #cbd5e1;
-  --color-line-soft: #f1f5f9;
+  /* ── Typography & Ink ── */
+  --color-ink: #0a0a0a;
+  --color-ink-strong: #000000;
+  --color-ink-muted: #3d3d3d;
+  --color-ink-subtle: #6b6b6b;
+  --color-line: #0a0a0a;
+  --color-line-strong: #000000;
+  --color-line-soft: #d4d4d4;
 
-  /* Brand Palette: Modern Ashoka Navy & Royal Indigo */
-  --color-brand: #0c2340;
-  --color-brand-strong: #071526;
-  --color-brand-mid: #143a68;
-  --color-brand-soft: #edf4fb;
-  --color-brand-accent: #1e528d;
-  --color-brand-gradient: linear-gradient(135deg, #0c2340 0%, #174276 100%);
-  --color-brand-glow: rgba(12, 35, 64, 0.15);
+  /* ── Brand: Electric Indigo ── */
+  --color-brand: #4f19d6;
+  --color-brand-strong: #3a0ca3;
+  --color-brand-mid: #6930e8;
+  --color-brand-soft: #ede5ff;
+  --color-brand-accent: #6930e8;
+  --color-brand-gradient: none;
+  --color-brand-glow: none;
 
-  /* Saffron / Sunlit Amber Signal */
-  --color-signal: #e66b00;
-  --color-signal-strong: #c25700;
-  --color-signal-soft: #fff3e6;
-  --color-signal-glow: rgba(230, 107, 0, 0.2);
-  --color-signal-gradient: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  /* ── Signal: Vermillion ── */
+  --color-signal: #e63312;
+  --color-signal-strong: #c4280d;
+  --color-signal-soft: #fff0ed;
+  --color-signal-glow: none;
+  --color-signal-gradient: none;
 
-  /* Forest / Jade Emerald Success */
-  --color-success: #0a7e58;
-  --color-success-strong: #065f43;
-  --color-success-soft: #eafaf4;
-  --color-success-glow: rgba(10, 126, 88, 0.18);
+  /* ── Success: Acid Green ── */
+  --color-success: #0d9e3f;
+  --color-success-strong: #087a2f;
+  --color-success-soft: #e8fce8;
+  --color-success-glow: none;
 
-  /* Civic Blue Info */
-  --color-info: #1769aa;
-  --color-info-strong: #0f4c7f;
-  --color-info-soft: #eef6fc;
+  /* ── Info: Black ── */
+  --color-info: #0a0a0a;
+  --color-info-strong: #000000;
+  --color-info-soft: #f0f0f0;
 
-  /* Warning */
-  --color-warning: #b45309;
-  --color-warning-strong: #92400e;
-  --color-warning-soft: #fef3c7;
+  /* ── Warning: Raw Amber ── */
+  --color-warning: #cc7a00;
+  --color-warning-strong: #995c00;
+  --color-warning-soft: #fff8e6;
 
-  /* Terracotta / Critical */
-  --color-critical: #c2410c;
-  --color-critical-strong: #991b1b;
-  --color-critical-soft: #fee2e2;
+  /* ── Critical: Vermillion ── */
+  --color-critical: #e63312;
+  --color-critical-strong: #a82410;
+  --color-critical-soft: #fff0ed;
 
-  /* Focus Outline */
-  --color-focus: #1769aa;
+  /* ── Focus ── */
+  --color-focus: #4f19d6;
 
-  /* Typography Scale */
-  --font-display:
-    var(--font-display), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    sans-serif;
+  /* ── Typography ── */
+  --font-display: var(--font-display), "Courier New", Courier, monospace;
   --font-body:
     var(--font-body), var(--font-devanagari), -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, sans-serif;
@@ -70,9 +68,9 @@
   --text-small: 0.875rem;
   --text-body: 1rem;
   --text-lede: clamp(1.05rem, 0.95rem + 0.35vw, 1.25rem);
-  --text-title: clamp(2.4rem, 1.8rem + 3vw, 4.25rem);
+  --text-title: clamp(2.6rem, 2rem + 3vw, 4.5rem);
 
-  /* Spacing Scale */
+  /* ── Spacing ── */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -82,28 +80,33 @@
   --space-7: 3rem;
   --space-8: 4rem;
 
-  /* Border Radii */
-  --radius-xs: 0.375rem;
-  --radius-control: 0.625rem;
-  --radius-card: 0.875rem;
-  --radius-panel: 1.25rem;
-  --radius-pill: 9999px;
+  /* ── Border Radii: ALL ZERO ── */
+  --radius-xs: 0;
+  --radius-control: 0;
+  --radius-card: 0;
+  --radius-panel: 0;
+  --radius-pill: 0;
 
-  /* Shadows & Elevation */
-  --shadow-xs: 0 1px 2px 0 rgb(15 23 42 / 0.04);
-  --shadow-sm:
-    0 2px 4px -1px rgb(15 23 42 / 0.06), 0 1px 2px -1px rgb(15 23 42 / 0.04);
-  --shadow-md:
-    0 8px 20px -4px rgb(15 23 42 / 0.08), 0 2px 6px -1px rgb(15 23 42 / 0.04);
-  --shadow-lg:
-    0 16px 36px -6px rgb(15 23 42 / 0.12), 0 4px 12px -2px rgb(15 23 42 / 0.06);
-  --shadow-paper:
-    0 20px 48px -12px rgb(12 35 64 / 0.1), 0 2px 10px 0 rgb(12 35 64 / 0.04);
-  --shadow-glow-signal: 0 0 0 4px rgba(230, 107, 0, 0.2);
-  --shadow-glow-brand: 0 0 0 4px rgba(12, 35, 64, 0.15);
+  /* ── Shadows: NONE (brutalist = borders only) ── */
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-paper: none;
+  --shadow-glow-signal: none;
+  --shadow-glow-brand: none;
+  --shadow-offset: 4px 4px 0 #0a0a0a;
+  --shadow-offset-sm: 2px 2px 0 #0a0a0a;
+  --shadow-offset-brand: 4px 4px 0 #4f19d6;
+  --shadow-offset-signal: 4px 4px 0 #e63312;
 
-  /* Transitions */
-  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base: 220ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-smooth: 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  /* ── Transitions ── */
+  --transition-fast: 100ms ease;
+  --transition-base: 150ms ease;
+  --transition-smooth: 200ms ease;
+
+  /* ── Brutalist border widths ── */
+  --border-thin: 1.5px;
+  --border-thick: 2.5px;
+  --border-heavy: 3.5px;
 }

@@ -5,78 +5,66 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.65rem 1.25rem;
-  border: 1px solid transparent;
-  border-radius: var(--radius-control);
+  border: var(--border-thick) solid var(--color-ink);
   cursor: pointer;
+  font-family: var(--font-display), monospace;
   font-size: var(--text-small);
-  font-weight: 650;
-  letter-spacing: 0.01em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   line-height: 1.25;
   text-align: center;
   text-decoration: none;
-  box-shadow: var(--shadow-xs);
+  text-transform: uppercase;
   transition: all var(--transition-fast);
   user-select: none;
 }
 
 .button:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-offset-sm);
+  transform: translate(-2px, -2px);
 }
 
 .button:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: var(--shadow-xs);
+  box-shadow: none;
+  transform: translate(0, 0);
 }
 
 .button:disabled {
   cursor: not-allowed;
-  opacity: 0.5;
-  box-shadow: none;
+  opacity: 0.4;
 }
 
 .primary {
-  border-color: rgba(15, 59, 97, 0.2);
-  background: linear-gradient(
-    180deg,
-    var(--color-brand) 0%,
-    var(--color-brand-strong) 100%
-  );
-  color: var(--color-paper);
+  background: var(--color-signal);
+  color: #ffffff;
+  border-color: var(--color-ink);
 }
 
 .primary:hover:not(:disabled) {
-  border-color: rgba(9, 35, 59, 0.4);
-  background: linear-gradient(
-    180deg,
-    var(--color-brand-accent) 0%,
-    var(--color-brand) 100%
-  );
-  box-shadow:
-    var(--shadow-md),
-    0 0 0 1px rgba(15, 59, 97, 0.15);
+  background: var(--color-signal-strong);
+  box-shadow: var(--shadow-offset-signal);
 }
 
 .secondary {
-  border-color: var(--color-line-strong);
   background: var(--color-paper);
-  color: var(--color-brand-strong);
+  color: var(--color-ink);
+  border-color: var(--color-ink);
 }
 
 .secondary:hover:not(:disabled) {
-  border-color: var(--color-brand);
-  background: var(--color-brand-soft);
-  color: var(--color-brand);
+  background: var(--color-ink);
+  color: #ffffff;
+  box-shadow: var(--shadow-offset-sm);
 }
 
 .quiet {
   border-color: transparent;
   background: transparent;
   color: var(--color-ink);
-  box-shadow: none;
 }
 
 .quiet:hover:not(:disabled) {
-  background: var(--color-paper-muted);
+  background: var(--color-paper-subtle);
+  border-color: var(--color-ink);
   box-shadow: none;
 }
