@@ -1,36 +1,67 @@
 :root {
   color-scheme: light;
 
-  --color-canvas: #edf3f7;
+  /* Surfaces & Canvas */
+  --color-canvas: #f4f7fb;
+  --color-canvas-subtle: #eef3f8;
   --color-paper: #ffffff;
-  --color-paper-muted: #e4edf3;
-  --color-ink: #13263f;
-  --color-ink-muted: #536274;
-  --color-line: #c6d4df;
-  --color-brand: #0e5c61;
-  --color-brand-strong: #08484c;
-  --color-brand-soft: #d9ebea;
-  --color-signal: #e4a72c;
-  --color-signal-soft: #f8e7bd;
-  --color-success: #146c57;
-  --color-success-soft: #d9eee7;
-  --color-info: #245f92;
-  --color-info-soft: #deebf5;
-  --color-warning: #8b5605;
-  --color-warning-soft: #faebc8;
-  --color-critical: #a33b3b;
-  --color-critical-soft: #f7dfdf;
-  --color-focus: #245fd6;
+  --color-paper-muted: #f8fafc;
+  --color-paper-subtle: #f1f5f9;
 
+  /* Typography & Ink */
+  --color-ink: #0b1d33;
+  --color-ink-muted: #475569;
+  --color-ink-subtle: #64748b;
+  --color-line: #e2e8f0;
+  --color-line-strong: #cbd5e1;
+  --color-line-soft: #edf2f7;
+
+  /* Bharat Digital Brand Palette: Ashoka Indigo & Deep Navy */
+  --color-brand: #0f3b61;
+  --color-brand-strong: #09233b;
+  --color-brand-soft: #eaf2f9;
+  --color-brand-accent: #1e5a8f;
+
+  /* Saffron / Warm Amber Signal */
+  --color-signal: #d97706;
+  --color-signal-strong: #b45309;
+  --color-signal-soft: #fef3c7;
+  --color-signal-glow: rgba(217, 119, 6, 0.16);
+
+  /* Forest / Jade Emerald Success */
+  --color-success: #0d825c;
+  --color-success-strong: #065f46;
+  --color-success-soft: #dcfce7;
+
+  /* Civic Blue Info */
+  --color-info: #1d6fa5;
+  --color-info-strong: #1e40af;
+  --color-info-soft: #e0f2fe;
+
+  /* Warning */
+  --color-warning: #b45309;
+  --color-warning-strong: #92400e;
+  --color-warning-soft: #fef3c7;
+
+  /* Terracotta / Critical */
+  --color-critical: #c2410c;
+  --color-critical-strong: #991b1b;
+  --color-critical-soft: #fee2e2;
+
+  /* Focus Outline */
+  --color-focus: #1d6fa5;
+
+  /* Typography Scale */
   --font-display: "Anek Devanagari", "Nirmala UI", sans-serif;
   --font-body: "Noto Sans Devanagari", "Nirmala UI", sans-serif;
 
   --text-caption: 0.75rem;
   --text-small: 0.875rem;
   --text-body: 1rem;
-  --text-lede: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-  --text-title: clamp(2.25rem, 1.65rem + 3vw, 4.25rem);
+  --text-lede: clamp(1.05rem, 0.98rem + 0.35vw, 1.25rem);
+  --text-title: clamp(2.35rem, 1.75rem + 3vw, 4.25rem);
 
+  /* Spacing Scale */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -40,7 +71,27 @@
   --space-7: 3rem;
   --space-8: 4rem;
 
+  /* Border Radii */
+  --radius-xs: 0.25rem;
   --radius-control: 0.5rem;
-  --radius-panel: 0.875rem;
-  --shadow-paper: 0 1.25rem 3.75rem rgb(19 38 63 / 9%);
+  --radius-card: 0.75rem;
+  --radius-panel: 1rem;
+  --radius-pill: 9999px;
+
+  /* Shadows & Elevation */
+  --shadow-xs: 0 1px 2px 0 rgb(15 23 42 / 0.05);
+  --shadow-sm:
+    0 2px 4px 0 rgb(15 23 42 / 0.06), 0 1px 2px -1px rgb(15 23 42 / 0.04);
+  --shadow-md:
+    0 6px 16px -2px rgb(15 23 42 / 0.08), 0 2px 6px -2px rgb(15 23 42 / 0.04);
+  --shadow-lg:
+    0 14px 30px -4px rgb(15 23 42 / 0.1), 0 4px 10px -4px rgb(15 23 42 / 0.05);
+  --shadow-paper:
+    0 16px 40px -8px rgb(11 34 56 / 0.08), 0 2px 8px 0 rgb(11 34 56 / 0.03);
+  --shadow-glow-signal: 0 0 0 4px rgba(217, 119, 6, 0.18);
+  --shadow-glow-brand: 0 0 0 4px rgba(15, 59, 97, 0.15);
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 220ms cubic-bezier(0.4, 0, 0.2, 1);
 }
