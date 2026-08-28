@@ -3,29 +3,6 @@ import { ActionLink } from "@/components/ui/action-link";
 
 import styles from "./page.module.css";
 
-const journey = [
-  {
-    step: "01",
-    label: "PREPARE",
-    badge: "CHECK & PLAN",
-  },
-  {
-    step: "02",
-    label: "APPLY",
-    badge: "FAST & CLEAN",
-  },
-  {
-    step: "03",
-    label: "TRACK",
-    badge: "REAL-TIME UPDATES",
-  },
-  {
-    step: "04",
-    label: "RESOLVE",
-    badge: "REJECTION RECOVERY",
-  },
-] as const;
-
 type TrustPoint = {
   title: string;
   tag: string;
@@ -65,48 +42,21 @@ export default function HomePage() {
             route: prepare, apply, track, and recover when something goes wrong.
           </p>
           <div className={styles.actions}>
-            <ActionLink href="/demo" className={styles.primaryCta}>
-              Start with demo data
+            <ActionLink href="/demo" className={styles.textLinkPrimary}>
+              Start with demo data <span aria-hidden="true">→</span>
             </ActionLink>
             <ActionLink
               href="#safety"
-              variant="secondary"
-              className={styles.secondaryCta}
+              variant="quiet"
+              className={styles.textLinkSecondary}
             >
               See what is simulated
             </ActionLink>
           </div>
         </div>
-
-        <aside className={styles.routeCard} aria-label="ClaimSaathi journey">
-          <div className={styles.routeHeader}>
-            <p className={styles.routeEyebrow}>THE GUIDED ROUTE</p>
-          </div>
-          <ol className={styles.routeList}>
-            {journey.map((step) => (
-              <li key={step.label} className={styles.routeItem}>
-                <div className={styles.stepLeft}>
-                  <span className={styles.stepNum}>{step.step}</span>
-                  <strong className={styles.stepName}>{step.label}</strong>
-                </div>
-                <div className={styles.stepBadge}>{step.badge}</div>
-              </li>
-            ))}
-          </ol>
-        </aside>
       </section>
 
-      {/* Wireframe Showcase Canvas Box matching reference image */}
-      <section
-        className={styles.showcaseSection}
-        aria-label="Simulation canvas"
-      >
-        <div className={styles.showcaseFrame}>
-          <div className={styles.showcaseInner} />
-        </div>
-      </section>
-
-      {/* Trust Strip with vertical pipe accents matching reference image */}
+      {/* Trust Strip with vertical pipe accents */}
       <section className={styles.trustStrip} aria-label="Demo boundaries">
         {trustPoints.map(({ title, tag, icon, description }) => (
           <div key={title} className={styles.trustCard}>
@@ -129,6 +79,7 @@ export default function HomePage() {
         ))}
       </section>
 
+      {/* Clean borderless Citizen Problem section matching user's request */}
       <section className={styles.problem} aria-labelledby="problem-title">
         <header className={styles.sectionHeader}>
           <p className={styles.eyebrow}>THE CITIZEN PROBLEM</p>
@@ -139,8 +90,8 @@ export default function HomePage() {
           </p>
         </header>
         <div className={styles.problemRows}>
-          <article className={styles.problemCard}>
-            <span className={styles.problemPhase}>BEFORE THE CLAIM</span>
+          <article className={styles.problemItem}>
+            <p className={styles.problemPhase}>BEFORE THE CLAIM</p>
             <div>
               <h3>Important checks are easy to miss.</h3>
               <p>
@@ -149,8 +100,8 @@ export default function HomePage() {
               </p>
             </div>
           </article>
-          <article className={styles.problemCard}>
-            <span className={styles.problemPhase}>WHILE IT MOVES</span>
+          <article className={styles.problemItem}>
+            <p className={styles.problemPhase}>WHILE IT MOVES</p>
             <div>
               <h3>A status rarely explains the next action.</h3>
               <p>
@@ -159,8 +110,8 @@ export default function HomePage() {
               </p>
             </div>
           </article>
-          <article className={styles.problemCard}>
-            <span className={styles.problemPhase}>WHEN IT GOES WRONG</span>
+          <article className={styles.problemItem}>
+            <p className={styles.problemPhase}>WHEN IT GOES WRONG</p>
             <div>
               <h3>A rejection needs a recovery path.</h3>
               <p>
@@ -172,6 +123,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Clean borderless Trust Boundary section */}
       <section
         className={styles.safety}
         id="safety"
@@ -187,9 +139,9 @@ export default function HomePage() {
           </p>
         </div>
         <div className={styles.safetyLedger}>
-          <div className={styles.safetyCardSimulate}>
-            <div className={styles.safetyCardHeader}>
-              <span className={styles.safetyIcon} aria-hidden="true">
+          <div className={styles.safetyItem}>
+            <div className={styles.safetyItemHeader}>
+              <span className={styles.safetyIconSuccess} aria-hidden="true">
                 ✓
               </span>
               <strong>THE DEMO SIMULATES</strong>
@@ -199,9 +151,9 @@ export default function HomePage() {
               grievance events.
             </p>
           </div>
-          <div className={styles.safetyCardAvoid}>
-            <div className={styles.safetyCardHeader}>
-              <span className={styles.safetyIcon} aria-hidden="true">
+          <div className={styles.safetyItem}>
+            <div className={styles.safetyItemHeader}>
+              <span className={styles.safetyIconCritical} aria-hidden="true">
                 ✕
               </span>
               <strong>NEVER ENTER</strong>
@@ -211,9 +163,9 @@ export default function HomePage() {
               documents.
             </p>
           </div>
-          <div className={styles.safetyCardBoundary}>
-            <div className={styles.safetyCardHeader}>
-              <span className={styles.safetyIcon} aria-hidden="true">
+          <div className={styles.safetyItem}>
+            <div className={styles.safetyItemHeader}>
+              <span className={styles.safetyIconInfo} aria-hidden="true">
                 🛡️
               </span>
               <strong>NOTHING LEAVES THE DEMO</strong>
