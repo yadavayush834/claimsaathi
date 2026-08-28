@@ -12,6 +12,9 @@ describe("DemoDataService", () => {
     expect(cases.every((demoCase) => demoCase.persona.synthetic)).toBe(true);
     expect(cases.every((demoCase) => demoCase.claim.synthetic)).toBe(true);
     expect(cases.every((demoCase) => demoCase.fixtureVersion === 1)).toBe(true);
+    expect(
+      cases.every((demoCase) => demoCase.workspace.recentEvents.length > 0),
+    ).toBe(true);
   });
 
   it("returns the matching typed case and rejects unknown persona ids", () => {
@@ -20,6 +23,10 @@ describe("DemoDataService", () => {
     expect(service.loadCase("imran-returned")).toMatchObject({
       persona: { displayName: "Imran Sheikh" },
       claim: { id: "DEMO-CLM-1002", status: "action_needed" },
+      workspace: {
+        issue: { tone: "attention" },
+        nextAction: { title: "Check the fictional bank-name mismatch" },
+      },
     });
     expect(service.loadCase("not-a-demo-persona")).toBeNull();
   });
