@@ -1,0 +1,4 @@
+interface:
+  display_name: "ClaimSaathi Phase Gate"
+  short_description: "Build exactly one reviewed phase per PR"
+  default_prompt: "Use $claimsaathi-phase-gate to implement only the next approved ClaimSaathi phase and stop after opening its PR."
