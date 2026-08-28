@@ -11,58 +11,70 @@
 }
 
 .hero h1 {
-  max-width: 11ch;
-  margin: var(--space-5) 0 0;
+  max-width: 14ch;
+  margin: var(--space-4) 0 0;
+  color: var(--color-brand-strong);
   font-family: var(--font-display), sans-serif;
   font-size: var(--text-title);
-  font-weight: 710;
-  letter-spacing: -0.035em;
-  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
 }
 
 .lede {
-  max-width: 40rem;
-  margin: var(--space-5) 0 0;
+  max-width: 38rem;
+  margin: var(--space-4) 0 0;
   color: var(--color-ink-muted);
   font-size: var(--text-lede);
+  line-height: 1.55;
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: var(--space-3);
   margin-top: var(--space-6);
 }
 
 .actionNote {
-  max-width: 40rem;
+  max-width: 38rem;
   margin: var(--space-3) 0 0;
-  color: var(--color-ink-muted);
+  color: var(--color-ink-subtle);
   font-size: var(--text-small);
+  line-height: 1.4;
 }
 
 .routeCard {
+  position: relative;
+  overflow: hidden;
   padding: var(--space-5);
-  border-left: 0.3rem solid var(--color-brand);
-  border-radius: 0 var(--radius-panel) var(--radius-panel) 0;
-  background: var(--color-brand-soft);
+  border: 1px solid rgba(15, 59, 97, 0.15);
+  border-top: 0.35rem solid var(--color-brand);
+  border-radius: var(--radius-panel);
+  background: linear-gradient(
+    180deg,
+    var(--color-brand-soft) 0%,
+    rgba(234, 242, 249, 0.4) 100%
+  );
+  box-shadow: var(--shadow-sm);
 }
 
 .routeEyebrow,
 .eyebrow {
   margin: 0;
-  color: var(--color-brand-strong);
+  color: var(--color-brand-accent);
   font-size: var(--text-caption);
   font-weight: 800;
-  letter-spacing: 0.11em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .routeCard ol {
   position: relative;
   display: grid;
-  gap: var(--space-5);
-  margin: var(--space-5) 0 0;
+  gap: var(--space-4);
+  margin: var(--space-4) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -71,72 +83,84 @@
   position: absolute;
   top: 1rem;
   bottom: 1rem;
-  left: 0.9rem;
-  width: 1px;
-  background: color-mix(in srgb, var(--color-brand) 32%, transparent);
+  left: 0.95rem;
+  width: 2px;
+  background: rgba(15, 59, 97, 0.2);
   content: "";
 }
 
 .routeCard li {
   position: relative;
   display: grid;
-  grid-template-columns: 1.85rem minmax(0, 1fr);
+  grid-template-columns: 1.9rem minmax(0, 1fr);
   gap: var(--space-3);
 }
 
 .routeCard li > span {
   z-index: 1;
   display: grid;
-  width: 1.85rem;
-  height: 1.85rem;
+  width: 1.9rem;
+  height: 1.9rem;
   place-items: center;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--color-brand);
   color: var(--color-paper);
   font-size: var(--text-caption);
   font-weight: 800;
+  box-shadow: 0 2px 6px rgba(15, 59, 97, 0.25);
 }
 
 .routeCard strong {
   display: block;
   color: var(--color-brand-strong);
+  font-size: var(--text-small);
+  font-weight: 750;
 }
 
 .routeCard li p {
-  margin: var(--space-1) 0 0;
+  margin: 0.15rem 0 0;
   color: var(--color-ink-muted);
   font-size: var(--text-small);
+  line-height: 1.4;
 }
 
 .trustStrip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  padding: var(--space-6) 0;
   border-block: 1px solid var(--color-line);
 }
 
 .trustStrip > div {
-  padding: var(--space-5);
-  border-left: 1px solid var(--color-line);
+  padding: var(--space-4);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-card);
+  background: var(--color-paper-muted);
+  box-shadow: var(--shadow-xs);
+  transition: all var(--transition-fast);
 }
 
-.trustStrip > div:first-child {
-  padding-left: 0;
-  border-left: 0;
-}
-
-.trustStrip > div:last-child {
-  padding-right: 0;
+.trustStrip > div:hover {
+  border-color: var(--color-line);
+  background: var(--color-paper);
+  box-shadow: var(--shadow-sm);
 }
 
 .trustStrip strong {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
   color: var(--color-brand-strong);
   font-size: var(--text-small);
+  font-weight: 750;
 }
 
 .trustStrip p {
   margin: var(--space-2) 0 0;
   color: var(--color-ink-muted);
   font-size: var(--text-small);
+  line-height: 1.45;
 }
 
 .problem,
@@ -144,7 +168,7 @@
   display: grid;
   grid-template-columns: minmax(12rem, 0.55fr) minmax(0, 1fr);
   gap: clamp(var(--space-6), 5vw, var(--space-8));
-  padding: var(--space-8) 0;
+  padding: var(--space-7) 0;
 }
 
 .problem > header {
@@ -153,42 +177,63 @@
 
 .problem h2,
 .safety h2 {
-  margin: var(--space-3) 0 0;
+  margin: var(--space-2) 0 0;
+  color: var(--color-brand-strong);
   font-family: var(--font-display), sans-serif;
-  font-size: clamp(1.75rem, 1.45rem + 1.4vw, 2.65rem);
-  font-weight: 680;
+  font-size: clamp(1.65rem, 1.4rem + 1.2vw, 2.5rem);
+  font-weight: 750;
   letter-spacing: -0.02em;
-  line-height: 1.05;
+  line-height: 1.1;
 }
 
 .problemRows {
-  border-top: 1px solid var(--color-line);
+  display: grid;
+  gap: var(--space-3);
 }
 
 .problemRows article {
   display: grid;
-  grid-template-columns: minmax(8rem, 0.35fr) minmax(0, 1fr);
-  gap: var(--space-5);
-  padding: var(--space-5) 0;
-  border-bottom: 1px solid var(--color-line);
+  grid-template-columns: minmax(8.5rem, 0.35fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-paper);
+  box-shadow: var(--shadow-xs);
+  transition: all var(--transition-fast);
+}
+
+.problemRows article:hover {
+  border-color: var(--color-line-strong);
+  box-shadow: var(--shadow-sm);
 }
 
 .problemRows article > span {
-  color: var(--color-ink-muted);
+  display: inline-block;
+  align-self: start;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-control);
+  background: var(--color-brand-soft);
+  color: var(--color-brand-strong);
   font-size: var(--text-caption);
-  font-weight: 800;
-  letter-spacing: 0.06em;
+  font-weight: 750;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
 .problemRows h3 {
   margin: 0;
+  color: var(--color-ink);
   font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .problemRows p {
   margin: var(--space-2) 0 0;
   color: var(--color-ink-muted);
+  font-size: var(--text-small);
+  line-height: 1.5;
 }
 
 .safety {
@@ -199,30 +244,48 @@
 
 .safety > div:first-child > p:last-child {
   max-width: 32rem;
-  margin: var(--space-4) 0 0;
+  margin: var(--space-3) 0 0;
   color: var(--color-ink-muted);
+  font-size: var(--text-small);
+  line-height: 1.55;
 }
 
 .safetyLedger {
-  border-top: 1px solid var(--color-line);
+  display: grid;
+  gap: var(--space-3);
 }
 
 .safetyLedger > div {
   display: grid;
-  grid-template-columns: minmax(9rem, 0.35fr) minmax(0, 1fr);
-  gap: var(--space-5);
-  padding: var(--space-5) 0;
-  border-bottom: 1px solid var(--color-line);
+  grid-template-columns: minmax(9.5rem, 0.35fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--color-line);
+  border-left: 0.35rem solid var(--color-brand);
+  border-radius: var(--radius-card);
+  background: var(--color-paper-muted);
+  box-shadow: var(--shadow-xs);
+}
+
+.safetyLedger > div:nth-child(2) {
+  border-left-color: var(--color-critical);
+}
+
+.safetyLedger > div:nth-child(3) {
+  border-left-color: var(--color-info);
 }
 
 .safetyLedger strong {
   color: var(--color-brand-strong);
   font-size: var(--text-small);
+  font-weight: 750;
 }
 
 .safetyLedger p {
   margin: 0;
   color: var(--color-ink-muted);
+  font-size: var(--text-small);
+  line-height: 1.45;
 }
 
 @media (max-width: 56rem) {
@@ -239,11 +302,11 @@
 
 @media (max-width: 42rem) {
   .hero {
-    padding-bottom: var(--space-6);
+    padding-bottom: var(--space-5);
   }
 
   .hero h1 {
-    font-size: clamp(2.15rem, 12vw, 3.2rem);
+    font-size: clamp(2rem, 10vw, 2.75rem);
   }
 
   .actions > * {
@@ -256,24 +319,14 @@
 
   .trustStrip {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .trustStrip > div,
-  .trustStrip > div:first-child,
-  .trustStrip > div:last-child {
-    padding: var(--space-4) 0;
-    border-left: 0;
-    border-bottom: 1px solid var(--color-line);
-  }
-
-  .trustStrip > div:last-child {
-    border-bottom: 0;
+    gap: var(--space-3);
+    padding: var(--space-5) 0;
   }
 
   .problem,
   .safety {
     gap: var(--space-5);
-    padding: var(--space-7) 0;
+    padding: var(--space-6) 0;
   }
 
   .safety {

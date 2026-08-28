@@ -1,19 +1,20 @@
 .field {
   display: grid;
   min-width: 0;
-  gap: var(--space-2);
+  gap: 0.375rem;
 }
 
 .label {
   color: var(--color-ink);
   font-size: var(--text-small);
-  font-weight: 750;
+  font-weight: 700;
+  letter-spacing: 0.01em;
 }
 
 .hint,
 .error {
   font-size: var(--text-caption);
-  line-height: 1.45;
+  line-height: 1.4;
 }
 
 .hint {
@@ -21,31 +22,45 @@
 }
 
 .error {
-  color: var(--color-critical);
+  color: var(--color-critical-strong);
   font-weight: 650;
 }
 
 .input {
   width: 100%;
   min-width: 0;
-  min-height: 3rem;
-  padding: 0.7rem 0.8rem;
-  border: 1px solid var(--color-line);
+  min-height: 2.85rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--color-line-strong);
   border-radius: var(--radius-control);
   background: var(--color-paper);
   color: var(--color-ink);
+  font-size: var(--text-small);
   line-height: 1.4;
+  box-shadow: var(--shadow-xs);
+  transition: all var(--transition-fast);
 }
 
 .input::placeholder {
-  color: color-mix(in srgb, var(--color-ink-muted) 75%, white);
+  color: var(--color-ink-subtle);
+  opacity: 0.7;
 }
 
 .input:hover {
-  border-color: var(--color-ink-muted);
+  border-color: var(--color-brand-accent);
+}
+
+.input:focus {
+  border-color: var(--color-focus);
+  box-shadow: 0 0 0 3px rgba(29, 111, 165, 0.15);
+  outline: none;
 }
 
 .input[aria-invalid="true"] {
   border-color: var(--color-critical);
   background: var(--color-critical-soft);
+}
+
+.input[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.2);
 }

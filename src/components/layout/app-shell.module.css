@@ -1,21 +1,24 @@
 .shell {
-  width: min(100%, 90rem);
+  width: min(100%, 88rem);
   min-height: 100vh;
   margin-inline: auto;
 }
 
 .skipLink {
   position: fixed;
-  z-index: 20;
+  z-index: 50;
   top: var(--space-3);
   left: var(--space-3);
   padding: var(--space-2) var(--space-4);
-  transform: translateY(-160%);
+  transform: translateY(-180%);
   border-radius: var(--radius-control);
-  background: var(--color-ink);
+  background: var(--color-brand-strong);
   color: var(--color-paper);
+  font-size: var(--text-small);
   font-weight: 700;
   text-decoration: none;
+  box-shadow: var(--shadow-lg);
+  transition: transform var(--transition-fast);
 }
 
 .skipLink:focus {
@@ -24,21 +27,29 @@
 
 .topbar {
   display: flex;
-  min-height: 5.5rem;
+  min-height: 5.25rem;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
   padding: var(--space-4) clamp(var(--space-4), 4vw, var(--space-7));
   border-bottom: 1px solid var(--color-line);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .brand {
   display: inline-flex;
   min-width: 0;
   align-items: center;
-  gap: var(--space-3);
+  gap: 0.875rem;
   color: var(--color-ink);
   text-decoration: none;
+  transition: opacity var(--transition-fast);
+}
+
+.brand:hover {
+  opacity: 0.9;
 }
 
 .brandMark {
@@ -47,59 +58,74 @@
   height: 2.75rem;
   flex: 0 0 auto;
   place-items: center;
-  border-radius: 0.3rem 0.9rem 0.3rem 0.3rem;
-  background: var(--color-brand);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem 1.25rem 0.5rem 0.5rem;
+  background: linear-gradient(
+    135deg,
+    var(--color-brand) 0%,
+    var(--color-brand-strong) 100%
+  );
   color: var(--color-paper);
   font-family: var(--font-display), sans-serif;
-  font-size: 1.05rem;
-  font-weight: 750;
-  letter-spacing: 0.02em;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  box-shadow:
+    0 4px 10px rgba(15, 59, 97, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.brand strong,
+.brand strong {
+  display: block;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.4rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
 .brand small {
   display: block;
+  overflow: hidden;
+  margin-top: 0.15rem;
+  color: var(--color-ink-muted);
+  font-size: var(--text-caption);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .demoShort {
   display: none;
 }
 
-.brand strong {
-  font-family: var(--font-display), sans-serif;
-  font-size: 1.35rem;
-  font-weight: 720;
-  line-height: 1;
-}
-
-.brand small {
-  overflow: hidden;
-  margin-top: 0.2rem;
-  color: var(--color-ink-muted);
-  font-size: var(--text-caption);
-  line-height: 1.2;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .frame {
   display: grid;
-  grid-template-columns: minmax(12rem, 15rem) minmax(0, 1fr);
-  gap: clamp(var(--space-5), 4vw, var(--space-8));
-  padding: clamp(var(--space-5), 4vw, var(--space-8));
+  grid-template-columns: minmax(13rem, 16rem) minmax(0, 1fr);
+  gap: clamp(var(--space-5), 3.5vw, var(--space-8));
+  padding: clamp(var(--space-5), 3.5vw, var(--space-8));
 }
 
 .rail {
   align-self: start;
-  padding-top: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-panel);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: var(--shadow-xs);
 }
 
 .railLabel {
   margin: 0 0 var(--space-4);
-  color: var(--color-ink-muted);
+  color: var(--color-brand-strong);
   font-size: var(--text-caption);
-  font-weight: 750;
-  letter-spacing: 0.11em;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -128,7 +154,7 @@
   grid-template-columns: 2rem minmax(0, 1fr);
   align-items: center;
   gap: var(--space-3);
-  min-height: 3.75rem;
+  min-height: 3.5rem;
 }
 
 .stepDot {
@@ -138,34 +164,43 @@
   height: 2rem;
   place-items: center;
   border: 2px solid var(--color-line);
-  border-radius: 999px;
-  background: var(--color-canvas);
-  color: var(--color-ink-muted);
+  border-radius: var(--radius-pill);
+  background: var(--color-paper);
+  color: var(--color-ink-subtle);
   font-size: var(--text-caption);
-  font-weight: 800;
+  font-weight: 750;
+  box-shadow: var(--shadow-xs);
+  transition: all var(--transition-fast);
 }
 
 .step[data-state="current"] .stepDot {
   border-color: var(--color-signal);
   background: var(--color-signal);
-  color: var(--color-ink);
-  box-shadow: 0 0 0 0.3rem var(--color-signal-soft);
+  color: var(--color-paper);
+  box-shadow: var(--shadow-glow-signal);
 }
 
 .step[data-state="complete"] .stepDot {
-  border-color: var(--color-brand);
-  background: var(--color-brand);
+  border-color: var(--color-success);
+  background: var(--color-success);
   color: var(--color-paper);
 }
 
 .stepLabel {
   color: var(--color-ink-muted);
   font-size: var(--text-small);
-  font-weight: 650;
+  font-weight: 600;
+  transition: color var(--transition-fast);
 }
 
 .step[data-state="current"] .stepLabel {
+  color: var(--color-brand-strong);
+  font-weight: 750;
+}
+
+.step[data-state="complete"] .stepLabel {
   color: var(--color-ink);
+  font-weight: 600;
 }
 
 .main {
@@ -178,7 +213,7 @@
   box-shadow: var(--shadow-paper);
 }
 
-@media (max-width: 47.99rem) {
+@media (max-width: 52rem) {
   .topbar {
     min-height: 4.75rem;
   }
@@ -194,11 +229,12 @@
   }
 
   .rail {
-    padding: 0 0 var(--space-2);
+    padding: var(--space-3) var(--space-4);
   }
 
   .railLabel {
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-2);
+    text-align: center;
   }
 
   .steps {
@@ -219,12 +255,13 @@
     justify-items: center;
     gap: var(--space-2);
     min-width: 0;
+    min-height: auto;
     text-align: center;
   }
 
   .stepLabel {
     max-width: 100%;
-    font-size: 0.7rem;
+    font-size: 0.725rem;
     line-height: 1.2;
     overflow-wrap: anywhere;
   }
@@ -234,18 +271,19 @@
   }
 }
 
-@media (max-width: 23rem) {
+@media (max-width: 25rem) {
   .topbar {
-    align-items: flex-start;
+    align-items: center;
   }
 
   .brandMark {
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 2.35rem;
+    height: 2.35rem;
+    font-size: 1rem;
   }
 
   .brand strong {
-    font-size: 1.15rem;
+    font-size: 1.2rem;
   }
 
   .demoLong {
