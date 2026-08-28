@@ -38,7 +38,7 @@
 
 .brand {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 0.4rem;
   color: var(--color-fg);
   font-family: var(--font-display), "Space Grotesk", sans-serif;
@@ -62,20 +62,20 @@
   font-size: 1.65rem;
   font-weight: 700;
   letter-spacing: 0;
-  padding-bottom: 0.2rem;
   /* Tricolor Animation */
   background: linear-gradient(
-    to right,
+    90deg,
     #ff9933 0%,
     #ffffff 33%,
     #138808 66%,
     #ff9933 100%
   );
-  background-size: 300% auto;
+  background-size: 300% 100%;
   color: transparent;
+  -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
-  animation: tricolorFlow 4s linear infinite;
+  animation: tricolorFlow 3s linear infinite;
 }
 
 @keyframes tricolorFlow {
