@@ -20,7 +20,6 @@ export function AppShell({ children }: AppShellProps) {
           <span className={styles.brandEn}>CLAIM</span>
           <span className={styles.brandHi}>साथी</span>
         </Link>
-        <span className={styles.environmentTag}>SIMULATION ENVIRONMENT</span>
       </header>
 
       <div className={styles.frame}>
