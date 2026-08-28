@@ -4,21 +4,23 @@ import { describe, expect, it } from "vitest";
 import HomePage from "./page";
 
 describe("HomePage", () => {
-  it("renders the design-system preview inside the application shell", () => {
+  it("explains the citizen task and offers a no-login demo entry", () => {
     render(<HomePage />);
 
     expect(
       screen.getByRole("heading", {
         level: 1,
-        name: "A calm interface for high-stakes moments.",
+        name: "Withdraw your PF without guessing what comes next.",
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("navigation", { name: "Claim journey" }),
-    ).toBeVisible();
+      screen.getByRole("link", { name: "Start with demo data" }),
+    ).toHaveAttribute("href", "/demo");
     expect(
-      screen.getByRole("complementary", { name: "Independent demo" }),
+      screen.getByText(
+        "Nothing is submitted to EPFO or another government system.",
+      ),
     ).toBeVisible();
-    expect(screen.getByRole("button", { name: "Continue" })).toBeEnabled();
+    expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
   });
 });
