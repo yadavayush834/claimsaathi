@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import { StatusBadge } from "@/components/ui/status-badge";
 import { demoDataService } from "@/lib/demo/demo-service";
 import type { DemoCase, DemoPersonaId } from "@/lib/demo/model";
 import { createDemoSessionStore } from "@/lib/demo/session-store";
 
+import { ClaimWorkspace } from "./claim-workspace";
 import styles from "./demo-session-manager.module.css";
 
 type SessionView =
@@ -19,18 +18,6 @@ type SessionView =
       source: "started" | "restored";
       persisted: boolean;
     }>;
-
-const claimStatusLabels = {
-  draft: "Ready to plan",
-  action_needed: "Needs a correction",
-  settled: "Mock settlement recorded",
-} as const;
-
-const currencyFormatter = new Intl.NumberFormat("en-IN", {
-  style: "currency",
-  currency: "INR",
-  maximumFractionDigits: 0,
-});
 
 const demoCases = demoDataService.listCases();
 
@@ -140,48 +127,17 @@ export function DemoSessionManager() {
     );
   }
 
-  const { claim, persona } = view.demoCase;
-
   return (
-    <section className={styles.activePanel} aria-labelledby="active-case-title">
-      <header className={styles.activeHeader}>
-        <div>
-          <p>
-            Current fictional citizen · fixture v{view.demoCase.fixtureVersion}
-          </p>
-          <h2 id="active-case-title">{persona.displayName}</h2>
-        </div>
-        <StatusBadge tone="success">Demo session active</StatusBadge>
-      </header>
-
-      <p className={styles.scenario}>{persona.scenarioDescription}</p>
-
-      <dl className={styles.caseDetails}>
-        <div>
-          <dt>Claim reference</dt>
-          <dd>{claim.id}</dd>
-        </div>
-        <div>
-          <dt>Requested amount</dt>
-          <dd>{currencyFormatter.format(claim.requestedAmountRupees)}</dd>
-        </div>
-        <div>
-          <dt>Case state</dt>
-          <dd>{claimStatusLabels[claim.status]}</dd>
-        </div>
-      </dl>
-
-      <p className={styles.recoveryNote} aria-live="polite">
-        {view.persisted
+    <ClaimWorkspace
+      demoCase={view.demoCase}
+      sessionMessage={
+        view.persisted
           ? view.source === "restored"
-            ? "Session restored after refresh. This browser remembered only the fictional case id."
-            : "Session saved. Refresh this page and the fictional case will return."
-          : "The case is open, but this browser blocked local storage, so refresh may reset it."}
-      </p>
-
-      <Button variant="secondary" onClick={switchCase}>
-        Switch demo citizen
-      </Button>
-    </section>
+            ? "Session restored after refresh."
+            : "Session saved for refresh recovery."
+          : "Browser storage is blocked, so refresh may reset this case."
+      }
+      onSwitch={switchCase}
+    />
   );
 }

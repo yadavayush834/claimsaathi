@@ -21,8 +21,7 @@
   gap: var(--space-5);
 }
 
-.sectionHeading > p,
-.activeHeader p {
+.sectionHeading > p {
   margin: 0;
   color: var(--color-brand-strong);
   font-size: var(--text-caption);
@@ -31,8 +30,7 @@
   text-transform: uppercase;
 }
 
-.sectionHeading h2,
-.activeHeader h2 {
+.sectionHeading h2 {
   margin: var(--space-2) 0 0;
   font-family: var(--font-display), sans-serif;
   font-size: clamp(1.75rem, 1.5rem + 1vw, 2.35rem);
@@ -148,58 +146,6 @@
   font-size: 1.2rem;
 }
 
-.activePanel {
-  padding-top: var(--space-5);
-  border-top: 0.35rem solid var(--color-brand);
-}
-
-.activeHeader {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--space-4);
-}
-
-.scenario {
-  max-width: 40rem;
-  margin: var(--space-4) 0 var(--space-5);
-  color: var(--color-ink-muted);
-}
-
-.caseDetails {
-  margin: 0;
-  border-top: 1px solid var(--color-line);
-}
-
-.caseDetails > div {
-  display: grid;
-  grid-template-columns: minmax(10rem, 0.4fr) minmax(0, 1fr);
-  gap: var(--space-5);
-  padding: var(--space-4) 0;
-  border-bottom: 1px solid var(--color-line);
-}
-
-.caseDetails dt {
-  color: var(--color-ink-muted);
-  font-size: var(--text-small);
-  font-weight: 700;
-}
-
-.caseDetails dd {
-  margin: 0;
-  color: var(--color-brand-strong);
-  font-weight: 800;
-}
-
-.recoveryNote {
-  margin: var(--space-4) 0;
-  padding: var(--space-3) var(--space-4);
-  border-left: 0.25rem solid var(--color-signal);
-  background: var(--color-signal-soft);
-  color: var(--color-ink);
-  font-size: var(--text-small);
-}
-
 @media (max-width: 42rem) {
   .caseButton {
     grid-template-columns: 3.5rem minmax(0, 1fr);
@@ -219,18 +165,5 @@
 
   .caseAction {
     grid-column: 2;
-  }
-
-  .activeHeader {
-    display: grid;
-  }
-
-  .caseDetails > div {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-1);
-  }
-
-  .activePanel > button {
-    width: 100%;
   }
 }
