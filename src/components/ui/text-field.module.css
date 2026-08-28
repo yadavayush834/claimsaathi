@@ -5,12 +5,12 @@
 }
 
 .label {
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
 }
 
 .hint,
@@ -20,11 +20,11 @@
 }
 
 .hint {
-  color: var(--color-ink-muted);
+  color: #787878;
 }
 
 .error {
-  color: var(--color-signal);
+  color: #ef4444;
   font-weight: 700;
 }
 
@@ -33,34 +33,35 @@
   min-width: 0;
   min-height: 2.85rem;
   padding: 0.65rem 0.85rem;
-  border: var(--border-thick) solid var(--color-ink);
-  background: var(--color-paper);
-  color: var(--color-ink);
+  border: 1px solid #333333;
+  background: #0d0d0d;
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
   line-height: 1.4;
   transition: all var(--transition-fast);
 }
 
 .input::placeholder {
-  color: var(--color-ink-subtle);
-  opacity: 0.6;
+  color: #555555;
 }
 
 .input:hover {
-  border-color: var(--color-brand);
+  border-color: #777777;
 }
 
 .input:focus {
-  border-color: var(--color-brand);
-  box-shadow: var(--shadow-offset-brand);
+  border-color: #ffffff;
+  background: #000000;
   outline: none;
 }
 
 .input[aria-invalid="true"] {
-  border-color: var(--color-signal);
-  background: var(--color-signal-soft);
+  border-color: #ef4444;
+  background: #2d0b0b;
 }
 
 .input[aria-invalid="true"]:focus {
-  box-shadow: var(--shadow-offset-signal);
+  border-color: #ef4444;
+  box-shadow: 0 0 0 1px #ef4444;
 }

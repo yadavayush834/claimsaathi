@@ -10,17 +10,18 @@
 html {
   min-width: 20rem;
   background-color: var(--color-canvas);
-  color-scheme: light;
+  color-scheme: dark;
   scroll-behavior: smooth;
 }
 
 body {
   min-height: 100vh;
   margin: 0;
+  background-color: var(--color-canvas);
   color: var(--color-ink);
-  font-family: var(--font-body), sans-serif;
+  font-family: var(--font-body), monospace;
   font-size: var(--text-body);
-  line-height: 1.55;
+  line-height: 1.6;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -34,23 +35,23 @@ select {
 }
 
 a {
-  color: var(--color-brand);
-  text-decoration-thickness: 2px;
+  color: inherit;
+  text-decoration-thickness: 1.5px;
   text-underline-offset: 3px;
   transition: color var(--transition-fast);
 }
 
 a:hover {
-  color: var(--color-signal);
-}
-
-::selection {
-  background: var(--color-signal);
   color: #ffffff;
 }
 
+::selection {
+  background: #ffffff;
+  color: #000000;
+}
+
 :focus-visible {
-  outline: var(--border-thick) solid var(--color-focus);
+  outline: 2px solid #ffffff;
   outline-offset: 2px;
 }
 

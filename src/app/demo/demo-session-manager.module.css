@@ -2,24 +2,24 @@
   display: grid;
   gap: var(--space-2);
   padding: var(--space-5);
-  border: var(--border-thick) solid var(--color-ink);
-  border-left: var(--border-heavy) solid var(--color-brand);
-  background: var(--color-paper);
+  border: 1px solid #333333;
+  background: #0d0d0d;
 }
 
 .loading strong {
   display: block;
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
   font-size: 1.05rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.06em;
 }
 
 .loading p {
   margin: 0;
-  color: var(--color-ink-muted);
+  color: #888888;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
 }
 
@@ -30,9 +30,9 @@
 
 .sectionHeading > p {
   margin: 0;
-  color: var(--color-brand);
-  font-family: var(--font-display), monospace;
-  font-size: 0.7rem;
+  color: #888888;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -40,11 +40,11 @@
 
 .sectionHeading h2 {
   margin: var(--space-2) 0 0;
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
+  color: #ffffff;
+  font-family: var(--font-display), "Space Grotesk", sans-serif;
   font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.4rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   line-height: 1.1;
   text-transform: uppercase;
 }
@@ -53,14 +53,15 @@
   display: block;
   max-width: 40rem;
   margin-top: var(--space-2);
-  color: var(--color-ink-muted);
+  color: #888888;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
   line-height: 1.5;
 }
 
 .caseList {
   display: grid;
-  gap: 0;
+  gap: var(--space-3);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -73,28 +74,21 @@
   align-items: center;
   gap: var(--space-4);
   padding: var(--space-5);
-  border: var(--border-thick) solid var(--color-ink);
-  border-bottom: none;
-  background: var(--color-paper);
-  color: var(--color-ink);
+  border: 1px solid #2a2a2a;
+  background: #000000;
+  color: #ffffff;
   cursor: pointer;
   text-align: left;
   transition: all var(--transition-fast);
 }
 
-.caseButton:last-child,
-.caseList li:last-child .caseButton {
-  border-bottom: var(--border-thick) solid var(--color-ink);
-}
-
 .caseButton:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: var(--shadow-offset);
-  background: var(--color-paper-muted);
+  border-color: #ffffff;
+  background: #0d0d0d;
 }
 
 .caseButton:focus-visible {
-  outline: var(--border-thick) solid var(--color-focus);
+  outline: 2px solid #ffffff;
   outline-offset: 2px;
 }
 
@@ -103,11 +97,11 @@
   width: 4.25rem;
   height: 4.25rem;
   place-content: center;
-  border: var(--border-thick) solid var(--color-ink);
-  background: var(--color-paper);
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
-  font-size: 1.5rem;
+  border: 1px solid #333333;
+  background: #111111;
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
+  font-size: 1.4rem;
   font-weight: 800;
   line-height: 1;
   text-align: center;
@@ -115,8 +109,8 @@
 
 .caseIndex small {
   margin-bottom: 0.2rem;
-  color: var(--color-brand);
-  font-family: var(--font-display), monospace;
+  color: #888888;
+  font-family: var(--font-mono), monospace;
   font-size: 0.55rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -130,19 +124,19 @@
 
 .caseBody small {
   display: block;
-  color: var(--color-brand);
-  font-family: var(--font-display), monospace;
+  color: #888888;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-caption);
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .caseBody strong {
   display: block;
   margin-top: 0.15rem;
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
+  color: #ffffff;
+  font-family: var(--font-display), "Space Grotesk", sans-serif;
   font-size: 1.3rem;
   font-weight: 700;
   line-height: 1.15;
@@ -152,14 +146,16 @@
 .caseBody > span {
   display: inline-block;
   margin-top: 0.25rem;
-  color: var(--color-ink-muted);
+  color: #a0a0a0;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
   font-weight: 600;
 }
 
 .caseBody p {
   margin: var(--space-2) 0 0;
-  color: var(--color-ink-muted);
+  color: #777777;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
   line-height: 1.45;
 }
@@ -169,32 +165,30 @@
   align-items: center;
   gap: 0.35rem;
   padding: 0.5rem 0.85rem;
-  border: var(--border-thick) solid var(--color-ink);
-  background: var(--color-paper);
-  color: var(--color-ink);
-  font-family: var(--font-display), monospace;
+  border: 1px solid #333333;
+  background: #111111;
+  color: #ffffff;
+  font-family: var(--font-mono), monospace;
   font-size: var(--text-small);
   font-weight: 700;
   white-space: nowrap;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   transition: all var(--transition-fast);
 }
 
 .caseButton:hover .caseAction {
-  background: var(--color-signal);
-  color: #ffffff;
-  border-color: var(--color-ink);
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
 }
 
 .caseAction b {
-  color: var(--color-signal);
   font-size: 1.15rem;
   transition: transform var(--transition-fast);
 }
 
 .caseButton:hover .caseAction b {
-  color: #ffffff;
   transform: translateX(3px);
 }
 
