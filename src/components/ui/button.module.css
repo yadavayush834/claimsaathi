@@ -10,6 +10,7 @@
   font-weight: 750;
   line-height: 1.2;
   text-align: center;
+  text-decoration: none;
   transition:
     background-color 140ms ease,
     border-color 140ms ease,
