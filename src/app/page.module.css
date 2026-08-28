@@ -1,363 +1,230 @@
-/* ── HERO SECTION: Spacious, clean layout with natural line wrapping ── */
+.gridContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: var(--space-8) 0;
+}
+
+/* ── HERO ── */
 .hero {
-  display: block;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
   max-width: 64rem;
-  padding: var(--space-6) 0 var(--space-8);
 }
 
-.heroCopy {
-  min-width: 0;
-  width: 100%;
-}
-
-.hero h1 {
+.heroTitle {
   margin: 0;
-  color: #ffffff;
+  color: var(--color-fg);
   font-family: var(--font-display), "Space Grotesk", sans-serif;
-  font-size: clamp(2.4rem, 2rem + 2.2vw, 4rem);
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  line-height: 1.12;
+  font-size: clamp(3rem, 2.5rem + 4vw, 5.5rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
   text-transform: uppercase;
   word-break: normal;
   overflow-wrap: break-word;
 }
 
-.lede {
+.heroLede {
+  margin: 0;
   max-width: 48rem;
-  margin: var(--space-6) 0 0;
   color: #a0a0a0;
   font-family: var(--font-mono), monospace;
-  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.15rem);
-  line-height: 1.75;
+  font-size: clamp(1rem, 0.95rem + 0.5vw, 1.25rem);
+  line-height: 1.6;
 }
 
-/* ── Hero Actions: Clean, prominent text actions without box borders ── */
-.actions {
+.heroActions {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 2.5rem;
-  margin-top: var(--space-7);
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
 }
 
-.textLinkPrimary {
+.actionPrimary {
   display: inline-flex !important;
-  align-items: center !important;
-  gap: 0.65rem !important;
+  align-items: center;
+  gap: var(--space-2);
   padding: 0 !important;
   background: transparent !important;
-  color: #ffffff !important;
+  color: var(--color-fg) !important;
   border: none !important;
   font-family: var(--font-mono), monospace !important;
-  font-size: 0.95rem !important;
+  font-size: 1.1rem !important;
   font-weight: 700 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: 0.1em !important;
   text-transform: uppercase !important;
-  text-decoration: underline !important;
-  text-underline-offset: 6px !important;
-  text-decoration-thickness: 1.5px !important;
-  transition: all var(--transition-fast) !important;
+  text-decoration: none !important;
+  transition: opacity var(--transition-fast) !important;
+}
+.actionPrimary::before {
+  content: "[";
+  margin-right: 0.25rem;
+}
+.actionPrimary::after {
+  content: "]";
+  margin-left: 0.25rem;
+}
+.actionPrimary:hover {
+  opacity: 0.7;
 }
 
-.textLinkPrimary:hover {
-  color: #ffffff !important;
-  text-underline-offset: 9px !important;
-  text-decoration-thickness: 2px !important;
-}
-
-.textLinkPrimary span {
-  transition: transform var(--transition-fast);
-}
-
-.textLinkPrimary:hover span {
-  transform: translateX(4px);
-}
-
-.textLinkSecondary {
+.actionSecondary {
   display: inline-flex !important;
-  align-items: center !important;
+  align-items: center;
+  gap: var(--space-2);
   padding: 0 !important;
   background: transparent !important;
   color: #777777 !important;
   border: none !important;
   font-family: var(--font-mono), monospace !important;
   font-size: 0.9rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.08em !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
   text-transform: uppercase !important;
   text-decoration: none !important;
   transition: color var(--transition-fast) !important;
 }
-
-.textLinkSecondary:hover {
-  color: #ffffff !important;
-  text-decoration: underline !important;
-  text-underline-offset: 6px !important;
+.actionSecondary::before {
+  content: "[";
+  margin-right: 0.25rem;
+}
+.actionSecondary::after {
+  content: "]";
+  margin-left: 0.25rem;
+}
+.actionSecondary:hover {
+  color: var(--color-fg) !important;
 }
 
-/* ── TRUST STRIP: 3 spacious columns with pipe accent ── */
-.trustStrip {
+/* ── TRUST ACCENT ── */
+.trustAccent {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-7);
-  padding: var(--space-8) 0;
-  border-top: 1px solid #222222;
-  border-bottom: 1px solid #222222;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  padding: var(--space-6) 0;
+  border-top: 2px solid var(--color-fg);
+  border-bottom: 2px solid var(--color-fg);
 }
 
-.trustCard {
+.trustItem {
   display: flex;
   flex-direction: column;
+  gap: var(--space-2);
 }
 
-.trustHeader {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-}
-
-.trustBar {
-  width: 2px;
-  height: 2.25rem;
-  background: #ffffff;
-  flex: 0 0 auto;
-}
-
-.trustTitleRow {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.trustIcon {
-  font-size: 0.85rem;
-}
-
-.trustCard strong {
-  color: #ffffff;
+.trustItem span {
+  color: #555555;
   font-family: var(--font-mono), monospace;
   font-size: 0.85rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
-.trustTag {
-  display: block;
-  margin-top: 0.15rem;
-  color: #777777;
+.trustItem strong {
+  color: var(--color-fg);
   font-family: var(--font-mono), monospace;
-  font-size: 0.7rem;
+  font-size: 1rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
-.trustDesc {
-  margin: var(--space-3) 0 0;
-  color: #777777;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.825rem;
-  line-height: 1.6;
-}
-
-/* ── THE CITIZEN PROBLEM: Wide, beautifully proportioned layout without boxes ── */
-.problem,
-.safety {
-  display: grid;
-  grid-template-columns: minmax(18rem, 24rem) minmax(0, 1fr);
-  gap: clamp(var(--space-6), 6vw, var(--space-8));
-  padding: var(--space-8) 0;
-}
-
-.sectionHeader {
-  min-width: 0;
-}
-
-.eyebrow {
+.trustItem p {
   margin: 0;
-  color: #777777;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.problem h2,
-.safety h2 {
-  margin: var(--space-2) 0 0;
-  color: #ffffff;
-  font-family: var(--font-display), "Space Grotesk", sans-serif;
-  font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.2rem);
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  line-height: 1.18;
-  text-transform: uppercase;
-}
-
-.problemSubhead {
-  margin: var(--space-4) 0 0;
-  color: #777777;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.85rem;
-  line-height: 1.65;
-}
-
-.problemRows {
-  display: grid;
-  gap: var(--space-7);
-}
-
-/* Problem Items: clean layout with ample width for descriptions */
-.problemItem {
-  display: grid;
-  grid-template-columns: 14rem minmax(0, 1fr);
-  gap: var(--space-5);
-  align-items: start;
-  padding: 0 0 var(--space-6);
-  border: none;
-  border-bottom: 1px solid #1a1a1a;
-  background: transparent;
-}
-
-.problemItem:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.problemPhase {
-  margin: 0;
-  color: #777777;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.problemItem h3 {
-  margin: 0;
-  color: #ffffff;
-  font-family: var(--font-mono), monospace;
-  font-size: 1.05rem;
-  font-weight: 700;
-  line-height: 1.35;
-}
-
-.problemItem p {
-  margin: var(--space-2) 0 0;
   color: #888888;
   font-family: var(--font-mono), monospace;
   font-size: 0.85rem;
-  line-height: 1.65;
+  line-height: 1.5;
 }
 
-/* ── SAFETY / TRUST BOUNDARY SECTION ── */
+/* ── PROBLEM / SAFETY ── */
+.problem,
 .safety {
-  border-top: 1px solid #222222;
-  scroll-margin-top: var(--space-4);
-}
-
-.safetyIntro {
-  min-width: 0;
-}
-
-.safetyIntro > p:last-child {
-  max-width: 32rem;
-  margin: var(--space-4) 0 0;
-  color: #777777;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.85rem;
-  line-height: 1.65;
-}
-
-.safetyLedger {
   display: grid;
-  gap: var(--space-6);
+  grid-template-columns: 24rem 1fr;
+  gap: var(--space-8);
+  align-items: start;
 }
 
-.safetyItem {
-  padding: 0 0 var(--space-5);
-  border: none;
-  border-bottom: 1px solid #1a1a1a;
-  background: transparent;
-}
-
-.safetyItem:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.safetyItemHeader {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  margin-bottom: 0.4rem;
-}
-
-.safetyIconSuccess,
-.safetyIconCritical,
-.safetyIconInfo {
-  font-family: var(--font-mono), monospace;
-  font-size: 0.85rem;
-  font-weight: 800;
-}
-
-.safetyIconSuccess {
-  color: #22c55e;
-}
-
-.safetyIconCritical {
-  color: #ef4444;
-}
-
-.safetyIconInfo {
-  color: #ffffff;
-}
-
-.safetyLedger strong {
-  color: #ffffff;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+.problemHeader h2,
+.safetyHeader h2 {
+  margin: 0 0 var(--space-4) 0;
+  color: var(--color-fg);
+  font-family: var(--font-display), "Space Grotesk", sans-serif;
+  font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
   text-transform: uppercase;
 }
 
-.safetyLedger p {
+.problemHeader p,
+.safetyHeader p {
   margin: 0;
-  color: #777777;
+  color: #a0a0a0;
+  font-family: var(--font-mono), monospace;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.problemList,
+.safetyList {
+  display: flex;
+  flex-direction: column;
+  border-top: 2px solid var(--color-fg);
+}
+
+.problemRow,
+.safetyRow {
+  display: grid;
+  grid-template-columns: 14rem 1fr;
+  gap: var(--space-6);
+  padding: var(--space-5) 0;
+  border-bottom: 1px solid #333333;
+}
+
+.problemLabel,
+.safetyLabel {
+  color: var(--color-fg);
   font-family: var(--font-mono), monospace;
   font-size: 0.85rem;
-  line-height: 1.65;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.problemContent h3 {
+  margin: 0 0 var(--space-2) 0;
+  color: var(--color-fg);
+  font-family: var(--font-mono), monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.problemContent p,
+.safetyRow p {
+  margin: 0;
+  color: #888888;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 /* ── RESPONSIVE ── */
-@media (max-width: 60rem) {
+@media (max-width: 64rem) {
+  .trustAccent {
+    grid-template-columns: 1fr;
+  }
   .problem,
   .safety {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: 1fr;
     gap: var(--space-6);
   }
-
-  .problemItem {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-2);
-  }
-}
-
-@media (max-width: 44rem) {
-  .trustStrip {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-5);
-  }
-
-  .actions {
-    gap: 1.5rem;
-    flex-direction: column;
-    align-items: flex-start;
+  .problemRow,
+  .safetyRow {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
   }
 }

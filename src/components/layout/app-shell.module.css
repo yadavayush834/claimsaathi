@@ -1,210 +1,123 @@
 .shell {
-  width: 100%;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  background-color: #000000;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-fg);
 }
 
 .skipLink {
-  position: fixed;
-  z-index: 50;
-  top: var(--space-3);
-  left: var(--space-3);
-  padding: var(--space-2) var(--space-4);
-  transform: translateY(-180%);
-  background: #ffffff;
-  color: #000000;
-  font-family: var(--font-mono), monospace;
-  font-size: var(--text-small);
-  font-weight: 700;
-  text-decoration: none;
-  text-transform: uppercase;
-  border: 1px solid #ffffff;
-  transition: transform var(--transition-fast);
-}
-
-.skipLink:focus {
-  transform: translateY(0);
-}
-
-/* ── TOPBAR: matching reference image ── */
-.topbar {
-  display: flex;
-  min-height: 4.5rem;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  padding: 1rem clamp(var(--space-4), 4vw, var(--space-8));
-  border-bottom: 1px solid #222222;
-  background: #000000;
-  position: sticky;
-  top: 0;
-  z-index: 30;
-}
-
-.topbarLeft {
-  display: flex;
-  align-items: center;
-}
-
-.brand {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 1.25rem;
-  color: #ffffff;
-  text-decoration: none;
-  transition: opacity var(--transition-fast);
-}
-
-.brand:hover {
-  opacity: 0.85;
-}
-
-.brandTitle {
-  font-family: var(--font-display), "Space Grotesk", sans-serif;
-  font-size: 1.35rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  color: #ffffff;
-  text-transform: uppercase;
-}
-
-.brandSubtitle {
-  font-family: var(--font-mono), monospace;
-  font-size: 0.75rem;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  color: #888888;
-  text-transform: uppercase;
-}
-
-.topbarRight {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.independentBadge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.35rem 0.75rem;
-  border: 1px solid #ffffff;
-  background: transparent;
-  color: #ffffff;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.demoTag {
-  color: #888888;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-}
-
-.helpButton {
-  display: grid;
-  width: 1.75rem;
-  height: 1.75rem;
-  place-items: center;
-  border-radius: 9999px;
-  border: 1px solid #888888;
-  background: transparent;
-  color: #ffffff;
+  position: absolute;
+  top: -100%;
+  left: 0;
+  padding: var(--space-4);
+  background: var(--color-fg);
+  color: var(--color-bg);
   font-family: var(--font-mono), monospace;
   font-size: 0.85rem;
   font-weight: 700;
-  cursor: pointer;
-  transition: all var(--transition-fast);
+  z-index: 9999;
+  text-decoration: none;
+}
+.skipLink:focus {
+  top: 0;
 }
 
-.helpButton:hover {
-  border-color: #ffffff;
-  background: #ffffff;
-  color: #000000;
-}
-
-.demoShort {
-  display: none;
-}
-
-/* ── FRAME: Full-width container with clean maximum width ── */
-.frame {
-  display: block;
-  width: 100%;
-  max-width: 82rem;
-  margin-inline: auto;
-  flex: 1 0 auto;
-}
-
-/* ── MAIN CONTENT ── */
-.main {
-  width: 100%;
-  padding: clamp(var(--space-6), 4vw, var(--space-8))
-    clamp(var(--space-4), 4vw, var(--space-8));
-  background: #000000;
-}
-
-/* ── SITE FOOTER ── */
-.siteFooter {
-  width: 100%;
-  border-top: 1px solid #222222;
-  background: #000000;
-  padding: 1.25rem clamp(var(--space-4), 4vw, var(--space-8));
-}
-
-.footerInner {
+/* ── BRUTALIST TOPBAR ── */
+.topbar {
+  position: sticky;
+  top: 0;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-  max-width: 82rem;
-  margin-inline: auto;
+  align-items: center;
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-bg);
+  border-bottom: 2px solid var(--color-fg);
+  z-index: 100;
 }
 
-.footerLeft {
-  margin: 0;
-  color: #ffffff;
+.brand {
+  color: var(--color-fg);
+  font-family: var(--font-display), "Space Grotesk", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.brand:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.environmentTag {
+  color: var(--color-fg);
   font-family: var(--font-mono), monospace;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
-.footerLinks {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  color: #888888;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.75rem;
+/* ── FRAME ── */
+.frame {
+  flex: 1;
+  display: block;
+  width: 100%;
+  /* Strict rigid grid max-width */
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
 }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 36rem) {
-  .brandSubtitle {
+.main {
+  width: 100%;
+  min-height: 100%;
+}
+
+/* ── BRUTALIST FOOTER ── */
+.siteFooter {
+  padding: var(--space-4) var(--space-6);
+  border-top: 2px solid var(--color-fg);
+  background: var(--color-bg);
+}
+
+.footerGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  color: var(--color-fg);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.alignRight {
+  text-align: right;
+}
+
+@media (max-width: 48rem) {
+  .topbar {
+    padding: var(--space-4);
+  }
+  .brand {
+    font-size: 1.25rem;
+  }
+  .environmentTag {
     display: none;
   }
-
-  .demoLong {
-    display: none;
+  .frame {
+    padding: 0 var(--space-4);
   }
-
-  .demoShort {
-    display: inline;
+  .siteFooter {
+    padding: var(--space-4);
   }
-
-  .footerInner {
-    flex-direction: column;
-    align-items: flex-start;
+  .footerGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+  .alignRight {
+    text-align: left;
   }
 }
