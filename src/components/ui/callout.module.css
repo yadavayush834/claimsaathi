@@ -1,0 +1,35 @@
+.callout {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-left: 0.25rem solid var(--color-info);
+  background: var(--color-info-soft);
+  color: var(--color-ink);
+}
+
+.marker {
+  display: grid;
+  width: 1.5rem;
+  height: 1.5rem;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--color-info);
+  color: var(--color-paper);
+  font-family: Georgia, serif;
+  font-size: var(--text-small);
+  font-style: italic;
+  font-weight: 700;
+}
+
+.callout strong {
+  display: block;
+  margin-bottom: var(--space-1);
+  color: var(--color-info);
+}
+
+.callout p {
+  margin: 0;
+  color: var(--color-ink);
+  font-size: var(--text-small);
+}

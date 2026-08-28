@@ -47,8 +47,8 @@ Statuses are `NOT STARTED`, `IN PR`, or `MERGED`. Only one phase may be `IN PR`.
 
 | Phase | Deliverable                                       | Acceptance gate                                                                                                                                     | Status      |
 | ----: | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-|    01 | Repository and application foundation             | App runs locally; formatting, linting, type checking, and baseline tests are documented and pass; project-local phase skill is included             | IN PR       |
-|    02 | Design system and responsive application shell    | Tokens, typography, reusable controls, navigation shell, and narrow-mobile layout render without overflow                                           | NOT STARTED |
+|    01 | Repository and application foundation             | App runs locally; formatting, linting, type checking, and baseline tests are documented and pass; project-local phase skill is included             | MERGED      |
+|    02 | Design system and responsive application shell    | Tokens, typography, reusable controls, navigation shell, and narrow-mobile layout render without overflow                                           | IN PR       |
 |    03 | Landing, problem framing, and trust boundary      | Citizen understands the task, independence from EPFO, synthetic-data policy, and can enter the demo without login                                   | NOT STARTED |
 |    04 | Synthetic citizen session and mock service layer  | Versioned demo personas and claims load through typed service boundaries; refresh recovery works                                                    | NOT STARTED |
 |    05 | Unified PF claim workspace                        | Balance, active claim, recent events, issue state, and next action appear in one accessible mobile-first view                                       | NOT STARTED |

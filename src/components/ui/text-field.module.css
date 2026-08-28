@@ -1,0 +1,51 @@
+.field {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-2);
+}
+
+.label {
+  color: var(--color-ink);
+  font-size: var(--text-small);
+  font-weight: 750;
+}
+
+.hint,
+.error {
+  font-size: var(--text-caption);
+  line-height: 1.45;
+}
+
+.hint {
+  color: var(--color-ink-muted);
+}
+
+.error {
+  color: var(--color-critical);
+  font-weight: 650;
+}
+
+.input {
+  width: 100%;
+  min-width: 0;
+  min-height: 3rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  line-height: 1.4;
+}
+
+.input::placeholder {
+  color: color-mix(in srgb, var(--color-ink-muted) 75%, white);
+}
+
+.input:hover {
+  border-color: var(--color-ink-muted);
+}
+
+.input[aria-invalid="true"] {
+  border-color: var(--color-critical);
+  background: var(--color-critical-soft);
+}

@@ -1,0 +1,258 @@
+.shell {
+  width: min(100%, 90rem);
+  min-height: 100vh;
+  margin-inline: auto;
+}
+
+.skipLink {
+  position: fixed;
+  z-index: 20;
+  top: var(--space-3);
+  left: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  transform: translateY(-160%);
+  border-radius: var(--radius-control);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.skipLink:focus {
+  transform: translateY(0);
+}
+
+.topbar {
+  display: flex;
+  min-height: 5.5rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) clamp(var(--space-4), 4vw, var(--space-7));
+  border-bottom: 1px solid var(--color-line);
+}
+
+.brand {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.brandMark {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 0.3rem 0.9rem 0.3rem 0.3rem;
+  background: var(--color-brand);
+  color: var(--color-paper);
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.05rem;
+  font-weight: 750;
+  letter-spacing: 0.02em;
+}
+
+.brand strong,
+.brand small {
+  display: block;
+}
+
+.demoShort {
+  display: none;
+}
+
+.brand strong {
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.35rem;
+  font-weight: 720;
+  line-height: 1;
+}
+
+.brand small {
+  overflow: hidden;
+  margin-top: 0.2rem;
+  color: var(--color-ink-muted);
+  font-size: var(--text-caption);
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.frame {
+  display: grid;
+  grid-template-columns: minmax(12rem, 15rem) minmax(0, 1fr);
+  gap: clamp(var(--space-5), 4vw, var(--space-8));
+  padding: clamp(var(--space-5), 4vw, var(--space-8));
+}
+
+.rail {
+  align-self: start;
+  padding-top: var(--space-2);
+}
+
+.railLabel {
+  margin: 0 0 var(--space-4);
+  color: var(--color-ink-muted);
+  font-size: var(--text-caption);
+  font-weight: 750;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.steps {
+  position: relative;
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.steps::before {
+  position: absolute;
+  top: 1rem;
+  bottom: 1rem;
+  left: 0.95rem;
+  width: 2px;
+  background: var(--color-line);
+  content: "";
+}
+
+.step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 3.75rem;
+}
+
+.stepDot {
+  z-index: 1;
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border: 2px solid var(--color-line);
+  border-radius: 999px;
+  background: var(--color-canvas);
+  color: var(--color-ink-muted);
+  font-size: var(--text-caption);
+  font-weight: 800;
+}
+
+.step[data-state="current"] .stepDot {
+  border-color: var(--color-signal);
+  background: var(--color-signal);
+  color: var(--color-ink);
+  box-shadow: 0 0 0 0.3rem var(--color-signal-soft);
+}
+
+.step[data-state="complete"] .stepDot {
+  border-color: var(--color-brand);
+  background: var(--color-brand);
+  color: var(--color-paper);
+}
+
+.stepLabel {
+  color: var(--color-ink-muted);
+  font-size: var(--text-small);
+  font-weight: 650;
+}
+
+.step[data-state="current"] .stepLabel {
+  color: var(--color-ink);
+}
+
+.main {
+  min-width: 0;
+  padding: clamp(var(--space-5), 4vw, var(--space-7));
+  border: 1px solid var(--color-line);
+  border-top: 0.35rem solid var(--color-signal);
+  border-radius: var(--radius-panel);
+  background: var(--color-paper);
+  box-shadow: var(--shadow-paper);
+}
+
+@media (max-width: 47.99rem) {
+  .topbar {
+    min-height: 4.75rem;
+  }
+
+  .brand small {
+    display: none;
+  }
+
+  .frame {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+    padding: var(--space-4);
+  }
+
+  .rail {
+    padding: 0 0 var(--space-2);
+  }
+
+  .railLabel {
+    margin-bottom: var(--space-3);
+  }
+
+  .steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .steps::before {
+    top: 0.95rem;
+    right: calc(12.5% - 0.5rem);
+    bottom: auto;
+    left: calc(12.5% - 0.5rem);
+    width: auto;
+    height: 2px;
+  }
+
+  .step {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: var(--space-2);
+    min-width: 0;
+    text-align: center;
+  }
+
+  .stepLabel {
+    max-width: 100%;
+    font-size: 0.7rem;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+
+  .main {
+    padding: var(--space-5) var(--space-4);
+  }
+}
+
+@media (max-width: 23rem) {
+  .topbar {
+    align-items: flex-start;
+  }
+
+  .brandMark {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+
+  .brand strong {
+    font-size: 1.15rem;
+  }
+
+  .demoLong {
+    display: none;
+  }
+
+  .demoShort {
+    display: inline;
+  }
+}
