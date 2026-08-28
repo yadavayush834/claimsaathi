@@ -1,0 +1,236 @@
+.loading {
+  padding: var(--space-5);
+  border-left: 0.25rem solid var(--color-brand);
+  background: var(--color-brand-soft);
+}
+
+.loading strong,
+.loading p {
+  display: block;
+  margin: 0;
+}
+
+.loading p {
+  margin-top: var(--space-1);
+  color: var(--color-ink-muted);
+  font-size: var(--text-small);
+}
+
+.manager {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.sectionHeading > p,
+.activeHeader p {
+  margin: 0;
+  color: var(--color-brand-strong);
+  font-size: var(--text-caption);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sectionHeading h2,
+.activeHeader h2 {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.75rem, 1.5rem + 1vw, 2.35rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.sectionHeading > span {
+  display: block;
+  max-width: 40rem;
+  margin-top: var(--space-2);
+  color: var(--color-ink-muted);
+}
+
+.caseList {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--color-line);
+  list-style: none;
+}
+
+.caseButton {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-5) 0;
+  border: 0;
+  border-bottom: 1px solid var(--color-line);
+  background: transparent;
+  color: var(--color-ink);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    background-color 140ms ease,
+    padding 140ms ease;
+}
+
+.caseButton:hover {
+  padding-inline: var(--space-3);
+  background: var(--color-brand-soft);
+}
+
+.caseIndex {
+  display: grid;
+  width: 4.5rem;
+  height: 4.5rem;
+  place-content: center;
+  border: 1px solid var(--color-line);
+  border-radius: 0.25rem 1.1rem 0.25rem 0.25rem;
+  background: var(--color-canvas);
+  color: var(--color-brand-strong);
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.45rem;
+  font-weight: 750;
+  line-height: 1;
+  text-align: center;
+}
+
+.caseIndex small {
+  margin-bottom: var(--space-1);
+  color: var(--color-ink-muted);
+  font-family: var(--font-body), sans-serif;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.caseBody,
+.caseBody small,
+.caseBody strong,
+.caseBody > span {
+  display: block;
+}
+
+.caseBody small {
+  color: var(--color-brand-strong);
+  font-size: var(--text-caption);
+  font-weight: 750;
+}
+
+.caseBody strong {
+  margin-top: var(--space-1);
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.35rem;
+  line-height: 1.1;
+}
+
+.caseBody > span {
+  margin-top: var(--space-1);
+  font-weight: 700;
+}
+
+.caseBody p {
+  margin: var(--space-2) 0 0;
+  color: var(--color-ink-muted);
+  font-size: var(--text-small);
+}
+
+.caseAction {
+  color: var(--color-brand-strong);
+  font-size: var(--text-small);
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.caseAction b {
+  margin-left: var(--space-1);
+  color: var(--color-signal);
+  font-size: 1.2rem;
+}
+
+.activePanel {
+  padding-top: var(--space-5);
+  border-top: 0.35rem solid var(--color-brand);
+}
+
+.activeHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.scenario {
+  max-width: 40rem;
+  margin: var(--space-4) 0 var(--space-5);
+  color: var(--color-ink-muted);
+}
+
+.caseDetails {
+  margin: 0;
+  border-top: 1px solid var(--color-line);
+}
+
+.caseDetails > div {
+  display: grid;
+  grid-template-columns: minmax(10rem, 0.4fr) minmax(0, 1fr);
+  gap: var(--space-5);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.caseDetails dt {
+  color: var(--color-ink-muted);
+  font-size: var(--text-small);
+  font-weight: 700;
+}
+
+.caseDetails dd {
+  margin: 0;
+  color: var(--color-brand-strong);
+  font-weight: 800;
+}
+
+.recoveryNote {
+  margin: var(--space-4) 0;
+  padding: var(--space-3) var(--space-4);
+  border-left: 0.25rem solid var(--color-signal);
+  background: var(--color-signal-soft);
+  color: var(--color-ink);
+  font-size: var(--text-small);
+}
+
+@media (max-width: 42rem) {
+  .caseButton {
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-3);
+  }
+
+  .caseButton:hover {
+    padding-inline: var(--space-2);
+  }
+
+  .caseIndex {
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 1.2rem;
+  }
+
+  .caseAction {
+    grid-column: 2;
+  }
+
+  .activeHeader {
+    display: grid;
+  }
+
+  .caseDetails > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
+  }
+
+  .activePanel > button {
+    width: 100%;
+  }
+}
