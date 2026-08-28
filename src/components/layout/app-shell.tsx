@@ -5,7 +5,7 @@ import styles from "./app-shell.module.css";
 
 type AppShellProps = Readonly<{
   children: ReactNode;
-  currentStep?: number;
+  currentStep?: number; // Kept for API compatibility, unused in minimalist shell
 }>;
 
 export function AppShell({ children }: AppShellProps) {
@@ -16,30 +16,10 @@ export function AppShell({ children }: AppShellProps) {
       </a>
 
       <header className={styles.topbar}>
-        <div className={styles.topbarLeft}>
-          <Link className={styles.brand} href="/" aria-label="ClaimSaathi home">
-            <span className={styles.brandTitle}>CLAIMSAATHI</span>
-            <span className={styles.brandSubtitle}>
-              PF WITHDRAWAL COMPANION
-            </span>
-          </Link>
-        </div>
-
-        <div className={styles.topbarRight}>
-          <div className={styles.independentBadge}>
-            <span className={styles.demoLong}>INDEPENDENT DEMO</span>
-            <span className={styles.demoShort}>DEMO</span>
-          </div>
-          <span className={styles.demoTag}>DEMO</span>
-          <button
-            type="button"
-            className={styles.helpButton}
-            aria-label="Demo information"
-            title="ClaimSaathi simulation environment"
-          >
-            ?
-          </button>
-        </div>
+        <Link className={styles.brand} href="/" aria-label="ClaimSaathi home">
+          CLAIMSAATHI
+        </Link>
+        <span className={styles.environmentTag}>SIMULATION ENVIRONMENT</span>
       </header>
 
       <div className={styles.frame}>
@@ -49,15 +29,10 @@ export function AppShell({ children }: AppShellProps) {
       </div>
 
       <footer className={styles.siteFooter}>
-        <div className={styles.footerInner}>
-          <p className={styles.footerLeft}>
-            CLAIMSAATHI © 2024. FOR SIMULATION ONLY.
-          </p>
-          <div className={styles.footerLinks}>
-            <span>No Login Required</span>
-            <span>Synthetic Data</span>
-            <span>Terms of Use</span>
-          </div>
+        <div className={styles.footerGrid}>
+          <span>(C) 2024</span>
+          <span>NO LIVE CONNECTION</span>
+          <span className={styles.alignRight}>INDEPENDENT PROTOTYPE</span>
         </div>
       </footer>
     </div>
