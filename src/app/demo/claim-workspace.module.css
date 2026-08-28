@@ -1,6 +1,6 @@
 .workspace {
   display: grid;
-  gap: var(--space-5);
+  gap: var(--space-6);
 }
 
 .workspaceHeader {
@@ -8,11 +8,43 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-4);
-  padding-bottom: var(--space-4);
+  padding-bottom: var(--space-5);
   border-bottom: 1px solid var(--color-line);
 }
 
-.workspaceHeader p,
+.personaBanner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.personaAvatar {
+  display: grid;
+  width: 3.5rem;
+  height: 3.5rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 2px solid #ffffff;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(
+    135deg,
+    var(--color-brand) 0%,
+    var(--color-brand-accent) 100%
+  );
+  color: #ffffff;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  box-shadow: 0 4px 12px rgba(12, 35, 64, 0.2);
+}
+
+.personaDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.fixtureEyebrow,
 .sectionLabel p,
 .nextActionLabel p {
   margin: 0;
@@ -24,49 +56,86 @@
 }
 
 .workspaceHeader h2 {
-  margin: var(--space-1) 0 0;
+  margin: 0.15rem 0 0;
   color: var(--color-brand-strong);
   font-family: var(--font-display), sans-serif;
   font-size: clamp(1.85rem, 1.5rem + 1.2vw, 2.75rem);
   font-weight: 800;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.03em;
   line-height: 1.05;
 }
 
-.workspaceHeader > div > span {
-  display: inline-block;
+.scenarioRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
   margin-top: 0.25rem;
-  color: var(--color-ink-muted);
+}
+
+.scenarioTitle {
+  color: var(--color-ink);
   font-size: var(--text-small);
-  font-weight: 600;
+  font-weight: 650;
+}
+
+.stateChip {
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-brand-soft);
+  color: var(--color-brand-strong);
+  font-size: var(--text-caption);
+  font-weight: 750;
+}
+
+.headerBadges {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+.switchTopBtn {
+  min-height: 2.2rem !important;
+  padding: 0.35rem 0.75rem !important;
+  font-size: var(--text-caption) !important;
+}
+
+.sessionBanner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  background: var(--color-paper-muted);
+  width: fit-content;
+}
+
+.sessionDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-success);
+  box-shadow: 0 0 0 2px var(--color-success-soft);
 }
 
 .sessionNote {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
   margin: 0;
-  padding: 0.45rem 0.85rem;
-  border-radius: var(--radius-control);
-  background: var(--color-paper-muted);
   color: var(--color-ink-muted);
   font-size: var(--text-caption);
-  font-weight: 600;
+  font-weight: 650;
 }
 
 .nextAction {
   display: grid;
-  grid-template-columns: minmax(8.5rem, 0.28fr) minmax(0, 1fr);
+  grid-template-columns: minmax(9rem, 0.28fr) minmax(0, 1fr);
   gap: var(--space-4);
   padding: var(--space-5);
-  border: 1px solid rgba(217, 119, 6, 0.25);
-  border-left: 0.4rem solid var(--color-signal);
+  border: 1px solid rgba(230, 107, 0, 0.25);
+  border-left: 0.45rem solid var(--color-signal);
   border-radius: var(--radius-card);
-  background: linear-gradient(
-    180deg,
-    var(--color-signal-soft) 0%,
-    rgba(254, 243, 199, 0.5) 100%
-  );
+  background: linear-gradient(180deg, #fff7ed 0%, #ffffff 100%);
   box-shadow: var(--shadow-sm);
 }
 
@@ -78,15 +147,20 @@
 
 .nextActionLabel > span {
   display: grid;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 1.85rem;
+  height: 1.85rem;
   place-items: center;
   border-radius: var(--radius-pill);
   background: var(--color-signal);
   color: var(--color-paper);
   font-size: 1rem;
   font-weight: 900;
-  box-shadow: 0 2px 4px rgba(217, 119, 6, 0.3);
+  box-shadow: 0 2px 6px rgba(230, 107, 0, 0.35);
+}
+
+.nextActionBody {
+  display: flex;
+  flex-direction: column;
 }
 
 .nextActionHeading {
@@ -104,19 +178,20 @@
   color: var(--color-brand-strong);
   font-family: var(--font-display), sans-serif;
   font-size: clamp(1.25rem, 1.15rem + 0.5vw, 1.65rem);
-  font-weight: 750;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   line-height: 1.15;
 }
 
-.nextAction > div:last-child > p {
-  max-width: 42rem;
+.nextActionDesc {
+  max-width: 44rem;
   margin: var(--space-2) 0 0;
   color: var(--color-ink);
   font-size: var(--text-small);
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
-.nextAction small {
+.nextActionHint {
   display: block;
   margin-top: var(--space-2);
   color: var(--color-ink-muted);
@@ -145,7 +220,7 @@
 .ledgerSection:hover,
 .issueSection:hover,
 .eventsSection:hover {
-  border-color: var(--color-line-strong);
+  border-color: var(--color-brand-accent);
   box-shadow: var(--shadow-sm);
 }
 
@@ -158,10 +233,10 @@
   margin-bottom: var(--space-3);
 }
 
-.sectionLabel > span:not([data-tone]) {
+.eventsMeta {
   color: var(--color-ink-subtle);
   font-size: var(--text-caption);
-  font-weight: 650;
+  font-weight: 700;
 }
 
 .balanceTotal,
@@ -176,25 +251,76 @@
   line-height: 1;
 }
 
+/* Distribution Progress Bar */
+.balanceBar {
+  display: flex;
+  height: 0.5rem;
+  width: 100%;
+  margin-top: var(--space-3);
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--color-paper-subtle);
+}
+
+.employeeBar {
+  background: var(--color-brand);
+}
+
+.employerBar {
+  background: var(--color-signal);
+}
+
+.pensionBar {
+  background: var(--color-success);
+}
+
 .balanceBreakdown,
 .claimDetails {
   margin: var(--space-4) 0 0;
   border-top: 1px solid var(--color-line-soft);
 }
 
-.balanceBreakdown > div,
+.shareRow,
 .claimDetails > div {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: var(--space-4);
-  padding: 0.6rem 0;
+  padding: 0.65rem 0;
   border-bottom: 1px solid var(--color-line-soft);
 }
 
-.balanceBreakdown dt,
+.shareRow dt {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--color-ink-muted);
+  font-size: var(--text-small);
+  font-weight: 600;
+}
+
+.shareDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--radius-pill);
+}
+
+.employeeDot {
+  background: var(--color-brand);
+}
+
+.employerDot {
+  background: var(--color-signal);
+}
+
+.pensionDot {
+  background: var(--color-success);
+}
+
 .claimDetails dt {
   color: var(--color-ink-muted);
   font-size: var(--text-small);
+  font-weight: 600;
 }
 
 .balanceBreakdown dd,
@@ -202,19 +328,27 @@
   margin: 0;
   color: var(--color-ink);
   font-size: var(--text-small);
-  font-weight: 700;
+  font-weight: 750;
   text-align: right;
+}
+
+.refCode {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  background: var(--color-paper-muted);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--color-line);
 }
 
 .scopeNote {
   margin: var(--space-3) 0 0;
   color: var(--color-warning-strong);
   font-size: var(--text-caption);
-  font-weight: 700;
+  font-weight: 750;
 }
 
 .issueSection {
-  border-left: 0.4rem solid var(--color-success);
+  border-left: 0.45rem solid var(--color-success);
 }
 
 .issueSection[data-tone="attention"] {
@@ -222,7 +356,7 @@
   background: linear-gradient(
     180deg,
     var(--color-paper) 0%,
-    rgba(254, 226, 226, 0.2) 100%
+    rgba(254, 226, 226, 0.25) 100%
   );
 }
 
@@ -231,7 +365,7 @@
   background: linear-gradient(
     180deg,
     var(--color-paper) 0%,
-    rgba(254, 243, 199, 0.2) 100%
+    rgba(254, 243, 199, 0.25) 100%
   );
 }
 
@@ -239,7 +373,7 @@
   margin: var(--space-3) 0 0;
   color: var(--color-ink-muted);
   font-size: var(--text-small);
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 .eventsSection ol {
@@ -285,7 +419,7 @@
 .eventsSection time {
   color: var(--color-ink-subtle);
   font-size: var(--text-caption);
-  font-weight: 700;
+  font-weight: 750;
 }
 
 .eventsSection strong {
@@ -326,11 +460,17 @@
 }
 
 @media (max-width: 42rem) {
-  .workspaceHeader,
-  .nextActionHeading,
-  .workspaceFooter {
-    display: grid;
-    gap: var(--space-3);
+  .workspaceHeader {
+    flex-direction: column;
+  }
+
+  .headerBadges {
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .switchTopBtn {
+    display: none;
   }
 
   .nextAction {
@@ -342,6 +482,11 @@
   .eventsSection li {
     grid-template-columns: minmax(0, 1fr);
     gap: 0.2rem;
+  }
+
+  .workspaceFooter {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .workspaceFooter > button {

@@ -22,22 +22,51 @@ export function AppShell({ children, currentStep = 1 }: AppShellProps) {
       <header className={styles.topbar}>
         <Link className={styles.brand} href="/" aria-label="ClaimSaathi home">
           <span className={styles.brandMark} aria-hidden="true">
-            CS
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className={styles.brandIcon}
+            >
+              <path
+                d="M12 2L4 5V11.5C4 16.5 7.4 21.1 12 22.5C16.6 21.1 20 16.5 20 11.5V5L12 2Z"
+                fill="currentColor"
+                fillOpacity="0.15"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M9 12L11 14L15 9.5"
+                stroke="#ff8c1a"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </span>
-          <span>
+          <span className={styles.brandText}>
             <strong>ClaimSaathi</strong>
             <small>PF withdrawal companion</small>
           </span>
         </Link>
-        <StatusBadge tone="neutral">
-          <span className={styles.demoLong}>Independent demo</span>
-          <span className={styles.demoShort}>Demo</span>
-        </StatusBadge>
+        <div className={styles.topbarRight}>
+          <StatusBadge tone="neutral">
+            <span className={styles.demoLong}>Independent demo</span>
+            <span className={styles.demoShort}>Demo</span>
+          </StatusBadge>
+        </div>
       </header>
 
       <div className={styles.frame}>
         <aside className={styles.rail}>
-          <p className={styles.railLabel}>Your claim route</p>
+          <div className={styles.railHeader}>
+            <span className={styles.railDot} aria-hidden="true" />
+            <p className={styles.railLabel}>Your claim route</p>
+          </div>
           <nav aria-label="Claim journey">
             <ol className={styles.steps}>
               {journeySteps.map((step, index) => {
@@ -52,7 +81,7 @@ export function AppShell({ children, currentStep = 1 }: AppShellProps) {
                 return (
                   <li className={styles.step} data-state={state} key={step}>
                     <span className={styles.stepDot} aria-hidden="true">
-                      {stepNumber}
+                      {state === "complete" ? "✓" : stepNumber}
                     </span>
                     <span
                       className={styles.stepLabel}
