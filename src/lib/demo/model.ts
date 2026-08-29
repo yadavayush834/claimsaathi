@@ -109,6 +109,19 @@ export type DemoSession = Readonly<{
   personaId: DemoPersonaId;
 }>;
 
+export type MockClaimFormStep = 1 | 2 | 3;
+
+export type MockClaimDraft = Readonly<{
+  version: typeof DEMO_DATA_VERSION;
+  personaId: DemoPersonaId;
+  step: MockClaimFormStep;
+  treatmentNeed: string;
+  fictionalCity: string;
+  notificationRoute: "browser" | "mock_sms" | "mock_email";
+  bankConfirmed: boolean;
+  declarationConfirmed: boolean;
+}>;
+
 export function isDemoPersonaId(value: unknown): value is DemoPersonaId {
   return (
     typeof value === "string" &&

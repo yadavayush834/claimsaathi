@@ -1,9 +1,11 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { beforeEach, describe, expect, it } from "vitest";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { DEMO_SESSION_STORAGE_KEY } from "@/lib/demo/session-store";
 
 import { DemoSessionManager } from "./demo-session-manager";
+
+afterEach(cleanup);
 
 describe("DemoSessionManager", () => {
   beforeEach(() => {
@@ -72,6 +74,52 @@ describe("DemoSessionManager", () => {
 
     expect(
       screen.getByRole("heading", { name: "Check what needs fixing first" }),
+    ).toBeVisible();
+  });
+
+  it("navigates through eligibility planning into the mock claim form and back", async () => {
+    render(<DemoSessionManager />);
+
+    await screen.findByRole("heading", {
+      level: 2,
+      name: "Choose a fictional citizen",
+    });
+
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "Start Asha Verma's demo case",
+      }),
+    );
+    fireEvent.click(
+      screen.getByRole("button", { name: "Plan mock withdrawal" }),
+    );
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Continue to details" }),
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Continue to amount" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Calculate mock result" }),
+    );
+
+    expect(
+      screen.getByRole("heading", { name: /Up to ₹75,000/ }),
+    ).toBeVisible();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Continue to claim details" }),
+    );
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Add the details for this mock claim",
+      }),
+    ).toBeVisible();
+
+    fireEvent.click(screen.getByRole("button", { name: "Back to workspace" }));
+
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Asha Verma" }),
     ).toBeVisible();
   });
 });
