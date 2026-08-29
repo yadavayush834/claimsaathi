@@ -188,7 +188,7 @@ describe("DemoSessionManager", () => {
     ).toBeVisible();
   });
 
-  it("navigates into settlement reconciliation for Latha Nair from the workspace", async () => {
+  it("navigates into settlement reconciliation and grievance preparation for Latha Nair", async () => {
     render(<DemoSessionManager />);
 
     await screen.findByRole("heading", {
@@ -212,6 +212,20 @@ describe("DemoSessionManager", () => {
       screen.getByRole("heading", {
         level: 2,
         name: "Reconcile Latha Nair's Settled Claim",
+      }),
+    ).toBeVisible();
+
+    // Dispute calculation to open grievance
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: /Dispute calculation/i,
+      }),
+    );
+
+    expect(
+      screen.getByRole("heading", {
+        level: 2,
+        name: "Prepare Grievance for Latha Nair",
       }),
     ).toBeVisible();
 
