@@ -10,8 +10,15 @@ function renderPlanner() {
   const demoCase = demoDataService.loadCase("asha-planning");
   expect(demoCase).not.toBeNull();
   const onBack = vi.fn();
-  render(<WithdrawalPlanner demoCase={demoCase!} onBack={onBack} />);
-  return { onBack };
+  const onStartMockClaim = vi.fn();
+  render(
+    <WithdrawalPlanner
+      demoCase={demoCase!}
+      onBack={onBack}
+      onStartMockClaim={onStartMockClaim}
+    />,
+  );
+  return { onBack, onStartMockClaim };
 }
 
 function continueToResult() {
@@ -24,7 +31,7 @@ function continueToResult() {
 
 describe("WithdrawalPlanner", () => {
   it("guides the citizen to an explainable eligible amount", () => {
-    renderPlanner();
+    const { onStartMockClaim } = renderPlanner();
 
     expect(
       screen.getByRole("heading", { name: "Plan a mock PF withdrawal" }),
@@ -46,6 +53,11 @@ describe("WithdrawalPlanner", () => {
     expect(
       screen.getByRole("link", { name: /official EPFO press brief/ }),
     ).toHaveAttribute("href", ELIGIBILITY_POLICY_SOURCE_URL);
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Continue to claim details" }),
+    );
+    expect(onStartMockClaim).toHaveBeenCalledOnce();
   });
 
   it("explains when the service check is not met", () => {

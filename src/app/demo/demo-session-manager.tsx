@@ -9,6 +9,7 @@ import { createDemoSessionStore } from "@/lib/demo/session-store";
 import { ClaimWorkspace } from "./claim-workspace";
 import styles from "./demo-session-manager.module.css";
 import { KycPreflight } from "./kyc-preflight";
+import { MockClaimForm } from "./mock-claim-form";
 import { WithdrawalPlanner } from "./withdrawal-planner";
 
 type SessionView =
@@ -27,6 +28,7 @@ export function DemoSessionManager() {
   const [view, setView] = useState<SessionView>({ status: "loading" });
   const [plannerCase, setPlannerCase] = useState<DemoCase | null>(null);
   const [preflightCase, setPreflightCase] = useState<DemoCase | null>(null);
+  const [claimFormCase, setClaimFormCase] = useState<DemoCase | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -67,6 +69,7 @@ export function DemoSessionManager() {
     const store = createDemoSessionStore(window.localStorage);
     setPlannerCase(null);
     setPreflightCase(null);
+    setClaimFormCase(null);
     setView({
       status: "active",
       demoCase: selectedCase,
@@ -79,6 +82,7 @@ export function DemoSessionManager() {
     createDemoSessionStore(window.localStorage).clear();
     setPlannerCase(null);
     setPreflightCase(null);
+    setClaimFormCase(null);
     setView({ status: "choosing" });
   }
 
@@ -140,6 +144,10 @@ export function DemoSessionManager() {
       <WithdrawalPlanner
         demoCase={plannerCase}
         onBack={() => setPlannerCase(null)}
+        onStartMockClaim={() => {
+          setPlannerCase(null);
+          setClaimFormCase(plannerCase);
+        }}
       />
     );
   }
@@ -149,6 +157,15 @@ export function DemoSessionManager() {
       <KycPreflight
         demoCase={preflightCase}
         onBack={() => setPreflightCase(null)}
+      />
+    );
+  }
+
+  if (claimFormCase) {
+    return (
+      <MockClaimForm
+        demoCase={claimFormCase}
+        onBack={() => setClaimFormCase(null)}
       />
     );
   }

@@ -23,6 +23,7 @@ import styles from "./withdrawal-planner.module.css";
 type WithdrawalPlannerProps = Readonly<{
   demoCase: DemoCase;
   onBack: () => void;
+  onStartMockClaim: () => void;
 }>;
 
 type PlannerStep = 1 | 2 | 3 | 4;
@@ -43,6 +44,7 @@ function parseWholeNumber(value: string) {
 export function WithdrawalPlanner({
   demoCase,
   onBack,
+  onStartMockClaim,
 }: WithdrawalPlannerProps) {
   const [step, setStep] = useState<PlannerStep>(1);
   const [purpose, setPurpose] = useState<WithdrawalPurpose>("medical");
@@ -294,6 +296,7 @@ export function WithdrawalPlanner({
           result={result}
           onChangeAnswers={() => setStep(1)}
           onBack={onBack}
+          onStartMockClaim={onStartMockClaim}
         />
       ) : null}
     </section>
@@ -304,11 +307,13 @@ type EligibilityResultViewProps = Readonly<{
   result: EligibilityResult;
   onChangeAnswers: () => void;
   onBack: () => void;
+  onStartMockClaim: () => void;
 }>;
 
 function EligibilityResultView({
   onBack,
   onChangeAnswers,
+  onStartMockClaim,
   result,
 }: EligibilityResultViewProps) {
   return (
@@ -427,7 +432,11 @@ function EligibilityResultView({
         <Button variant="secondary" onClick={onChangeAnswers}>
           Change answers
         </Button>
-        <Button onClick={onBack}>Return to workspace</Button>
+        {result.eligible ? (
+          <Button onClick={onStartMockClaim}>Continue to claim details</Button>
+        ) : (
+          <Button onClick={onBack}>Return to workspace</Button>
+        )}
       </div>
     </section>
   );
