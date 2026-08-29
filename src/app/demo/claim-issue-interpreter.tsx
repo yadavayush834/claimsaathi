@@ -11,6 +11,7 @@ import type {
 } from "@/lib/ai/interpreter-model";
 import { interpretWithRuleFallback } from "@/lib/ai/rule-fallback-interpreter";
 import type { DemoCase } from "@/lib/demo/model";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 import styles from "./claim-issue-interpreter.module.css";
 
@@ -21,7 +22,7 @@ type ClaimIssueInterpreterProps = Readonly<{
   onOpenPreflight?: () => void;
 }>;
 
-const PRESET_REMARKS = [
+const PRESET_REMARKS_EN = [
   {
     label: "Bank name mismatch",
     text: "MEMBER NAME IN BANK KYC DOES NOT MATCH WITH UAN RECORD",
@@ -44,12 +45,40 @@ const PRESET_REMARKS = [
   },
 ] as const;
 
+const PRESET_REMARKS_HI = [
+  {
+    label: "बैंक नाम बेमेल (Mismatch)",
+    text: "MEMBER NAME IN BANK KYC DOES NOT MATCH WITH UAN RECORD",
+  },
+  {
+    label: "जन्म तिथि में 3+ वर्ष का अंतर",
+    text: "DATE OF BIRTH MISMATCH (>3 YRS DIFFERENCE). SUBMIT JOINT DECLARATION WITH PROOF",
+  },
+  {
+    label: "चिकित्सा प्रमाण पत्र अनुपलब्ध (Para 68J)",
+    text: "MEDICAL CERTIFICATE NOT PRODUCED IN PRESCRIBED FORMAT SIGNED BY RMP (PARA 68J)",
+  },
+  {
+    label: "सेवा 5 वर्ष से कम (Para 68B)",
+    text: "SERVICE LESS THAN 5 YEARS FOR PARA 68B HOUSING ADVANCE",
+  },
+  {
+    label: "अस्पष्ट DA/APFC रिजेक्शन टिप्पणी",
+    text: "CLAIM REJECTED AS PER DA/APFC REMARKS - CONTACT REGIONAL OFFICE",
+  },
+] as const;
+
 export function ClaimIssueInterpreter({
   demoCase,
   initialRemark,
   onBack,
   onOpenPreflight,
 }: ClaimIssueInterpreterProps) {
+  const { locale, t } = useLocale();
+
+  const PRESET_REMARKS =
+    locale === "hi" ? PRESET_REMARKS_HI : PRESET_REMARKS_EN;
+
   const defaultText =
     initialRemark ??
     (demoCase.workspace.issue.tone === "attention"
@@ -74,7 +103,11 @@ export function ClaimIssueInterpreter({
   async function handleAnalyze() {
     const query = remarkText.trim();
     if (!query) {
-      setError("Please enter or select a portal remark to analyze.");
+      setError(
+        locale === "hi"
+          ? "कृपया विश्लेषण हेतु पोर्टल टिप्पणी दर्ज करें या चुनें।"
+          : "Please enter or select a portal remark to analyze.",
+      );
       return;
     }
 
@@ -98,7 +131,15 @@ export function ClaimIssueInterpreter({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        result = (await response.json()) as InterpretationResponse;
+
+        if (response.ok) {
+          result = (await response.json()) as InterpretationResponse;
+        } else {
+          result = {
+            ok: true,
+            interpretation: interpretWithRuleFallback(payload),
+          };
+        }
       } catch {
         result = {
           ok: true,
@@ -109,211 +150,251 @@ export function ClaimIssueInterpreter({
       if (result.ok) {
         setInterpretation(result.interpretation);
       } else {
-        setError(result.error);
+        setInterpretation(interpretWithRuleFallback(payload));
       }
-    } catch (err) {
+    } catch {
       setError(
-        err instanceof Error ? err.message : "Interpretation analysis failed.",
+        locale === "hi"
+          ? "विश्लेषण पूरा करने में असमर्थ। कृपया पुनः प्रयास करें।"
+          : "Unable to complete diagnostic interpretation. Please try again.",
       );
     } finally {
       setIsLoading(false);
     }
   }
 
-  function copyActionSummary() {
+  function handleCopySummary() {
     if (!interpretation) return;
-    const summary = [
-      `ClaimSaathi Issue Diagnostic Summary`,
-      `Issue: ${interpretation.categoryLabel}`,
-      `Severity: ${interpretation.severity}`,
-      `Plain Language Explanation: ${interpretation.plainLanguageExplanation}`,
-      `Root Cause: ${interpretation.rootCause}`,
-      `Action Steps:`,
-      ...interpretation.citedNextSteps.map(
-        (s) =>
-          `  ${s.order}. [${s.owner}] ${s.step} (Ref: ${s.officialRuleCitation})`,
-      ),
-      `Diagnostic Engine: ${interpretation.modelUsed} (Synthetic)`,
-    ].join("\n");
-
-    navigator.clipboard?.writeText(summary);
+    const lines = [
+      `ClaimSaathi Rejection Interpretation`,
+      `Raw Remark: ${interpretation.rawStatusText}`,
+      `Category: ${interpretation.categoryLabel}`,
+      `Plain Language: ${interpretation.plainLanguageExplanation}`,
+      `Next Action: ${interpretation.citedNextSteps[0]?.step ?? "Review with field office"}`,
+    ];
+    if (
+      typeof navigator !== "undefined" &&
+      navigator.clipboard &&
+      typeof navigator.clipboard.writeText === "function"
+    ) {
+      navigator.clipboard.writeText(lines.join("\n"));
+    }
     setCopied(true);
-    setTimeout(() => setCopied(false), 3000);
+    setTimeout(() => setCopied(false), 2500);
   }
 
   return (
-    <section className={styles.container} aria-labelledby="interpreter-title">
+    <section className={styles.interpreter} aria-labelledby="interpreter-title">
       <header className={styles.header}>
         <div>
           <p className={styles.eyebrow}>
-            AI Civic Diagnostic · EPFO Portal Remark Translation
+            {locale === "hi"
+              ? "एआई दावा-समस्या इंटरप्रेटर · पारदर्शी विश्लेषण"
+              : "OpenAI Claim-Issue Interpreter · Transparent Diagnostics"}
           </p>
-          <h2 id="interpreter-title">Claim Issue & Rejection Interpreter</h2>
+          <h2 id="interpreter-title">
+            {locale === "hi"
+              ? "अस्पष्ट रिजेक्शन टिप्पणी को समझें"
+              : "Translate & Resolve Portal Remarks"}
+          </h2>
           <span>
-            Translates cryptic EPFO rejection remarks into plain-language
-            diagnostics with cited official regulations and designated action
-            owners.
+            {locale === "hi"
+              ? `${demoCase.persona.displayName} के मामले में ईपीएफओ पोर्टल की तकनीकी टिप्पणियों को सरल भाषा में बदलें।`
+              : `Convert cryptic rejection codes and portal shorthand into plain-language instructions for ${demoCase.persona.displayName}.`}
           </span>
         </div>
         <Button variant="quiet" onClick={onBack}>
-          Back to workspace
+          {locale === "hi" ? "← वर्कस्पेस पर लौटें" : "Back to workspace"}
         </Button>
       </header>
 
-      <Callout title="Simulated AI Civic Assistant">
-        This tool translates unstructured portal remarks using structured AI and
-        deterministic civic rulebooks. It does not access private passwords,
-        Aadhaar OTPs, or EPFO internal servers.
+      <Callout
+        title={
+          locale === "hi"
+            ? "काल्पनिक निदान और नियम मार्गदर्शन"
+            : "Synthetic Diagnostic & Scheme Guidance"
+        }
+      >
+        {locale === "hi"
+          ? "यह इंटरप्रेटर सरकारी पोर्टल की टिप्पणियों को सरल भाषा में समझाता है और ईपीएफओ नियमों के अनुसार अगले कदमों का मार्गदर्शन करता है।"
+          : "This interpreter decodes unstructured status text and maps it to verified EPFO scheme guidelines and stakeholder responsibilities."}
       </Callout>
 
-      {/* Input & Presets Section */}
-      <section className={styles.inputCard} aria-labelledby="input-card-title">
-        <h3 id="input-card-title">Select or paste a portal remark</h3>
-        <p className={styles.inputHint}>
-          Choose a common Indian EPFO rejection remark below, or paste any
-          status text from your portal SMS or claim tracking page:
-        </p>
-
-        <div
-          className={styles.presetsBar}
-          role="group"
-          aria-label="Preset remarks"
-        >
-          {PRESET_REMARKS.map((preset) => (
-            <button
-              key={preset.label}
-              type="button"
-              className={styles.presetChip}
-              data-active={remarkText === preset.text}
-              onClick={() => {
-                setRemarkText(preset.text);
-                setError(null);
-              }}
-            >
-              {preset.label}
-            </button>
-          ))}
-        </div>
-
-        <div className={styles.textInputWrap}>
-          <label htmlFor="raw-remark-input" className={styles.inputLabel}>
-            Portal status or rejection text:
-          </label>
-          <textarea
-            id="raw-remark-input"
-            className={styles.textarea}
-            rows={3}
-            value={remarkText}
-            onChange={(e) => {
-              setRemarkText(e.target.value);
-              setError(null);
-            }}
-            placeholder="e.g. MEMBER NAME IN BANK KYC DOES NOT MATCH WITH UAN RECORD"
-          />
-        </div>
-
-        {error ? <p className={styles.errorMessage}>{error}</p> : null}
-
-        <div className={styles.inputActions}>
-          <Button onClick={handleAnalyze} disabled={isLoading}>
-            {isLoading ? "Analyzing with AI…" : "Translate & Analyze Issue →"}
-          </Button>
-        </div>
-      </section>
-
-      {/* Results Diagnostic Panel */}
-      {interpretation ? (
+      <div className={styles.bodyGrid}>
+        {/* Left Column: Remark input and presets */}
         <section
-          className={styles.resultsCard}
-          aria-labelledby="results-title"
-          aria-live="polite"
+          className={styles.inputSection}
+          aria-labelledby="input-heading"
         >
-          <div className={styles.resultsHeader}>
-            <div>
-              <div className={styles.badgeRow}>
-                <StatusBadge
-                  tone={
-                    interpretation.severity === "blocker"
-                      ? "critical"
-                      : interpretation.severity === "warning"
-                        ? "warning"
-                        : "info"
-                  }
+          <h3 id="input-heading">
+            {locale === "hi"
+              ? "पोर्टल टिप्पणी दर्ज करें"
+              : "Enter or Select Remark"}
+          </h3>
+          <p className={styles.inputHint}>
+            {locale === "hi"
+              ? "पोर्टल पर प्रदर्शित वास्तविक या सिम्युलेटेड रिजेक्शन टिप्पणी पेस्ट करें।"
+              : "Paste a cryptic EPFO status message or pick a common preset."}
+          </p>
+
+          <div className={styles.textareaWrapper}>
+            <textarea
+              className={styles.textarea}
+              rows={4}
+              value={remarkText}
+              onChange={(e) => setRemarkText(e.target.value)}
+              placeholder={
+                locale === "hi"
+                  ? "उदा: MEMBER NAME IN BANK KYC DOES NOT MATCH..."
+                  : "e.g. MEMBER NAME IN BANK KYC DOES NOT MATCH..."
+              }
+              aria-label={
+                locale === "hi"
+                  ? "विश्लेषण हेतु पोर्टल टिप्पणी"
+                  : "Portal remark text for analysis"
+              }
+            />
+          </div>
+
+          <div className={styles.presetsWrapper}>
+            <span className={styles.presetsLabel}>
+              {locale === "hi" ? "त्वरित उदाहरण:" : "Common Presets:"}
+            </span>
+            <div className={styles.presetButtons}>
+              {PRESET_REMARKS.map((preset) => (
+                <button
+                  key={preset.label}
+                  type="button"
+                  className={styles.presetChip}
+                  onClick={() => setRemarkText(preset.text)}
                 >
-                  {interpretation.severity === "blocker"
-                    ? "Blocker / Action required"
-                    : interpretation.severity === "warning"
-                      ? "Needs review"
-                      : "Informational note"}
-                </StatusBadge>
-                <span className={styles.modelChip}>
-                  Engine: <strong>{interpretation.modelUsed}</strong>
-                </span>
-                <span className={styles.confidenceChip}>
-                  Confidence: {interpretation.confidence}
-                </span>
-              </div>
-              <h3 id="results-title">{interpretation.categoryLabel}</h3>
-            </div>
-            <Button variant="secondary" onClick={copyActionSummary}>
-              {copied ? "✓ Copied checklist" : "Copy action summary"}
-            </Button>
-          </div>
-
-          <div className={styles.explanationBox}>
-            <strong>What this means in plain language</strong>
-            <p>{interpretation.plainLanguageExplanation}</p>
-          </div>
-
-          <div className={styles.rootCauseBox}>
-            <span>Identified root cause</span>
-            <p>{interpretation.rootCause}</p>
-          </div>
-
-          {/* Action Checklist with Designated Owners */}
-          <div className={styles.stepsSection}>
-            <h4>Step-by-step action checklist</h4>
-            <ol className={styles.stepsList}>
-              {interpretation.citedNextSteps.map((step) => (
-                <li key={step.order} className={styles.stepCard}>
-                  <div className={styles.stepNumber} aria-hidden="true">
-                    {step.order}
-                  </div>
-                  <div className={styles.stepBody}>
-                    <div className={styles.stepMetaRow}>
-                      <span className={styles.ownerBadge}>
-                        Action Owner: <strong>{step.owner}</strong>
-                      </span>
-                      <span className={styles.citationBadge}>
-                        Citation: {step.officialRuleCitation}
-                      </span>
-                    </div>
-                    <p className={styles.stepText}>{step.step}</p>
-                  </div>
-                </li>
+                  {preset.label}
+                </button>
               ))}
-            </ol>
+            </div>
           </div>
 
-          {interpretation.suggestedGrievanceNote ? (
-            <div className={styles.grievanceDraftBox}>
-              <strong>Suggested EPFiGMS appeal / clarification text</strong>
-              <p>{interpretation.suggestedGrievanceNote}</p>
+          {error ? (
+            <div role="alert" className={styles.errorAlert}>
+              {error}
             </div>
           ) : null}
 
-          <div className={styles.resultsFooter}>
-            {onOpenPreflight ? (
-              <Button onClick={onOpenPreflight}>
-                Check readiness preflight checklist →
-              </Button>
-            ) : null}
-            <Button variant="secondary" onClick={onBack}>
-              Return to workspace
+          <div className={styles.actions}>
+            <Button
+              onClick={handleAnalyze}
+              disabled={isLoading}
+              className={styles.analyzeBtn}
+            >
+              {isLoading
+                ? t.common.loading
+                : locale === "hi"
+                  ? "टिप्पणी का विश्लेषण करें →"
+                  : "Analyze Remark with AI →"}
             </Button>
           </div>
         </section>
-      ) : null}
+
+        {/* Right Column: Diagnostic output card */}
+        {interpretation ? (
+          <section
+            className={styles.outputSection}
+            aria-labelledby="output-heading"
+          >
+            <div className={styles.outputHeader}>
+              <div>
+                <span className={styles.categoryTag}>
+                  {interpretation.categoryLabel}
+                </span>
+                <h3 id="output-heading">
+                  {locale === "hi" ? "समस्या का निदान" : "Diagnostic Breakdown"}
+                </h3>
+              </div>
+              <StatusBadge
+                tone={
+                  interpretation.severity === "blocker"
+                    ? "critical"
+                    : interpretation.severity === "warning"
+                      ? "warning"
+                      : "info"
+                }
+              >
+                {interpretation.severity === "blocker"
+                  ? locale === "hi"
+                    ? "बाधक (Blocker)"
+                    : "Blocker"
+                  : interpretation.severity === "warning"
+                    ? locale === "hi"
+                      ? "चेतावनी"
+                      : "Warning"
+                    : locale === "hi"
+                      ? "सूचना"
+                      : "Informational"}
+              </StatusBadge>
+            </div>
+
+            <div className={styles.plainExplanation}>
+              <h4>
+                {locale === "hi"
+                  ? "सरल भाषा में अर्थ"
+                  : "What this actually means"}
+              </h4>
+              <p>{interpretation.plainLanguageExplanation}</p>
+            </div>
+
+            <div className={styles.rootCause}>
+              <strong>{locale === "hi" ? "मूल कारण: " : "Root Cause: "}</strong>
+              <span>{interpretation.rootCause}</span>
+            </div>
+
+            {/* Structured Next Steps */}
+            <div className={styles.nextSteps}>
+              <h4>
+                {locale === "hi" ? "अनुशंसित कदम" : "Recommended Next Steps"}
+              </h4>
+              <ol className={styles.stepsList}>
+                {interpretation.citedNextSteps.map((step) => (
+                  <li key={step.order}>
+                    <div className={styles.stepHeader}>
+                      <span className={styles.stepNum}>{step.order}</span>
+                      <strong>{step.step}</strong>
+                      <span className={styles.ownerBadge}>{step.owner}</span>
+                    </div>
+                    {step.officialRuleCitation ? (
+                      <p className={styles.citationText}>
+                        📜 {step.officialRuleCitation}
+                      </p>
+                    ) : null}
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            {/* Action Bar */}
+            <div className={styles.outputActions}>
+              <Button
+                variant="secondary"
+                onClick={handleCopySummary}
+                className={styles.copyBtn}
+                aria-live="polite"
+              >
+                {copied
+                  ? t.common.copied
+                  : locale === "hi"
+                    ? "सारांश कॉपी करें"
+                    : "Copy Diagnostic Summary"}
+              </Button>
+              {onOpenPreflight ? (
+                <Button onClick={onOpenPreflight}>
+                  {locale === "hi"
+                    ? "केवाईसी प्री-फ्लाइट जांचें चलाएं →"
+                    : "Open KYC Preflight Checks →"}
+                </Button>
+              ) : null}
+            </div>
+          </section>
+        ) : null}
+      </div>
     </section>
   );
 }

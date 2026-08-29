@@ -14,6 +14,7 @@ import { WithdrawalPlanner } from "@/app/demo/withdrawal-planner";
 import { demoDataService } from "@/lib/demo/demo-service";
 import type { DemoCase, DemoPersonaId } from "@/lib/demo/model";
 import { createDemoSessionStore } from "@/lib/demo/session-store";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 import styles from "./demo-session-manager.module.css";
 
@@ -28,6 +29,8 @@ type ViewState =
     };
 
 export function DemoSessionManager() {
+  const { locale } = useLocale();
+
   const [view, setView] = useState<ViewState>(() => {
     if (typeof window === "undefined" || !window.localStorage) {
       return { status: "choosing" };
@@ -110,8 +113,14 @@ export function DemoSessionManager() {
   if (view.status === "loading") {
     return (
       <section className={styles.loading} aria-live="polite">
-        <strong>Opening the safe demo…</strong>
-        <p>Checking this browser for a saved fictional case.</p>
+        <strong>
+          {locale === "hi" ? "डेमो खोला जा रहा है…" : "Opening the safe demo…"}
+        </strong>
+        <p>
+          {locale === "hi"
+            ? "ब्राउज़र में सहेजे गए सत्र की जांच की जा रही है।"
+            : "Checking this browser for a saved fictional case."}
+        </p>
       </section>
     );
   }
@@ -120,11 +129,20 @@ export function DemoSessionManager() {
     return (
       <section className={styles.manager} aria-labelledby="choose-case-title">
         <div className={styles.sectionHeading}>
-          <p>Demo case files · fixture v{demoDataService.fixtureVersion}</p>
-          <h2 id="choose-case-title">Choose a fictional citizen</h2>
+          <p>
+            {locale === "hi"
+              ? `डेमो केस फाइलें · फिक्सचर v${demoDataService.fixtureVersion}`
+              : `Demo case files · fixture v${demoDataService.fixtureVersion}`}
+          </p>
+          <h2 id="choose-case-title">
+            {locale === "hi"
+              ? "काल्पनिक नागरिक चुनें"
+              : "Choose a fictional citizen"}
+          </h2>
           <span>
-            Each case starts at a different point in the same mock withdrawal
-            journey.
+            {locale === "hi"
+              ? "प्रत्येक केस निकासी यात्रा के अलग-अलग चरण पर शुरू होता है।"
+              : "Each case starts at a different point in the same mock withdrawal journey."}
           </span>
         </div>
 
@@ -134,23 +152,29 @@ export function DemoSessionManager() {
               <button
                 type="button"
                 className={styles.caseButton}
-                aria-label={`Start ${demoCase.persona.displayName}'s demo case`}
+                aria-label={
+                  locale === "hi"
+                    ? `${demoCase.persona.displayName} का डेमो केस शुरू करें`
+                    : `Start ${demoCase.persona.displayName}'s demo case`
+                }
                 onClick={() => startCase(demoCase.persona.id)}
               >
                 <span className={styles.caseIndex}>
-                  <small>Case</small>
+                  <small>{locale === "hi" ? "केस" : "Case"}</small>
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span className={styles.caseBody}>
                   <small>
-                    Fictional citizen · {demoCase.persona.homeState}
+                    {locale === "hi"
+                      ? `काल्पनिक नागरिक · ${demoCase.persona.homeState}`
+                      : `Fictional citizen · ${demoCase.persona.homeState}`}
                   </small>
                   <strong>{demoCase.persona.displayName}</strong>
                   <span>{demoCase.persona.scenarioTitle}</span>
                   <p>{demoCase.persona.scenarioDescription}</p>
                 </span>
                 <span className={styles.caseAction} aria-hidden="true">
-                  Start case <b>→</b>
+                  {locale === "hi" ? "केस शुरू करें" : "Start case"} <b>→</b>
                 </span>
               </button>
             </li>
@@ -276,6 +300,18 @@ export function DemoSessionManager() {
     );
   }
 
+  const sessionMsg = view.persisted
+    ? view.source === "restored"
+      ? locale === "hi"
+        ? "रिफ्रेश के बाद सत्र पुनर्स्थापित किया गया।"
+        : "Session restored after refresh."
+      : locale === "hi"
+        ? "रिफ्रेश पुनर्प्राप्ति हेतु सत्र सहेजा गया।"
+        : "Session saved for refresh recovery."
+    : locale === "hi"
+      ? "ब्राउज़र स्टोरेज अवरुद्ध है, इसलिए रिफ्रेश करने पर केस रीसेट हो सकता है।"
+      : "Browser storage is blocked, so refresh may reset this case.";
+
   return (
     <ClaimWorkspace
       demoCase={view.demoCase}
@@ -302,13 +338,7 @@ export function DemoSessionManager() {
       onPrepareGrievance={() => setGrievanceCase(view.demoCase)}
       onViewTimeline={() => setTimelineCase(view.demoCase)}
       onExplainIssue={() => setInterpreterCase(view.demoCase)}
-      sessionMessage={
-        view.persisted
-          ? view.source === "restored"
-            ? "Session restored after refresh."
-            : "Session saved for refresh recovery."
-          : "Browser storage is blocked, so refresh may reset this case."
-      }
+      sessionMessage={sessionMsg}
       onSwitch={switchCase}
     />
   );

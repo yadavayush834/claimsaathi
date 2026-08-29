@@ -8,6 +8,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import type { DemoCase } from "@/lib/demo/model";
 import type { RecoveryStepId } from "@/lib/demo/recovery-model";
 import { recoveryService } from "@/lib/demo/recovery-service";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 import styles from "./rejection-recovery-journey.module.css";
 
@@ -26,6 +27,8 @@ export function RejectionRecoveryJourney({
   onStartResubmission,
   onViewTimeline,
 }: RejectionRecoveryJourneyProps) {
+  const { locale } = useLocale();
+
   const [plan, setPlan] = useState(() =>
     recoveryService.getRecoveryPlan(demoCase.persona.id),
   );
@@ -66,26 +69,36 @@ export function RejectionRecoveryJourney({
       <header className={styles.header}>
         <div>
           <p className={styles.eyebrow}>
-            Safe Rejection Recovery · Primary Case 02
+            {locale === "hi"
+              ? "सुरक्षित रिजेक्शन सुधार यात्रा · प्राथमिक केस 02"
+              : "Safe Rejection Recovery · Primary Case 02"}
           </p>
           <h2 id="recovery-title">
-            Fix & Recover {demoCase.persona.displayName}&apos;s Claim
+            {locale === "hi"
+              ? `${demoCase.persona.displayName} के दावे का सुधार एवं पुनर्प्राप्ति`
+              : `Fix & Recover ${demoCase.persona.displayName}'s Claim`}
           </h2>
           <span>
-            Follow this 4-step guided resolution checklist to correct KYC bank
-            proof discrepancies, clear preflight checks, and file a clean mock
-            resubmission.
+            {locale === "hi"
+              ? "बैंक विवरण बेमेल ठीक करने, प्री-फ्लाइट जांच पूरी करने और त्रुटिरहित पुनः सबमिशन के लिए इस 4-चरणीय गाइड का पालन करें।"
+              : "Follow this 4-step guided resolution checklist to correct KYC bank proof discrepancies, clear preflight checks, and file a clean mock resubmission."}
           </span>
         </div>
         <Button variant="quiet" onClick={onBack}>
-          Back to workspace
+          {locale === "hi" ? "← वर्कस्पेस पर लौटें" : "Back to workspace"}
         </Button>
       </header>
 
-      <Callout title="Simulated Rejection Recovery Flow">
-        This interactive recovery wizard diagnoses why your claim was returned
-        and guides you through the necessary stakeholder actions (Citizen,
-        Employer, Bank) before launching a verified mock resubmission.
+      <Callout
+        title={
+          locale === "hi"
+            ? "सिम्युलेटेड रिजेक्शन सुधार प्रक्रिया"
+            : "Simulated Rejection Recovery Flow"
+        }
+      >
+        {locale === "hi"
+          ? "यह इंटरैक्टिव विज़ार्ड रिजेक्शन के कारणों का विश्लेषण करता है और पुनः सबमिशन से पहले आवश्यक कार्यों (नागरिक, नियोक्ता, बैंक) का मार्गदर्शन करता है।"
+          : "This interactive recovery wizard diagnoses why your claim was returned and guides you through the necessary stakeholder actions (Citizen, Employer, Bank) before launching a verified mock resubmission."}
       </Callout>
 
       {/* Diagnostic Explanation Card */}
@@ -96,156 +109,158 @@ export function RejectionRecoveryJourney({
         <div className={styles.diagnosticHeader}>
           <div>
             <span className={styles.diagnosticEyebrow}>
-              Original Return Reason
+              {locale === "hi" ? "मूल रिजेक्शन कारण" : "Original Return Reason"}
             </span>
-            <h3 id="diagnostic-title">{plan.categoryLabel}</h3>
+            <h3 id="diagnostic-title" className={styles.diagnosticCode}>
+              {plan.categoryLabel}
+            </h3>
           </div>
-          <StatusBadge tone={plan.resubmitted ? "success" : "warning"}>
-            {plan.resubmitted
-              ? "Clean mock resubmitted"
-              : allStepsCompleted
-                ? "Ready for resubmission"
-                : "Action required"}
+          <StatusBadge tone="critical">
+            {locale === "hi" ? "कार्रवाई आवश्यक" : "Action Required"}
           </StatusBadge>
         </div>
 
-        <div className={styles.remarkBox}>
-          <strong>EPFO Portal Return Remark:</strong>
-          <p className={styles.remarkQuote}>
-            &ldquo;{plan.rejectionReason}&rdquo;
-          </p>
-        </div>
-
-        <div className={styles.explanationBox}>
-          <strong>What happened in plain language:</strong>
-          <p>{plan.plainLanguageExplanation}</p>
+        <div className={styles.diagnosticBody}>
+          <div className={styles.plainMeaning}>
+            <strong>
+              {locale === "hi" ? "सरल भाषा में अर्थ: " : "Plain Translation: "}
+            </strong>
+            <p>{plan.plainLanguageExplanation}</p>
+          </div>
+          <div className={styles.impact}>
+            <strong>
+              {locale === "hi" ? "श्रेणी: " : "Original Portal Code: "}
+            </strong>
+            <p>{plan.rejectionReason}</p>
+          </div>
         </div>
       </section>
 
-      {/* Interactive Correction Checklist */}
+      {/* Interactive Guided Checklist */}
       <section
-        className={styles.checklistCard}
+        className={styles.checklistSection}
         aria-labelledby="checklist-title"
       >
         <div className={styles.checklistHeader}>
           <div>
             <h3 id="checklist-title">
-              Correction & Verification Checklist ({completedCount}/
-              {plan.steps.length})
+              {locale === "hi"
+                ? "सुधार कार्य चेकलिस्ट"
+                : "Guided Resolution Checklist"}
             </h3>
-            <p className={styles.checklistSubtitle}>
-              Check off each action as it is completed in the simulated
-              workflow:
-            </p>
+            <span className={styles.checklistProgress} aria-live="polite">
+              {completedCount} of {plan.steps.length}{" "}
+              {locale === "hi" ? "कदम पूरे हुए" : "steps completed"}
+            </span>
           </div>
-          <div className={styles.quickActions}>
-            <Button
-              variant="secondary"
-              onClick={handleCompleteAll}
-              disabled={allStepsCompleted}
-            >
-              Simulate all steps complete
+          <div className={styles.checklistActions}>
+            <Button variant="quiet" onClick={handleCompleteAll}>
+              {locale === "hi"
+                ? "सभी पूरे चिह्नित करें"
+                : "Simulate all steps complete"}
             </Button>
             <Button variant="quiet" onClick={handleReset}>
-              Reset checklist
+              {locale === "hi" ? "रीसेट करें" : "Reset Steps"}
             </Button>
           </div>
         </div>
 
-        <ol className={styles.stepList}>
+        <ol className={styles.checklist}>
           {plan.steps.map((step, index) => (
             <li
               key={step.id}
-              className={styles.stepItem}
+              className={styles.checklistItem}
               data-completed={step.completed}
             >
-              <label className={styles.stepLabel} htmlFor={`step-${step.id}`}>
+              <div className={styles.stepCheckboxWrap}>
                 <input
-                  id={`step-${step.id}`}
                   type="checkbox"
-                  className={styles.checkbox}
+                  id={`step-${step.id}`}
                   checked={step.completed}
                   onChange={(e) => handleToggleStep(step.id, e.target.checked)}
+                  className={styles.stepCheckbox}
+                  aria-label={`Mark step ${index + 1}: ${step.title} as completed`}
                 />
-                <div className={styles.stepContent}>
-                  <div className={styles.stepMetaRow}>
-                    <span className={styles.stepIndex}>Step {index + 1}</span>
-                    <span className={styles.ownerBadge}>
-                      Action Owner: <strong>{step.owner}</strong>
-                    </span>
-                    <span className={styles.citationBadge}>
-                      {step.officialCitation}
-                    </span>
-                  </div>
+              </div>
+              <div className={styles.stepDetails}>
+                <label
+                  htmlFor={`step-${step.id}`}
+                  className={styles.stepTitleLabel}
+                >
+                  <span className={styles.stepNumber}>{index + 1}.</span>
                   <strong>{step.title}</strong>
-                  <p>{step.description}</p>
-                </div>
-              </label>
+                  <span className={styles.ownerTag}>{step.owner}</span>
+                </label>
+                <p className={styles.stepDesc}>{step.description}</p>
+                {step.officialCitation ? (
+                  <small className={styles.etaText}>
+                    📜{" "}
+                    {locale === "hi" ? "नियम संदर्भ: " : "Official citation: "}
+                    {step.officialCitation}
+                  </small>
+                ) : null}
+              </div>
             </li>
           ))}
         </ol>
       </section>
 
-      {/* Preflight & Resubmission Gateway */}
-      <section className={styles.gatewayCard} aria-labelledby="gateway-title">
-        <h3 id="gateway-title">Next Step: Verification & Resubmission</h3>
+      {/* Completion Banner */}
+      {allStepsCompleted ? (
+        <section
+          style={{
+            padding: "1rem",
+            background: "var(--color-bg-surface-elevated, #f0fdf4)",
+            borderRadius: "0.5rem",
+            border: "1px solid var(--color-border-success, #86efac)",
+            marginTop: "1rem",
+          }}
+          aria-labelledby="ready-to-submit-heading"
+        >
+          <h3 id="ready-to-submit-heading" style={{ margin: "0 0 0.5rem 0" }}>
+            {locale === "hi"
+              ? "त्रुटिरहित नया दावा सबमिट करने हेतु तैयार"
+              : "Ready to submit clean mock claim"}
+          </h3>
+          <p style={{ margin: 0 }}>
+            {locale === "hi"
+              ? "सभी सुधार कदम पूरे हो चुके हैं। अब आप एक नया दावा प्रस्तुत कर सकते हैं।"
+              : "All discrepancy remediation steps verified. You can now launch a clean mock claim resubmission."}
+          </p>
+        </section>
+      ) : null}
 
-        {plan.resubmitted ? (
-          <div className={styles.resubmittedBox}>
-            <StatusBadge tone="success">✓ Resubmission Recorded</StatusBadge>
-            <h4>Clean Mock Claim Filed Successfully!</h4>
-            <p>
-              Your corrected claim (ID:{" "}
-              <strong>{plan.resubmittedClaimId ?? "DEMO-CLM-REC-9001"}</strong>)
-              has been submitted with verified bank records.
-            </p>
-            {onViewTimeline ? (
-              <Button onClick={onViewTimeline}>
-                Track claim on timeline →
-              </Button>
-            ) : (
-              <Button variant="secondary" onClick={onBack}>
-                Return to workspace
-              </Button>
-            )}
-          </div>
-        ) : allStepsCompleted ? (
-          <div className={styles.readyBox}>
-            <StatusBadge tone="success">
-              ✓ All Correction Checks Verified
-            </StatusBadge>
-            <h4>Ready to submit clean mock claim</h4>
-            <p>
-              Bank records and preflight verification are now green. You can
-              proceed to file the corrected mock application without risk of
-              name mismatch return.
-            </p>
-            <div className={styles.readyActions}>
-              <Button onClick={onStartResubmission}>
-                Proceed to clean mock resubmission →
-              </Button>
-              <Button variant="secondary" onClick={onOpenPreflight}>
-                Recheck preflight details
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <div className={styles.pendingBox}>
-            <p>
-              Please complete all {plan.steps.length} checklist steps above or
-              run the readiness preflight check before resubmitting.
-            </p>
-            <div className={styles.pendingActions}>
-              <Button variant="secondary" onClick={onOpenPreflight}>
-                Open Readiness Preflight Check →
-              </Button>
-              <Button variant="quiet" onClick={onBack}>
-                Cancel recovery
-              </Button>
-            </div>
-          </div>
-        )}
-      </section>
+      {/* Recovery Status Bar & Next Actions */}
+      <div className={styles.actionBar}>
+        <div className={styles.actionLeft}>
+          <Button variant="secondary" onClick={onOpenPreflight}>
+            {locale === "hi"
+              ? "केवाईसी प्री-फ्लाइट जांचें चलाएं →"
+              : "Open Readiness Preflight Check →"}
+          </Button>
+          {onViewTimeline ? (
+            <Button variant="quiet" onClick={onViewTimeline}>
+              {locale === "hi" ? "समयरेखा देखें" : "View Status Timeline"}
+            </Button>
+          ) : null}
+        </div>
+
+        <div className={styles.actionRight}>
+          <Button
+            disabled={!allStepsCompleted}
+            onClick={onStartResubmission}
+            className={styles.resubmitBtn}
+          >
+            {allStepsCompleted
+              ? locale === "hi"
+                ? "त्रुटिरहित नया दावा सबमिट करें →"
+                : "Proceed to clean mock resubmission →"
+              : locale === "hi"
+                ? `आगे बढ़ने हेतु सभी ${plan.steps.length} कदम पूरे करें`
+                : `Complete all ${plan.steps.length} steps to unlock resubmission`}
+          </Button>
+        </div>
+      </div>
     </section>
   );
 }

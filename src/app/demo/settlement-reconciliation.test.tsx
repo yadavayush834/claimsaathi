@@ -28,14 +28,14 @@ describe("SettlementReconciliation", () => {
 
     expect(screen.getByText("1. Requested Advance")).toBeVisible();
     expect(screen.getByText("2. Statutory Eligible Cap")).toBeVisible();
-    expect(screen.getByText("3. Settled & Disbursed")).toBeVisible();
+    expect(screen.getByText("3. Actually Disbursed")).toBeVisible();
 
     // Check amounts
     expect(screen.getAllByText(/1,10,000/).length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText(/92,000/).length).toBeGreaterThanOrEqual(2);
 
     // Confirmed facts
-    expect(screen.getByText("Confirmed Facts on Record")).toBeVisible();
+    expect(screen.getByText("Verified Facts Ledger")).toBeVisible();
     expect(screen.getByText("Employee Share Balance on Record")).toBeVisible();
     expect(screen.getAllByText(/1,82,500/).length).toBeGreaterThanOrEqual(1);
 
@@ -43,7 +43,7 @@ describe("SettlementReconciliation", () => {
     expect(
       screen.getByText("Statutory 24-Month Wage Ceiling Cap"),
     ).toBeVisible();
-    expect(screen.getByText("EPF Scheme 1952 Para 68B(2)")).toBeVisible();
+    expect(screen.getByText(/EPF Scheme 1952 Para 68B\(2\)/)).toBeVisible();
 
     // Back button
     fireEvent.click(screen.getByRole("button", { name: "Back to workspace" }));
@@ -64,21 +64,21 @@ describe("SettlementReconciliation", () => {
 
     fireEvent.click(
       screen.getByRole("button", {
-        name: /Mark Reconciled/i,
+        name: /Accept Reconciled Amount/i,
       }),
     );
 
-    expect(screen.getByText("Reconciliation Complete")).toBeVisible();
+    expect(screen.getByText("Settlement Accepted")).toBeVisible();
 
-    fireEvent.click(screen.getByRole("button", { name: /Reset decision/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Reset Resolution/i }));
 
     fireEvent.click(
       screen.getByRole("button", {
-        name: /Prepare Grievance/i,
+        name: /Dispute via Grievance/i,
       }),
     );
 
     expect(onPrepareGrievance).toHaveBeenCalledOnce();
-    expect(screen.getByText("Discrepancy Flagged for Grievance")).toBeVisible();
+    expect(screen.getByText("Disputed / Grievance")).toBeVisible();
   });
 });

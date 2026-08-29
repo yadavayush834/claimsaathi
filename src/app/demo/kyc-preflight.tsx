@@ -11,6 +11,7 @@ import type {
   DemoPreflightCheck,
 } from "@/lib/demo/model";
 import { runDemoPreflight } from "@/lib/preflight/demo-preflight";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 import styles from "./kyc-preflight.module.css";
 
@@ -19,10 +20,16 @@ type KycPreflightProps = Readonly<{
   onBack: () => void;
 }>;
 
-const categoryLabels: Record<DemoPreflightCategory, string> = {
+const categoryLabelsEn: Record<DemoPreflightCategory, string> = {
   identity: "Identity",
   bank: "Bank",
   evidence: "Evidence",
+};
+
+const categoryLabelsHi: Record<DemoPreflightCategory, string> = {
+  identity: "पहचान",
+  bank: "बैंक",
+  evidence: "दस्तावेज",
 };
 
 function getEffectiveStatus(
@@ -33,6 +40,7 @@ function getEffectiveStatus(
 }
 
 export function KycPreflight({ demoCase, onBack }: KycPreflightProps) {
+  const { locale } = useLocale();
   const preflight = useMemo(
     () => runDemoPreflight(demoCase.workspace.preflight),
     [demoCase.workspace.preflight],
@@ -45,6 +53,8 @@ export function KycPreflight({ demoCase, onBack }: KycPreflightProps) {
     firstActionCheck?.id ?? preflight.checks[0]?.id ?? "",
   );
   const [isConfirmed, setIsConfirmed] = useState(false);
+
+  const categoryLabels = locale === "hi" ? categoryLabelsHi : categoryLabelsEn;
 
   const effectiveChecks = preflight.checks.map((check) => ({
     check,
@@ -92,38 +102,73 @@ export function KycPreflight({ demoCase, onBack }: KycPreflightProps) {
     <section className={styles.preflight} aria-labelledby="preflight-title">
       <header className={styles.header}>
         <div>
-          <p>Fictional readiness preflight · no submission</p>
-          <h2 id="preflight-title">Check what needs fixing first</h2>
-          <span>{demoCase.persona.displayName}&apos;s synthetic case</span>
+          <p>
+            {locale === "hi"
+              ? "काल्पनिक तैयारी प्री-फ्लाइट · कोई वास्तविक सबमिशन नहीं"
+              : "Fictional readiness preflight · no submission"}
+          </p>
+          <h2 id="preflight-title">
+            {locale === "hi"
+              ? "जांचें कि पहले क्या सुधारना आवश्यक है"
+              : "Check what needs fixing first"}
+          </h2>
+          <span>
+            {locale === "hi"
+              ? `${demoCase.persona.displayName} का काल्पनिक केस`
+              : `${demoCase.persona.displayName}'s synthetic case`}
+          </span>
         </div>
         <Button variant="quiet" onClick={onBack}>
-          Back to workspace
+          {locale === "hi" ? "← वर्कस्पेस पर लौटें" : "Back to workspace"}
         </Button>
       </header>
 
-      <Callout title="Synthetic records only">
-        These comparisons use local fictional records. Do not enter, upload, or
-        correct real identity, bank, or medical information here.
+      <Callout
+        title={
+          locale === "hi" ? "केवल काल्पनिक रिकॉर्ड" : "Synthetic records only"
+        }
+      >
+        {locale === "hi"
+          ? "ये तुलनाएं स्थानीय काल्पनिक रिकॉर्ड का उपयोग करती हैं। यहां कभी भी असली पहचान या बैंक विवरण दर्ज न करें।"
+          : "These comparisons use local fictional records. Do not enter, upload, or correct real identity, bank, or medical information here."}
       </Callout>
 
       <section className={styles.summary} aria-labelledby="preflight-summary">
         <div className={styles.summaryNumber} aria-hidden="true">
           <span>{isComplete ? "✓" : remainingChecks.length}</span>
-          <small>{isComplete ? "ready" : "to fix"}</small>
+          <small>
+            {isComplete
+              ? locale === "hi"
+                ? "तैयार"
+                : "ready"
+              : locale === "hi"
+                ? "सुधार बाकी"
+                : "to fix"}
+          </small>
         </div>
         <div>
-          <p>Preflight result</p>
+          <p>{locale === "hi" ? "प्री-फ्लाइट परिणाम" : "Preflight result"}</p>
           <h3 id="preflight-summary">
             {isComplete
-              ? "This fictional case is ready for its next step."
-              : `${remainingChecks.length} fictional records need attention.`}
+              ? locale === "hi"
+                ? "यह काल्पनिक केस अगले चरण के लिए पूरी तरह तैयार है।"
+                : "This fictional case is ready for its next step."
+              : locale === "hi"
+                ? `${remainingChecks.length} काल्पनिक रिकॉर्ड पर ध्यान देने की आवश्यकता है।`
+                : `${remainingChecks.length} fictional records need attention.`}
           </h3>
           <span>
-            {completedCount} of {effectiveChecks.length} readiness checks are
-            clear in this browser.
+            {locale === "hi"
+              ? `इस ब्राउज़र में ${effectiveChecks.length} में से ${completedCount} तैयारी जांचें पूरी हो गई हैं।`
+              : `${completedCount} of ${effectiveChecks.length} readiness checks are clear in this browser.`}
           </span>
         </div>
-        <div className={styles.summaryMeter} aria-label="Preflight progress">
+        <div
+          className={styles.summaryMeter}
+          aria-label={
+            locale === "hi" ? "प्री-फ्लाइट प्रगति" : "Preflight progress"
+          }
+        >
           <span
             style={{
               width: `${(completedCount / effectiveChecks.length) * 100}%`,
@@ -133,10 +178,17 @@ export function KycPreflight({ demoCase, onBack }: KycPreflightProps) {
       </section>
 
       <div className={styles.preflightGrid}>
-        <nav className={styles.checkRail} aria-label="Readiness checks">
+        <nav
+          className={styles.checkRail}
+          aria-label={locale === "hi" ? "तैयारी जांचें" : "Readiness checks"}
+        >
           <div className={styles.railHeading}>
-            <p>Check records</p>
-            <span>Choose one to review</span>
+            <p>{locale === "hi" ? "जांच रिकॉर्ड" : "Check records"}</p>
+            <span>
+              {locale === "hi"
+                ? "समीक्षा हेतु एक चुनें"
+                : "Choose one to review"}
+            </span>
           </div>
           <ol>
             {effectiveChecks.map(({ check, status }, index) => (
@@ -146,7 +198,11 @@ export function KycPreflight({ demoCase, onBack }: KycPreflightProps) {
                   aria-current={
                     selected?.check.id === check.id ? "step" : undefined
                   }
-                  aria-label={`Review ${categoryLabels[check.category]}: ${check.label}`}
+                  aria-label={
+                    locale === "hi"
+                      ? `${categoryLabels[check.category]} जांचें: ${check.label}`
+                      : `Review ${categoryLabels[check.category]}: ${check.label}`
+                  }
                   onClick={() => selectCheck(check.id)}
                 >
                   <span className={styles.checkNumber} aria-hidden="true">
@@ -161,7 +217,13 @@ export function KycPreflight({ demoCase, onBack }: KycPreflightProps) {
                   <StatusBadge
                     tone={status === "ready" ? "success" : "critical"}
                   >
-                    {status === "ready" ? "Clear" : "Fix"}
+                    {status === "ready"
+                      ? locale === "hi"
+                        ? "सफल"
+                        : "Clear"
+                      : locale === "hi"
+                        ? "सुधारें"
+                        : "Fix"}
                   </StatusBadge>
                 </button>
               </li>
@@ -177,21 +239,30 @@ export function KycPreflight({ demoCase, onBack }: KycPreflightProps) {
           >
             <header className={styles.reviewHeader}>
               <div>
-                <p>{categoryLabels[selected.check.category]} record</p>
+                <p>
+                  {categoryLabels[selected.check.category]}{" "}
+                  {locale === "hi" ? "रिकॉर्ड" : "record"}
+                </p>
                 <h3 id="selected-check-title">{selected.check.label}</h3>
               </div>
               <StatusBadge
                 tone={selected.status === "ready" ? "success" : "critical"}
               >
                 {selected.status === "ready"
-                  ? "Ready in demo"
-                  : "Action needed"}
+                  ? locale === "hi"
+                    ? "डेमो में तैयार"
+                    : "Ready in demo"
+                  : locale === "hi"
+                    ? "कार्रवाई आवश्यक"
+                    : "Action needed"}
               </StatusBadge>
             </header>
 
             <p className={styles.reviewSummary}>
               {selectedWasResolved
-                ? "You marked this fictional correction ready in this browser. The original comparison remains below for context."
+                ? locale === "hi"
+                  ? "आपने इस काल्पनिक सुधार को इस ब्राउज़र में तैयार चिह्नित किया है। संदर्भ हेतु मूल तुलना नीचे बनी हुई है।"
+                  : "You marked this fictional correction ready in this browser. The original comparison remains below for context."
                 : selected.check.summary}
             </p>
 
@@ -199,7 +270,11 @@ export function KycPreflight({ demoCase, onBack }: KycPreflightProps) {
               className={styles.comparison}
               aria-labelledby="comparison-title"
             >
-              <p id="comparison-title">What the fictional check compared</p>
+              <p id="comparison-title">
+                {locale === "hi"
+                  ? "काल्पनिक जांच ने क्या तुलना की"
+                  : "What the fictional check compared"}
+              </p>
               <dl>
                 {selected.check.comparedRecords.map((record) => (
                   <div key={record.label}>
@@ -217,7 +292,11 @@ export function KycPreflight({ demoCase, onBack }: KycPreflightProps) {
               >
                 <div className={styles.ownerLine}>
                   <div>
-                    <p id="owner-title">Who can fix this</p>
+                    <p id="owner-title">
+                      {locale === "hi"
+                        ? "सुधार का दायित्व"
+                        : "Who can fix this"}
+                    </p>
                     <strong>{selected.check.ownerLabel}</strong>
                   </div>
                   <span aria-hidden="true">→</span>
@@ -235,21 +314,30 @@ export function KycPreflight({ demoCase, onBack }: KycPreflightProps) {
                     onChange={(event) => setIsConfirmed(event.target.checked)}
                   />
                   <span>
-                    I completed these fictional correction steps for this demo.
+                    {locale === "hi"
+                      ? "मैंने इस डेमो के लिए ये काल्पनिक सुधारात्मक कदम पूरे कर लिए हैं।"
+                      : "I completed these fictional correction steps for this demo."}
                   </span>
                 </label>
                 <Button disabled={!isConfirmed} onClick={markSelectedReady}>
-                  Mark this check ready
+                  {locale === "hi"
+                    ? "इस जांच को तैयार चिह्नित करें"
+                    : "Mark this check ready"}
                 </Button>
               </section>
             ) : (
               <div className={styles.clearPanel}>
                 <span aria-hidden="true">✓</span>
                 <div>
-                  <strong>No correction is needed in this demo.</strong>
+                  <strong>
+                    {locale === "hi"
+                      ? "इस डेमो में किसी सुधार की आवश्यकता नहीं है।"
+                      : "No correction is needed in this demo."}
+                  </strong>
                   <p>
-                    This local status reflects the simulated correction; it does
-                    not alter the fictional source records shown above.
+                    {locale === "hi"
+                      ? "यह स्थिति सिम्युलेटेड सुधार को दर्शाती है; यह ऊपर दिखाए गए काल्पनिक रिकॉर्ड को नहीं बदलती।"
+                      : "This local status reflects the simulated correction; it does not alter the fictional source records shown above."}
                   </p>
                 </div>
               </div>
@@ -262,15 +350,22 @@ export function KycPreflight({ demoCase, onBack }: KycPreflightProps) {
         <section className={styles.complete} aria-live="polite">
           <span aria-hidden="true">✓</span>
           <div>
-            <p>Preflight complete</p>
-            <h3>All three fictional readiness checks are clear.</h3>
+            <p>
+              {locale === "hi" ? "प्री-फ्लाइट पूर्ण" : "Preflight complete"}
+            </p>
+            <h3>
+              {locale === "hi"
+                ? "सभी काल्पनिक तैयारी जांचें सफल रहीं।"
+                : "All three fictional readiness checks are clear."}
+            </h3>
             <span>
-              The next mock claim form is intentionally not available until a
-              later phase of this prototype.
+              {locale === "hi"
+                ? "यह केस अब अगले चरण पर आगे बढ़ने के लिए तैयार है।"
+                : "The next mock claim form is intentionally not available until a later phase of this prototype."}
             </span>
           </div>
           <Button variant="secondary" onClick={onBack}>
-            Return to workspace
+            {locale === "hi" ? "वर्कस्पेस पर लौटें" : "Return to workspace"}
           </Button>
         </section>
       ) : null}

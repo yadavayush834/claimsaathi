@@ -31,10 +31,10 @@ describe("ClaimWorkspace", () => {
       screen.getByRole("heading", { level: 2, name: "Imran Sheikh" }),
     ).toBeVisible();
     expect(
-      screen.getByRole("region", { name: /Synthetic PF balance/ }),
+      screen.getByRole("region", { name: /Synthetic PF balance/i }),
     ).toHaveTextContent(/1,57,400/);
     expect(
-      screen.getByRole("region", { name: /Active claim/ }),
+      screen.getByRole("region", { name: /Active Claim/i }),
     ).toHaveTextContent("DEMO-CLM-1002");
     expect(screen.getByText("Issue state")).toBeVisible();
     expect(
@@ -44,7 +44,7 @@ describe("ClaimWorkspace", () => {
       screen.getByRole("region", { name: "Recent events" }),
     ).toHaveTextContent("Mock claim submitted");
     expect(
-      screen.getByRole("region", {
+      screen.getByRole("heading", {
         name: "Run the fictional readiness preflight",
       }),
     ).toBeVisible();
@@ -88,7 +88,7 @@ describe("ClaimWorkspace", () => {
       screen.getByRole("heading", { level: 2, name: "Latha Nair" }),
     ).toBeVisible();
     expect(
-      screen.getByRole("region", { name: /Synthetic PF balance/ }),
+      screen.getByRole("region", { name: /Synthetic PF balance/i }),
     ).toHaveTextContent(/2,95,500/);
 
     fireEvent.click(

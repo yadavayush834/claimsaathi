@@ -22,21 +22,19 @@ describe("GrievanceManager", () => {
     expect(
       screen.getByRole("heading", {
         level: 2,
-        name: "Prepare Grievance for Latha Nair",
+        name: "Draft Statutory Grievance for Latha Nair",
       }),
     ).toBeVisible();
 
-    const subjectInput = screen.getByLabelText("Subject Line");
+    const subjectInput = screen.getByLabelText("Grievance Subject");
     expect(subjectInput).toHaveValue(
       "Grievance regarding short settlement of Form 31 Housing Advance (Claim ID: DEMO-CLM-1003)",
     );
 
-    const petitionTextarea = screen.getByLabelText(
-      "Petition Letter Body (Editable)",
-    );
+    const petitionTextarea = screen.getByLabelText("Formal Petition Text");
     expect(petitionTextarea).toHaveValue();
 
-    expect(screen.getByText("Supporting Evidence Checklist")).toBeVisible();
+    expect(screen.getByText("Supporting Evidence")).toBeVisible();
     expect(screen.getByText("Claim Acknowledgement Slip")).toBeVisible();
     expect(screen.getByText("Bank Credit Statement / Passbook")).toBeVisible();
 
@@ -48,7 +46,7 @@ describe("GrievanceManager", () => {
     const demoCase = demoDataService.loadCase("latha-settlement");
     render(<GrievanceManager demoCase={demoCase!} onBack={vi.fn()} />);
 
-    const subjectInput = screen.getByLabelText("Subject Line");
+    const subjectInput = screen.getByLabelText("Grievance Subject");
     fireEvent.change(subjectInput, {
       target: { value: "Custom Subject for Regional PF Commissioner" },
     });
@@ -56,9 +54,7 @@ describe("GrievanceManager", () => {
       "Custom Subject for Regional PF Commissioner",
     );
 
-    const petitionTextarea = screen.getByLabelText(
-      "Petition Letter Body (Editable)",
-    );
+    const petitionTextarea = screen.getByLabelText("Formal Petition Text");
     fireEvent.change(petitionTextarea, {
       target: { value: "Custom revised representation body." },
     });
@@ -66,15 +62,17 @@ describe("GrievanceManager", () => {
 
     // Toggle evidence item
     const checkbox = screen.getByLabelText(
-      "Attach Housing Estimation / Certificate",
+      "Toggle evidence: Housing Estimation / Certificate",
     );
     expect(checkbox).not.toBeChecked();
     fireEvent.click(checkbox);
     expect(checkbox).toBeChecked();
 
     // Copy text
-    fireEvent.click(screen.getByRole("button", { name: "Copy petition text" }));
-    expect(await screen.findByText("✓ Copied to clipboard!")).toBeVisible();
+    fireEvent.click(
+      screen.getByRole("button", { name: "Copy Petition to Clipboard" }),
+    );
+    expect(await screen.findByText(/Copied/i)).toBeVisible();
   });
 
   it("registers simulated EPFiGMS docket and enables 15-day SLA reminder", () => {
@@ -83,24 +81,24 @@ describe("GrievanceManager", () => {
 
     fireEvent.click(
       screen.getByRole("button", {
-        name: "Register on simulated EPFiGMS →",
+        name: "Simulate EPFiGMS Registration →",
       }),
     );
 
-    expect(screen.getByText(/Docket Ref: EPFiG\/E\/2026\/\d+/)).toBeVisible();
-    expect(screen.getByText("⏱ 15 Days SLA Target")).toBeVisible();
-    expect(screen.getByText("✓ SLA Reminder Active")).toBeVisible();
+    expect(screen.getByText(/EPFiG\/E\/2026\/\d+/i)).toBeVisible();
+    expect(screen.getByText("15-Day Target")).toBeVisible();
 
-    fireEvent.click(
-      screen.getByRole("button", { name: "✓ SLA Reminder Active" }),
+    const reminderCheckbox = screen.getByLabelText(
+      "Toggle calendar SLA reminder",
     );
-    expect(screen.getByText("+ Enable SLA Reminder")).toBeVisible();
+    expect(reminderCheckbox).toBeChecked();
 
-    fireEvent.click(screen.getByRole("button", { name: "Reset to draft" }));
+    fireEvent.click(reminderCheckbox);
+    expect(reminderCheckbox).not.toBeChecked();
+
+    fireEvent.click(screen.getByRole("button", { name: "Reset Default" }));
     expect(
-      screen.getByRole("button", {
-        name: "Register on simulated EPFiGMS →",
-      }),
+      screen.getByRole("button", { name: "Simulate EPFiGMS Registration →" }),
     ).toBeVisible();
   });
 });

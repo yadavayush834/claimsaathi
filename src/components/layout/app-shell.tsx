@@ -1,5 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import type { ReactNode } from "react";
+
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
+import { LocaleProvider, useLocale } from "@/lib/i18n/locale-context";
 
 import styles from "./app-shell.module.css";
 
@@ -8,33 +13,71 @@ type AppShellProps = Readonly<{
   currentStep?: number;
 }>;
 
-export function AppShell({ children }: AppShellProps) {
+function AppShellContent({ children }: AppShellProps) {
+  const { t, locale, isLowBandwidth } = useLocale();
+
   return (
-    <div className={styles.shell}>
+    <div
+      className={styles.shell}
+      data-lang={locale}
+      data-low-bandwidth={isLowBandwidth ? "true" : undefined}
+    >
       <a className={styles.skipLink} href="#main-content">
-        Skip to main content
+        {t.common.skipToMain}
       </a>
+
+      {isLowBandwidth ? (
+        <div
+          role="status"
+          style={{
+            background: "var(--color-warning-soft)",
+            borderBottom: "1px solid var(--color-warning-strong)",
+            color: "var(--color-warning-strong)",
+            padding: "0.35rem 1rem",
+            textAlign: "center",
+            fontSize: "0.8rem",
+            fontWeight: 600,
+          }}
+        >
+          ⚡ {t.common.lowBandwidthOn} · Lightweight mode active
+        </div>
+      ) : null}
 
       <header className={styles.topbar}>
         <div className={styles.topbarInner}>
-          <Link className={styles.brand} href="/" aria-label="ClaimSaathi home">
+          <Link
+            className={styles.brand}
+            href="/"
+            aria-label={`${t.common.brandName} home`}
+          >
             <span className={styles.brandMark} aria-hidden="true">
               <span />
               <span />
             </span>
             <span className={styles.brandCopy}>
-              <strong>ClaimSaathi</strong>
-              <small>PF guidance, made human</small>
+              <strong>{t.common.brandName}</strong>
+              <small>{t.common.brandTagline}</small>
             </span>
           </Link>
 
-          <nav className={styles.nav} aria-label="Primary navigation">
-            <Link href="/#how-it-works">How it works</Link>
-            <Link href="/#safety">Safety</Link>
-            <Link className={styles.navCta} href="/demo">
-              Open demo <span aria-hidden="true">↗</span>
-            </Link>
-          </nav>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "1rem",
+              flexWrap: "wrap",
+            }}
+          >
+            <LanguageSwitcher showBandwidthToggle />
+
+            <nav className={styles.nav} aria-label="Primary navigation">
+              <Link href="/#how-it-works">{t.common.howItWorks}</Link>
+              <Link href="/#safety">{t.common.safety}</Link>
+              <Link className={styles.navCta} href="/demo">
+                {t.common.openDemo} <span aria-hidden="true">↗</span>
+              </Link>
+            </nav>
+          </div>
         </div>
       </header>
 
@@ -47,19 +90,27 @@ export function AppShell({ children }: AppShellProps) {
       <footer className={styles.siteFooter}>
         <div className={styles.footerInner}>
           <div className={styles.footerBrand}>
-            <strong>ClaimSaathi</strong>
-            <p>A clearer route through a fictional EPF withdrawal journey.</p>
+            <strong>{t.common.brandName}</strong>
+            <p>{t.common.brandTagline}</p>
           </div>
           <div className={styles.footerNote}>
             <span className={styles.prototypeDot} aria-hidden="true" />
-            Independent prototype · No live government connection
+            {t.common.prototypeNotice}
           </div>
           <div className={styles.footerMeta}>
-            <span>Built for the OpenAI Buildathon</span>
-            <span>© 2026 ClaimSaathi</span>
+            <span>{t.common.buildathonNote}</span>
+            <span>{t.common.copyright}</span>
           </div>
         </div>
       </footer>
     </div>
+  );
+}
+
+export function AppShell({ children, currentStep }: AppShellProps) {
+  return (
+    <LocaleProvider>
+      <AppShellContent currentStep={currentStep}>{children}</AppShellContent>
+    </LocaleProvider>
   );
 }

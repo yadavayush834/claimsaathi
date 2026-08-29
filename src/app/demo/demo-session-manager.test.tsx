@@ -74,7 +74,7 @@ describe("DemoSessionManager", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: "Claim Issue & Rejection Interpreter",
+        name: "Translate & Resolve Portal Remarks",
       }),
     ).toBeVisible();
   });
@@ -109,7 +109,7 @@ describe("DemoSessionManager", () => {
     ).toBeVisible();
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Continue to claim details" }),
+      screen.getByRole("button", { name: "Start simplified mock claim →" }),
     );
 
     expect(
@@ -144,9 +144,9 @@ describe("DemoSessionManager", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "Latha Nair's Claim Status" }),
+      screen.getByRole("heading", { name: "Latha Nair's Claim Timeline" }),
     ).toBeVisible();
-    expect(screen.getByText("Claim milestones")).toBeVisible();
+    expect(screen.getByText("Lifecycle Stages")).toBeVisible();
 
     fireEvent.click(screen.getByRole("button", { name: "Back to workspace" }));
 
@@ -218,14 +218,14 @@ describe("DemoSessionManager", () => {
     // Dispute calculation to open grievance
     fireEvent.click(
       screen.getByRole("button", {
-        name: /Dispute calculation/i,
+        name: "Dispute via Grievance →",
       }),
     );
 
     expect(
       screen.getByRole("heading", {
         level: 2,
-        name: "Prepare Grievance for Latha Nair",
+        name: "Draft Statutory Grievance for Latha Nair",
       }),
     ).toBeVisible();
 

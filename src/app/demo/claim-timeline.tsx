@@ -15,6 +15,7 @@ import {
   getTimelineMilestones,
   resetTimeline,
 } from "@/lib/demo/timeline-service";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 import styles from "./claim-timeline.module.css";
 
@@ -24,7 +25,7 @@ type ClaimTimelineProps = Readonly<{
   onStartRecovery?: () => void;
 }>;
 
-const statusConfig: Record<
+const statusConfigEn: Record<
   DemoClaimStatus,
   {
     label: string;
@@ -40,20 +41,38 @@ const statusConfig: Record<
   rejected: { label: "Rejected in demo", tone: "critical" },
 };
 
+const statusConfigHi: Record<
+  DemoClaimStatus,
+  {
+    label: string;
+    tone: "neutral" | "info" | "warning" | "success" | "critical";
+  }
+> = {
+  draft: { label: "प्रारूप तैयार", tone: "neutral" },
+  submitted: { label: "सबमिट किया गया", tone: "info" },
+  under_process: { label: "क्षेत्रीय कार्यालय में समीक्षाधीन", tone: "info" },
+  action_needed: { label: "कार्रवाई आवश्यक", tone: "warning" },
+  approved: { label: "स्वीकृत एवं संस्वीकृत", tone: "success" },
+  settled: { label: "निपटारा पूर्ण", tone: "success" },
+  rejected: { label: "अस्वीकृत", tone: "critical" },
+};
+
 const currencyFormatter = new Intl.NumberFormat("en-IN", {
   style: "currency",
   currency: "INR",
   maximumFractionDigits: 0,
 });
 
-const dateFormatter = new Intl.DateTimeFormat("en-IN", {
-  day: "numeric",
-  month: "short",
-  year: "numeric",
-  timeZone: "UTC",
-});
-
-function formatDate(date: string) {
+function formatDate(date: string, locale: "en" | "hi") {
+  const dateFormatter = new Intl.DateTimeFormat(
+    locale === "hi" ? "hi-IN" : "en-IN",
+    {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      timeZone: "UTC",
+    },
+  );
   return dateFormatter.format(new Date(`${date}T00:00:00Z`));
 }
 
@@ -71,10 +90,12 @@ export function ClaimTimeline({
   onBack,
   onStartRecovery,
 }: ClaimTimelineProps) {
+  const { locale } = useLocale();
   const [timeline, setTimeline] = useState<DemoClaimTimelineRecord>(() =>
     getTimelineForPersona(demoCase.persona.id),
   );
 
+  const statusConfig = locale === "hi" ? statusConfigHi : statusConfigEn;
   const currentStatus = statusConfig[timeline.status] ?? {
     label: timeline.status,
     tone: "info" as const,
@@ -99,199 +120,181 @@ export function ClaimTimeline({
           <div className={styles.avatarWrap} aria-hidden="true">
             {getInitials(demoCase.persona.displayName)}
           </div>
-          <div className={styles.headerTitles}>
+          <div className={styles.headerInfo}>
             <p className={styles.eyebrow}>
-              Claim status tracking · sandbox simulation
+              {locale === "hi"
+                ? "दावा स्थिति ट्रैकर · स्थानीय अनुकरण"
+                : "Claim status tracker · local simulation"}
             </p>
             <h2 id="timeline-title">
-              {demoCase.persona.displayName}&apos;s Claim Status
+              {locale === "hi"
+                ? `${demoCase.persona.displayName} का दावा समयरेखा`
+                : `${demoCase.persona.displayName}'s Claim Timeline`}
             </h2>
-            <div className={styles.headerMeta}>
+            <div className={styles.metaRow}>
               <span className={styles.refCode}>
-                Claim ID: <strong>{timeline.claimId}</strong>
+                {locale === "hi" ? "दावा आईडी: " : "Claim ID: "}
+                {timeline.claimId}
               </span>
-              {timeline.acknowledgementNumber ? (
-                <span className={styles.ackCode}>
-                  ACK: <strong>{timeline.acknowledgementNumber}</strong>
-                </span>
-              ) : null}
               <span className={styles.stateChip}>
                 {demoCase.persona.homeState}
               </span>
+              <StatusBadge tone={currentStatus.tone}>
+                {currentStatus.label}
+              </StatusBadge>
             </div>
           </div>
-          <div className={styles.headerActions}>
-            <StatusBadge tone={currentStatus.tone}>
-              {currentStatus.label}
-            </StatusBadge>
-            <Button variant="quiet" onClick={onBack}>
-              Back to workspace
-            </Button>
-          </div>
+        </div>
+        <div className={styles.headerActions}>
+          <Button variant="quiet" onClick={onBack}>
+            {locale === "hi" ? "← वर्कस्पेस पर लौटें" : "Back to workspace"}
+          </Button>
         </div>
       </header>
 
-      {/* Stepper Card */}
-      <section
-        className={styles.stepperCard}
-        aria-label="Claim milestone progress"
-      >
-        <h3 className={styles.sectionHeading}>Claim milestones</h3>
-        <ol className={styles.stepperList}>
-          {milestones.map((m, index) => (
-            <li
-              key={m.stage}
-              className={styles.stepperItem}
-              data-state={m.state}
-            >
-              <div className={styles.stepIndicator}>
-                <span className={styles.stepCircle} aria-hidden="true">
-                  {m.state === "completed" ? "✓" : index + 1}
-                </span>
-                {index < milestones.length - 1 ? (
-                  <span className={styles.stepConnector} aria-hidden="true" />
-                ) : null}
-              </div>
-              <div className={styles.stepContent}>
-                <strong
-                  aria-current={m.state === "current" ? "step" : undefined}
-                >
-                  {m.label}
-                </strong>
-                <p>{m.summary}</p>
-                <span className={styles.stepStateTag}>
-                  {m.state === "completed"
-                    ? "Completed"
-                    : m.state === "current"
-                      ? "In progress"
-                      : "Upcoming"}
-                </span>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      {/* Main Status & Pending Action Details */}
-      <div className={styles.mainGrid}>
-        <section
-          className={styles.actionCard}
-          aria-labelledby="pending-action-title"
-        >
-          <div className={styles.cardHeader}>
-            <p className={styles.cardEyebrow}>Current stage</p>
-            <StatusBadge tone={currentStatus.tone}>
-              {currentStatus.label}
-            </StatusBadge>
-          </div>
-          <h3 id="pending-action-title">{timeline.pendingAction.title}</h3>
-          <p className={styles.actionDesc}>
-            {timeline.pendingAction.description}
-          </p>
-
-          <dl className={styles.keyInfoGrid}>
-            <div>
-              <dt>Requested amount</dt>
-              <dd className={styles.highlightAmount}>
-                {currencyFormatter.format(timeline.requestedAmountRupees)}
-              </dd>
-            </div>
-            <div>
-              <dt>Claim purpose</dt>
-              <dd>PF advance (Medical treatment)</dd>
-            </div>
-            <div>
-              <dt>Fictional payout account</dt>
-              <dd>Asha Verma · •••• 8421</dd>
-            </div>
-            <div>
-              <dt>Simulated timeline</dt>
-              <dd>3–5 working days</dd>
-            </div>
-          </dl>
-
-          {onStartRecovery &&
-          (timeline.status === "action_needed" ||
-            timeline.status === "rejected") ? (
-            <div style={{ marginTop: "1rem" }}>
-              <Button onClick={onStartRecovery}>
-                Start rejection recovery journey →
-              </Button>
-            </div>
-          ) : null}
-        </section>
-
-        {/* Simulation Controls for Demo Reviewer */}
-        <section
-          className={styles.controlsCard}
-          aria-labelledby="controls-title"
-        >
-          <div className={styles.cardHeader}>
-            <p className={styles.cardEyebrow}>Demo Reviewer Controls</p>
-            <StatusBadge tone="neutral">Simulation</StatusBadge>
-          </div>
-          <h3 id="controls-title">Advance claim lifecycle</h3>
-          <p className={styles.controlsDesc}>
-            Step forward through simulated processing states to view realistic
-            events and status changes.
-          </p>
-
-          <div className={styles.controlsActions}>
-            <Button
-              onClick={handleAdvance}
-              disabled={timeline.status === "settled"}
-            >
-              {timeline.status === "settled"
-                ? "Claim settled in demo"
-                : "Advance simulated status →"}
-            </Button>
-            <Button variant="secondary" onClick={handleReset}>
-              Reset to baseline
-            </Button>
-          </div>
-          <small className={styles.controlsHint}>
-            Changes are saved to this browser for refresh recovery.
+      {/* Snapshot summary */}
+      <div className={styles.snapshot}>
+        <div className={styles.snapshotCard}>
+          <span>
+            {locale === "hi" ? "अनुरोध प्रकार" : "Claim Request Type"}
+          </span>
+          <strong>PF Advance</strong>
+          <small>
+            {locale === "hi" ? "काल्पनिक फॉर्म 31" : "Form 31 simulation"}
           </small>
-        </section>
+        </div>
+        <div className={styles.snapshotCard}>
+          <span>{locale === "hi" ? "दावा राशि" : "Requested Amount"}</span>
+          <strong className={styles.amount}>
+            {currencyFormatter.format(timeline.requestedAmountRupees)}
+          </strong>
+          <small>{locale === "hi" ? "काल्पनिक राशि" : "Synthetic value"}</small>
+        </div>
+        <div className={styles.snapshotCard}>
+          <span>{locale === "hi" ? "पावती रसीद" : "Acknowledgement"}</span>
+          <strong className={styles.ackCode}>
+            {timeline.acknowledgementNumber ??
+              (locale === "hi" ? "लंबित" : "Pending")}
+          </strong>
+          <small>
+            {locale === "hi" ? "अंतिम स्थिति: " : "Current stage: "}
+            {currentStatus.label}
+          </small>
+        </div>
       </div>
 
-      {/* Comprehensive Event Ledger */}
-      <section className={styles.eventsCard} aria-labelledby="activity-title">
-        <div className={styles.cardHeader}>
-          <div>
-            <p className={styles.cardEyebrow}>Event ledger</p>
-            <h3 id="activity-title">Claim history & activity log</h3>
-          </div>
-          <span className={styles.eventsMeta}>Newest first</span>
+      {/* Milestone Progress Path */}
+      <section
+        className={styles.milestonesSection}
+        aria-labelledby="milestones-heading"
+      >
+        <div className={styles.sectionHeader}>
+          <h3 id="milestones-heading">
+            {locale === "hi" ? "प्रक्रिया चरण" : "Lifecycle Stages"}
+          </h3>
+          <span className={styles.sectionHint}>
+            {locale === "hi"
+              ? "स्थानीय रूप से प्रबंधित सिम्युलेटेड चरण"
+              : "Locally managed mock milestones"}
+          </span>
         </div>
 
-        <ol className={styles.eventsList}>
-          {timeline.events.map((evt) => (
-            <li key={evt.id} className={styles.eventItem}>
-              <time dateTime={evt.occurredOn}>
-                {formatDate(evt.occurredOn)}
-              </time>
-              <div className={styles.eventBody}>
-                <strong>{evt.title}</strong>
-                <p>{evt.description}</p>
-                <span className={styles.sourceTag}>
-                  Simulation log · {evt.id}
-                </span>
+        <ol className={styles.milestoneList}>
+          {milestones.map((milestone) => (
+            <li
+              key={milestone.stage}
+              className={styles.milestoneItem}
+              data-state={milestone.state}
+            >
+              <div className={styles.milestoneIconWrap}>
+                <div className={styles.milestoneIcon} aria-hidden="true">
+                  {milestone.state === "completed" ? (
+                    "✓"
+                  ) : milestone.state === "current" ? (
+                    <span className={styles.pulseDot} />
+                  ) : (
+                    "○"
+                  )}
+                </div>
+                <div className={styles.milestoneLine} aria-hidden="true" />
+              </div>
+              <div className={styles.milestoneContent}>
+                <div className={styles.milestoneHeader}>
+                  <strong>{milestone.label}</strong>
+                  {milestone.date ? (
+                    <time dateTime={milestone.date}>
+                      {formatDate(milestone.date, locale)}
+                    </time>
+                  ) : null}
+                </div>
+                <p>{milestone.summary}</p>
               </div>
             </li>
           ))}
         </ol>
       </section>
 
-      <footer className={styles.footer}>
-        <p>
-          All claim states and timeline events are synthetic prototype data. No
-          government system is contacted.
-        </p>
-        <Button variant="secondary" onClick={onBack}>
-          Return to workspace
-        </Button>
-      </footer>
+      {/* Audit Event Log */}
+      <section
+        className={styles.eventsSection}
+        aria-labelledby="events-heading"
+      >
+        <div className={styles.sectionHeader}>
+          <h3 id="events-heading">
+            {locale === "hi" ? "गतिविधि विवरण" : "Audit Event Log"}
+          </h3>
+          <span className={styles.sectionHint}>
+            {locale === "hi" ? "नवीनतम पहले" : "Chronological event ledger"}
+          </span>
+        </div>
+
+        <ol className={styles.eventList}>
+          {timeline.events.map((event) => (
+            <li key={event.id} className={styles.eventItem}>
+              <div className={styles.eventDate} aria-hidden="true">
+                <time dateTime={event.occurredOn}>
+                  {formatDate(event.occurredOn, locale)}
+                </time>
+              </div>
+              <div className={styles.eventBody}>
+                <strong>{event.title}</strong>
+                <p>{event.description}</p>
+                <time
+                  className={styles.eventDateMobile}
+                  dateTime={event.occurredOn}
+                >
+                  {formatDate(event.occurredOn, locale)}
+                </time>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* Timeline Controls */}
+      <div className={styles.controlsBar}>
+        <div className={styles.controlsLeft}>
+          <Button
+            variant="secondary"
+            onClick={handleAdvance}
+            className={styles.advanceBtn}
+          >
+            {locale === "hi"
+              ? "अगला सिम्युलेशन चरण बढ़ाएं →"
+              : "Simulate next lifecycle step →"}
+          </Button>
+          <Button variant="quiet" onClick={handleReset}>
+            {locale === "hi" ? "समयरेखा रीसेट करें" : "Reset timeline"}
+          </Button>
+        </div>
+        {onStartRecovery ? (
+          <Button onClick={onStartRecovery}>
+            {locale === "hi"
+              ? "रिजेक्शन सुधार यात्रा शुरू करें →"
+              : "Start rejection recovery journey →"}
+          </Button>
+        ) : null}
+      </div>
     </section>
   );
 }
