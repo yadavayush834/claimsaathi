@@ -51,7 +51,7 @@ describe("grievanceService", () => {
     const registered =
       grievanceService.registerMockGrievance("latha-settlement");
     expect(registered?.status).toBe("registered");
-    expect(registered?.registrationNumber).toMatch(/^EPFiG\/E\/2026\/\d+$/);
+    expect(registered?.registrationNumber).toMatch(/^DEMO-EPFIG-2026-\d+$/);
     expect(registered?.reminderActive).toBe(true);
     expect(registered?.slaDaysRemaining).toBe(15);
     expect(registered?.events.length).toBeGreaterThanOrEqual(2);

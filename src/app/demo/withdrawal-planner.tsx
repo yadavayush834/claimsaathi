@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 
 import { Button } from "@/components/ui/button";
+import { ExternalCitationLink } from "@/components/ui/external-citation-link";
 import { Callout } from "@/components/ui/callout";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { TextField } from "@/components/ui/text-field";
@@ -515,17 +516,14 @@ function EligibilityResultView({
           </span>
           <p>{result.limitingRule}</p>
         </div>
-        <a
+        <ExternalCitationLink
           href={ELIGIBILITY_POLICY_SOURCE_URL}
-          target="_blank"
-          rel="noreferrer"
           className={styles.sourceLink}
         >
           {locale === "hi"
             ? "ईपीएफओ स्रोत दिशानिर्देश देखें"
-            : "Review EPFO source guidelines"}{" "}
-          <span aria-hidden="true">↗</span>
-        </a>
+            : "Review EPFO source guidelines"}
+        </ExternalCitationLink>
       </div>
 
       <div className={styles.actions}>

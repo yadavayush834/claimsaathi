@@ -1,0 +1,41 @@
+.banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3, 0.75rem);
+  padding: var(--space-3, 0.75rem) var(--space-4, 1rem);
+  background: var(--color-bg-critical-subtle, #fef2f2);
+  border: 1.5px solid var(--color-border-critical, #ef4444);
+  border-radius: var(--radius-md, 0.5rem);
+  color: var(--color-text-critical, #991b1b);
+  font-size: var(--font-size-sm, 0.875rem);
+  line-height: var(--line-height-relaxed, 1.5);
+  margin-top: var(--space-2, 0.5rem);
+  margin-bottom: var(--space-2, 0.5rem);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.content {
+  flex: 1;
+}
+
+.title {
+  font-weight: var(--font-weight-semibold, 600);
+  display: block;
+  margin-bottom: 0.125rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

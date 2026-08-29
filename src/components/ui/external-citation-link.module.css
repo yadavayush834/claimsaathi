@@ -1,0 +1,37 @@
+.link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  color: var(--color-text-brand-emphasis, #0369a1);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: var(--font-weight-medium, 500);
+  transition: color 0.15s ease;
+}
+
+.link:hover {
+  color: var(--color-brand-primary, #0284c7);
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--color-brand-primary, #0284c7);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.icon {
+  font-size: 0.8em;
+  opacity: 0.8;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.35rem;
+  background: var(--color-bg-surface-elevated, #f1f5f9);
+  border: 1px solid var(--color-border-default, #e2e8f0);
+  border-radius: var(--radius-sm, 0.25rem);
+  color: var(--color-text-muted, #64748b);
+  margin-left: 0.25rem;
+  vertical-align: middle;
+}

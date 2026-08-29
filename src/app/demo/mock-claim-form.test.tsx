@@ -79,6 +79,22 @@ describe("MockClaimForm", () => {
     ).toBeVisible();
   });
 
+  it("does not retain a sensitive identifier in the fictional draft", () => {
+    renderForm();
+
+    fireEvent.change(screen.getByLabelText("Fictional treatment or need"), {
+      target: { value: "UAN 109988776655" },
+    });
+
+    expect(screen.getByText("Privacy & Safety Notice")).toBeVisible();
+    expect(screen.getByLabelText("Fictional treatment or need")).toHaveValue(
+      "",
+    );
+    expect(
+      window.localStorage.getItem("claimsaathi.mock-claim-draft.v1"),
+    ).toBeNull();
+  });
+
   it("navigates through review, verifies simulated OTP, and generates synthetic receipt", async () => {
     const { onBack, onSubmitted } = renderForm();
 

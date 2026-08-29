@@ -40,4 +40,16 @@ describe("POST /api/demo/interpret-issue", () => {
     expect(json.ok).toBe(false);
     expect(json.error).toContain("provide a portal remark");
   });
+
+  it("rejects sensitive identifiers before invoking the interpreter", async () => {
+    const req = new Request("http://localhost:3000/api/demo/interpret-issue", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ rawStatusText: "My UAN is 109988776655" }),
+    });
+
+    const res = await POST(req);
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toContain("not accepted by this demo");
+  });
 });
