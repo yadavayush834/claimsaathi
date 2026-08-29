@@ -11,6 +11,7 @@ describe("ClaimWorkspace", () => {
     const onSwitch = vi.fn();
     const onViewTimeline = vi.fn();
     const onExplainIssue = vi.fn();
+    const onStartRecovery = vi.fn();
 
     expect(demoCase).not.toBeNull();
     render(
@@ -20,6 +21,7 @@ describe("ClaimWorkspace", () => {
         onSwitch={onSwitch}
         onViewTimeline={onViewTimeline}
         onExplainIssue={onExplainIssue}
+        onStartRecovery={onStartRecovery}
       />,
     );
 
@@ -44,9 +46,13 @@ describe("ClaimWorkspace", () => {
         name: "Run the fictional readiness preflight",
       }),
     ).toBeVisible();
-    expect(
-      screen.getByText("Balance on record is not an eligibility result."),
-    ).toBeVisible();
+
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "Start rejection recovery journey →",
+      }),
+    );
+    expect(onStartRecovery).toHaveBeenCalledOnce();
 
     fireEvent.click(
       screen.getByRole("button", { name: "Explain with AI Interpreter →" }),
