@@ -19,6 +19,7 @@ import type {
   MockClaimSubmissionRequest,
   MockClaimSubmissionResult,
 } from "@/lib/demo/model";
+import { recordClaimSubmission } from "@/lib/demo/timeline-service";
 
 import styles from "./mock-claim-form.module.css";
 
@@ -26,6 +27,7 @@ type MockClaimFormProps = Readonly<{
   demoCase: DemoCase;
   onBack: () => void;
   onSubmitted?: (receipt: MockClaimSubmissionReceipt) => void;
+  onViewTimeline?: () => void;
 }>;
 
 type FormErrors = Readonly<{
@@ -95,6 +97,7 @@ export function MockClaimForm({
   demoCase,
   onBack,
   onSubmitted,
+  onViewTimeline,
 }: MockClaimFormProps) {
   const [initialDraft] = useState(() => loadInitialDraft(demoCase.persona.id));
   const [draft, setDraft] = useState<MockClaimDraft>(initialDraft.draft);
@@ -213,6 +216,7 @@ export function MockClaimForm({
 
       if (result.ok) {
         setReceipt(result.receipt);
+        recordClaimSubmission(result.receipt);
         createMockClaimDraftStore(window.localStorage).clear(
           demoCase.persona.id,
         );
@@ -332,8 +336,8 @@ export function MockClaimForm({
         >
           <strong>What happens next in this prototype?</strong>
           <p>
-            In the upcoming build phases, you will be able to track this mock
-            claim through its simulated settlement and resolution timeline.
+            You can now track this mock claim through its simulated field
+            review, sanction approval, and settlement timeline in the workspace.
           </p>
         </aside>
 
@@ -341,7 +345,11 @@ export function MockClaimForm({
           <Button variant="secondary" onClick={copyReceiptSummary}>
             {copied ? "✓ Copied receipt" : "Copy acknowledgement summary"}
           </Button>
-          <Button onClick={onBack}>Return to workspace</Button>
+          {onViewTimeline ? (
+            <Button onClick={onViewTimeline}>Track claim timeline →</Button>
+          ) : (
+            <Button onClick={onBack}>Return to workspace</Button>
+          )}
         </div>
       </section>
     );

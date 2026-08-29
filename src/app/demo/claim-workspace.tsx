@@ -1,3 +1,7 @@
+"use client";
+
+import { useMemo } from "react";
+
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/status-badge";
 import type {
@@ -5,6 +9,7 @@ import type {
   DemoClaimStatus,
   DemoIssueTone,
 } from "@/lib/demo/model";
+import { getTimelineForPersona } from "@/lib/demo/timeline-service";
 
 import styles from "./claim-workspace.module.css";
 
@@ -14,21 +19,30 @@ type ClaimWorkspaceProps = Readonly<{
   onSwitch: () => void;
   onPlanWithdrawal?: () => void;
   onReviewPreflight?: () => void;
+  onViewTimeline?: () => void;
 }>;
 
 const claimStatusLabels: Record<DemoClaimStatus, string> = {
   draft: "Draft ready",
+  submitted: "Submitted in demo",
+  under_process: "Under review",
   action_needed: "Action needed",
+  approved: "Approved",
   settled: "Settled in demo",
+  rejected: "Rejected in demo",
 };
 
 const claimStatusTones: Record<
   DemoClaimStatus,
-  "info" | "warning" | "success"
+  "neutral" | "info" | "warning" | "success" | "critical"
 > = {
-  draft: "info",
+  draft: "neutral",
+  submitted: "info",
+  under_process: "info",
   action_needed: "warning",
+  approved: "success",
   settled: "success",
+  rejected: "critical",
 };
 
 const issueTones: Record<DemoIssueTone, "success" | "critical" | "warning"> = {
@@ -68,15 +82,27 @@ export function ClaimWorkspace({
   onPlanWithdrawal,
   onReviewPreflight,
   onSwitch,
+  onViewTimeline,
   sessionMessage,
 }: ClaimWorkspaceProps) {
-  const { claim, persona, workspace } = demoCase;
+  const { persona, workspace } = demoCase;
+
+  const timeline = useMemo(
+    () => getTimelineForPersona(persona.id),
+    [persona.id],
+  );
+
+  const activeStatus = timeline.status;
+  const activeEvents =
+    timeline.events.length > 0 ? timeline.events : workspace.recentEvents;
+
   const totalBalance =
     workspace.balance.employeeShareRupees +
     workspace.balance.employerShareRupees +
     workspace.balance.pensionShareRupees;
+
   const claimHeading =
-    claim.status === "settled" ? "Latest claim" : "Active claim";
+    activeStatus === "settled" ? "Latest claim" : "Active claim";
 
   const employeeSharePct = Math.round(
     (workspace.balance.employeeShareRupees / totalBalance) * 100,
@@ -137,9 +163,13 @@ export function ClaimWorkspace({
           <div className={styles.nextActionHeading}>
             <h3 id="next-action-title">{workspace.nextAction.title}</h3>
             <StatusBadge
-              tone={onPlanWithdrawal || onReviewPreflight ? "info" : "neutral"}
+              tone={
+                onPlanWithdrawal || onReviewPreflight || onViewTimeline
+                  ? "info"
+                  : "neutral"
+              }
             >
-              {onPlanWithdrawal || onReviewPreflight
+              {onPlanWithdrawal || onReviewPreflight || onViewTimeline
                 ? "Available now"
                 : "Journey preview"}
             </StatusBadge>
@@ -152,21 +182,40 @@ export function ClaimWorkspace({
               ? "Uses fictional answers and a deterministic mock policy."
               : onReviewPreflight
                 ? "Compares local synthetic records and explains who owns each correction."
-                : "This workspace identifies the next step; the guided action is added in its later build phase."}
+                : onViewTimeline
+                  ? "Tracks your submitted mock claim through the simulated verification stages."
+                  : "This workspace identifies the next step; the guided action is added in its later build phase."}
           </small>
-          {onPlanWithdrawal ? (
-            <Button className={styles.planActionBtn} onClick={onPlanWithdrawal}>
-              Plan mock withdrawal
-            </Button>
-          ) : null}
-          {onReviewPreflight ? (
-            <Button
-              className={styles.planActionBtn}
-              onClick={onReviewPreflight}
-            >
-              Run readiness preflight
-            </Button>
-          ) : null}
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+            {onPlanWithdrawal ? (
+              <Button
+                className={styles.planActionBtn}
+                onClick={onPlanWithdrawal}
+              >
+                Plan mock withdrawal
+              </Button>
+            ) : null}
+            {onReviewPreflight ? (
+              <Button
+                className={styles.planActionBtn}
+                onClick={onReviewPreflight}
+              >
+                Run readiness preflight
+              </Button>
+            ) : null}
+            {onViewTimeline ? (
+              <Button
+                variant={
+                  onPlanWithdrawal || onReviewPreflight
+                    ? "secondary"
+                    : "primary"
+                }
+                onClick={onViewTimeline}
+              >
+                Track claim timeline →
+              </Button>
+            ) : null}
+          </div>
         </div>
       </section>
 
@@ -253,28 +302,48 @@ export function ClaimWorkspace({
         <section className={styles.ledgerSection} aria-labelledby="claim-title">
           <div className={styles.sectionLabel}>
             <p>Claim</p>
-            <StatusBadge tone={claimStatusTones[claim.status]}>
-              {claimStatusLabels[claim.status]}
+            <StatusBadge tone={claimStatusTones[activeStatus]}>
+              {claimStatusLabels[activeStatus]}
             </StatusBadge>
           </div>
           <h3 id="claim-title">{claimHeading}</h3>
           <strong className={styles.claimAmount}>
-            {currencyFormatter.format(claim.requestedAmountRupees)}
+            {currencyFormatter.format(timeline.requestedAmountRupees)}
           </strong>
           <dl className={styles.claimDetails}>
             <div>
               <dt>Reference</dt>
-              <dd className={styles.refCode}>{claim.id}</dd>
+              <dd className={styles.refCode}>{timeline.claimId}</dd>
             </div>
             <div>
               <dt>Request type</dt>
               <dd>PF advance</dd>
             </div>
-            <div>
-              <dt>Last update</dt>
-              <dd>{claim.lastEventLabel}</dd>
-            </div>
+            {timeline.acknowledgementNumber ? (
+              <div>
+                <dt>Acknowledgement</dt>
+                <dd className={styles.refCode}>
+                  {timeline.acknowledgementNumber}
+                </dd>
+              </div>
+            ) : (
+              <div>
+                <dt>Last update</dt>
+                <dd>{activeEvents[0]?.title ?? "Draft opened"}</dd>
+              </div>
+            )}
           </dl>
+          {onViewTimeline ? (
+            <div style={{ marginTop: "1rem" }}>
+              <Button
+                variant="quiet"
+                onClick={onViewTimeline}
+                style={{ padding: "0.4rem 0.6rem", fontSize: "0.85rem" }}
+              >
+                View full status timeline →
+              </Button>
+            </div>
+          ) : null}
         </section>
       </div>
 
@@ -304,7 +373,7 @@ export function ClaimWorkspace({
           </div>
           <h3 id="events-title">Recent events</h3>
           <ol>
-            {workspace.recentEvents.map((event) => (
+            {activeEvents.map((event) => (
               <li key={event.id}>
                 <time dateTime={event.occurredOn}>
                   {formatDate(event.occurredOn)}

@@ -9,6 +9,7 @@ describe("ClaimWorkspace", () => {
   it("shows the complete Phase 05 snapshot and one next action", () => {
     const demoCase = demoDataService.loadCase("imran-returned");
     const onSwitch = vi.fn();
+    const onViewTimeline = vi.fn();
 
     expect(demoCase).not.toBeNull();
     render(
@@ -16,6 +17,7 @@ describe("ClaimWorkspace", () => {
         demoCase={demoCase!}
         sessionMessage="Session restored after refresh."
         onSwitch={onSwitch}
+        onViewTimeline={onViewTimeline}
       />,
     );
 
@@ -43,6 +45,11 @@ describe("ClaimWorkspace", () => {
     expect(
       screen.getByText("Balance on record is not an eligibility result."),
     ).toBeVisible();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Track claim timeline →" }),
+    );
+    expect(onViewTimeline).toHaveBeenCalledOnce();
 
     fireEvent.click(
       screen.getByRole("button", { name: "Switch demo citizen" }),

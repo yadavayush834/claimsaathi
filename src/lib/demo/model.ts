@@ -7,11 +7,41 @@ export const DEMO_PERSONA_IDS = [
 ] as const;
 
 export type DemoPersonaId = (typeof DEMO_PERSONA_IDS)[number];
-export type DemoClaimStatus = "draft" | "action_needed" | "settled";
+export type DemoClaimStatus =
+  | "draft"
+  | "submitted"
+  | "under_process"
+  | "action_needed"
+  | "approved"
+  | "settled"
+  | "rejected";
 export type DemoClaimKind = "pf_advance";
 export type DemoIssueTone = "clear" | "attention" | "review";
 export type DemoPreflightCategory = "identity" | "bank" | "evidence";
 export type DemoPreflightStatus = "ready" | "action_needed";
+
+export type DemoTimelineStage =
+  "submitted" | "field_office" | "approval" | "settlement";
+
+export type DemoTimelineMilestone = Readonly<{
+  stage: DemoTimelineStage;
+  label: string;
+  state: "completed" | "current" | "upcoming";
+  date?: string;
+  summary: string;
+}>;
+
+export type DemoClaimTimelineRecord = Readonly<{
+  version: typeof DEMO_DATA_VERSION;
+  personaId: DemoPersonaId;
+  claimId: string;
+  acknowledgementNumber?: string;
+  status: DemoClaimStatus;
+  requestedAmountRupees: number;
+  events: readonly DemoClaimEvent[];
+  updatedAt: string;
+  pendingAction: DemoNextAction;
+}>;
 
 export type DemoPersona = Readonly<{
   id: DemoPersonaId;

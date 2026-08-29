@@ -122,4 +122,34 @@ describe("DemoSessionManager", () => {
       screen.getByRole("heading", { level: 2, name: "Asha Verma" }),
     ).toBeVisible();
   });
+
+  it("navigates into the claim status timeline from the workspace", async () => {
+    render(<DemoSessionManager />);
+
+    await screen.findByRole("heading", {
+      level: 2,
+      name: "Choose a fictional citizen",
+    });
+
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "Start Latha Nair's demo case",
+      }),
+    );
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Track claim timeline →" }),
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "Latha Nair's Claim Status" }),
+    ).toBeVisible();
+    expect(screen.getByText("Claim milestones")).toBeVisible();
+
+    fireEvent.click(screen.getByRole("button", { name: "Back to workspace" }));
+
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Latha Nair" }),
+    ).toBeVisible();
+  });
 });

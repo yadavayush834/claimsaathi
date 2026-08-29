@@ -6,6 +6,7 @@ import { demoDataService } from "@/lib/demo/demo-service";
 import type { DemoCase, DemoPersonaId } from "@/lib/demo/model";
 import { createDemoSessionStore } from "@/lib/demo/session-store";
 
+import { ClaimTimeline } from "./claim-timeline";
 import { ClaimWorkspace } from "./claim-workspace";
 import styles from "./demo-session-manager.module.css";
 import { KycPreflight } from "./kyc-preflight";
@@ -29,6 +30,7 @@ export function DemoSessionManager() {
   const [plannerCase, setPlannerCase] = useState<DemoCase | null>(null);
   const [preflightCase, setPreflightCase] = useState<DemoCase | null>(null);
   const [claimFormCase, setClaimFormCase] = useState<DemoCase | null>(null);
+  const [timelineCase, setTimelineCase] = useState<DemoCase | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -70,6 +72,7 @@ export function DemoSessionManager() {
     setPlannerCase(null);
     setPreflightCase(null);
     setClaimFormCase(null);
+    setTimelineCase(null);
     setView({
       status: "active",
       demoCase: selectedCase,
@@ -83,6 +86,7 @@ export function DemoSessionManager() {
     setPlannerCase(null);
     setPreflightCase(null);
     setClaimFormCase(null);
+    setTimelineCase(null);
     setView({ status: "choosing" });
   }
 
@@ -166,6 +170,20 @@ export function DemoSessionManager() {
       <MockClaimForm
         demoCase={claimFormCase}
         onBack={() => setClaimFormCase(null)}
+        onViewTimeline={() => {
+          const current = claimFormCase;
+          setClaimFormCase(null);
+          setTimelineCase(current);
+        }}
+      />
+    );
+  }
+
+  if (timelineCase) {
+    return (
+      <ClaimTimeline
+        demoCase={timelineCase}
+        onBack={() => setTimelineCase(null)}
       />
     );
   }
@@ -183,6 +201,7 @@ export function DemoSessionManager() {
           ? () => setPreflightCase(view.demoCase)
           : undefined
       }
+      onViewTimeline={() => setTimelineCase(view.demoCase)}
       sessionMessage={
         view.persisted
           ? view.source === "restored"
