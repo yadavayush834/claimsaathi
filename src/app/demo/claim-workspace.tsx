@@ -23,6 +23,7 @@ type ClaimWorkspaceProps = Readonly<{
   onExplainIssue?: () => void;
   onStartRecovery?: () => void;
   onReconcileSettlement?: () => void;
+  onPrepareGrievance?: () => void;
 }>;
 
 const claimStatusLabels: Record<DemoClaimStatus, string> = {
@@ -60,70 +61,89 @@ const currencyFormatter = new Intl.NumberFormat("en-IN", {
   maximumFractionDigits: 0,
 });
 
-const dateFormatter = new Intl.DateTimeFormat("en-IN", {
-  day: "numeric",
-  month: "short",
-  year: "numeric",
-  timeZone: "UTC",
-});
-
-function formatDate(date: string) {
-  return dateFormatter.format(new Date(`${date}T00:00:00Z`));
+function formatDate(isoDate: string): string {
+  const [year, month, day] = isoDate.split("-").map(Number);
+  if (!year || !month || !day) {
+    return isoDate;
+  }
+  const date = new Date(year, month - 1, day);
+  return date.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 }
 
-function getInitials(name: string) {
-  return name
-    .split(" ")
-    .map((part) => part[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
+function computeSharePercentages(balance: {
+  employeeShareRupees: number;
+  employerShareRupees: number;
+  pensionShareRupees: number;
+}) {
+  const total =
+    balance.employeeShareRupees +
+    balance.employerShareRupees +
+    balance.pensionShareRupees;
+  if (total === 0) {
+    return {
+      employeeSharePct: 33,
+      employerSharePct: 33,
+      pensionSharePct: 34,
+      totalRupees: 0,
+    };
+  }
+  const employeeSharePct = Math.round(
+    (balance.employeeShareRupees / total) * 100,
+  );
+  const employerSharePct = Math.round(
+    (balance.employerShareRupees / total) * 100,
+  );
+  const pensionSharePct = 100 - employeeSharePct - employerSharePct;
+  return {
+    employeeSharePct,
+    employerSharePct,
+    pensionSharePct,
+    totalRupees: total,
+  };
 }
 
 export function ClaimWorkspace({
   demoCase,
-  onExplainIssue,
+  sessionMessage,
+  onSwitch,
   onPlanWithdrawal,
   onReviewPreflight,
+  onViewTimeline,
+  onExplainIssue,
   onStartRecovery,
   onReconcileSettlement,
-  onSwitch,
-  onViewTimeline,
-  sessionMessage,
+  onPrepareGrievance,
 }: ClaimWorkspaceProps) {
   const { persona, workspace } = demoCase;
 
-  const timeline = useMemo(
-    () => getTimelineForPersona(persona.id),
-    [persona.id],
-  );
+  const timeline = useMemo(() => {
+    return getTimelineForPersona(persona.id);
+  }, [persona.id]);
 
   const activeStatus = timeline.status;
   const activeEvents =
     timeline.events.length > 0 ? timeline.events : workspace.recentEvents;
 
-  const totalBalance =
-    workspace.balance.employeeShareRupees +
-    workspace.balance.employerShareRupees +
-    workspace.balance.pensionShareRupees;
+  const { employeeSharePct, employerSharePct, pensionSharePct, totalRupees } =
+    computeSharePercentages(workspace.balance);
 
-  const claimHeading =
-    activeStatus === "settled" ? "Latest claim" : "Active claim";
-
-  const employeeSharePct = Math.round(
-    (workspace.balance.employeeShareRupees / totalBalance) * 100,
-  );
-  const employerSharePct = Math.round(
-    (workspace.balance.employerShareRupees / totalBalance) * 100,
-  );
-  const pensionSharePct = 100 - employeeSharePct - employerSharePct;
+  const claimHeading = `Active claim · ${persona.scenarioTitle}`;
 
   return (
     <section className={styles.workspace} aria-labelledby="workspace-title">
       <header className={styles.workspaceHeader}>
         <div className={styles.personaBanner}>
           <div className={styles.personaAvatar} aria-hidden="true">
-            {getInitials(persona.displayName)}
+            {persona.displayName
+              .split(" ")
+              .map((part) => part[0])
+              .join("")
+              .slice(0, 2)
+              .toUpperCase()}
           </div>
           <div className={styles.personaDetails}>
             <p className={styles.fixtureEyebrow}>
@@ -224,17 +244,7 @@ export function ClaimWorkspace({
               </Button>
             ) : null}
             {onViewTimeline ? (
-              <Button
-                variant={
-                  onPlanWithdrawal ||
-                  onReviewPreflight ||
-                  onStartRecovery ||
-                  onReconcileSettlement
-                    ? "secondary"
-                    : "primary"
-                }
-                onClick={onViewTimeline}
-              >
+              <Button variant="secondary" onClick={onViewTimeline}>
                 Track claim timeline →
               </Button>
             ) : null}
@@ -253,10 +263,9 @@ export function ClaimWorkspace({
           </div>
           <h3 id="balance-title">Synthetic PF balance</h3>
           <strong className={styles.balanceTotal}>
-            {currencyFormatter.format(totalBalance)}
+            {currencyFormatter.format(totalRupees)}
           </strong>
 
-          {/* Visual Distribution Progress Bar */}
           <div className={styles.balanceBar} aria-hidden="true">
             <span
               className={styles.employeeBar}
@@ -384,8 +393,15 @@ export function ClaimWorkspace({
           </div>
           <h3 id="issue-title">{workspace.issue.title}</h3>
           <p>{workspace.issue.description}</p>
-          {onExplainIssue ? (
-            <div style={{ marginTop: "0.85rem" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "0.5rem",
+              flexWrap: "wrap",
+              marginTop: "0.85rem",
+            }}
+          >
+            {onExplainIssue ? (
               <Button
                 variant="secondary"
                 onClick={onExplainIssue}
@@ -393,8 +409,17 @@ export function ClaimWorkspace({
               >
                 Explain with AI Interpreter →
               </Button>
-            </div>
-          ) : null}
+            ) : null}
+            {onPrepareGrievance ? (
+              <Button
+                variant="quiet"
+                onClick={onPrepareGrievance}
+                style={{ padding: "0.45rem 0.8rem", fontSize: "0.85rem" }}
+              >
+                Prepare EPFiGMS Grievance →
+              </Button>
+            ) : null}
+          </div>
         </section>
 
         <section
@@ -421,16 +446,6 @@ export function ClaimWorkspace({
           </ol>
         </section>
       </div>
-
-      <footer className={styles.workspaceFooter}>
-        <p>
-          Only the fictional case id is saved in this browser. No real account
-          is connected.
-        </p>
-        <Button variant="secondary" onClick={onSwitch}>
-          Switch demo citizen
-        </Button>
-      </footer>
     </section>
   );
 }

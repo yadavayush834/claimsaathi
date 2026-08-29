@@ -1,35 +1,63 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
+import { ClaimIssueInterpreter } from "@/app/demo/claim-issue-interpreter";
+import { ClaimTimeline } from "@/app/demo/claim-timeline";
+import { ClaimWorkspace } from "@/app/demo/claim-workspace";
+import { GrievanceManager } from "@/app/demo/grievance-manager";
+import { KycPreflight } from "@/app/demo/kyc-preflight";
+import { MockClaimForm } from "@/app/demo/mock-claim-form";
+import { RejectionRecoveryJourney } from "@/app/demo/rejection-recovery-journey";
+import { SettlementReconciliation } from "@/app/demo/settlement-reconciliation";
+import { WithdrawalPlanner } from "@/app/demo/withdrawal-planner";
 import { demoDataService } from "@/lib/demo/demo-service";
 import type { DemoCase, DemoPersonaId } from "@/lib/demo/model";
 import { createDemoSessionStore } from "@/lib/demo/session-store";
 
-import { ClaimIssueInterpreter } from "./claim-issue-interpreter";
-import { ClaimTimeline } from "./claim-timeline";
-import { ClaimWorkspace } from "./claim-workspace";
 import styles from "./demo-session-manager.module.css";
-import { KycPreflight } from "./kyc-preflight";
-import { MockClaimForm } from "./mock-claim-form";
-import { RejectionRecoveryJourney } from "./rejection-recovery-journey";
-import { SettlementReconciliation } from "./settlement-reconciliation";
-import { WithdrawalPlanner } from "./withdrawal-planner";
 
-type SessionView =
-  | Readonly<{ status: "loading" }>
-  | Readonly<{ status: "choosing" }>
-  | Readonly<{
-      status: "active";
-      demoCase: DemoCase;
-      source: "started" | "restored";
-      persisted: boolean;
-    }>;
-
-const demoCases = demoDataService.listCases();
+type ViewState =
+  | { readonly status: "loading" }
+  | { readonly status: "choosing" }
+  | {
+      readonly status: "active";
+      readonly demoCase: DemoCase;
+      readonly source: "started" | "restored";
+      readonly persisted: boolean;
+    };
 
 export function DemoSessionManager() {
-  const [view, setView] = useState<SessionView>({ status: "loading" });
+  const [view, setView] = useState<ViewState>(() => {
+    if (typeof window === "undefined" || !window.localStorage) {
+      return { status: "choosing" };
+    }
+
+    try {
+      const store = createDemoSessionStore(window.localStorage);
+      const savedSession = store.load();
+
+      if (!savedSession) {
+        return { status: "choosing" };
+      }
+
+      const savedCase = demoDataService.loadCase(savedSession.personaId);
+      if (!savedCase) {
+        store.clear();
+        return { status: "choosing" };
+      }
+
+      return {
+        status: "active",
+        demoCase: savedCase,
+        source: "restored",
+        persisted: true,
+      };
+    } catch {
+      return { status: "choosing" };
+    }
+  });
+
   const [plannerCase, setPlannerCase] = useState<DemoCase | null>(null);
   const [preflightCase, setPreflightCase] = useState<DemoCase | null>(null);
   const [claimFormCase, setClaimFormCase] = useState<DemoCase | null>(null);
@@ -39,39 +67,12 @@ export function DemoSessionManager() {
   const [reconciliationCase, setReconciliationCase] = useState<DemoCase | null>(
     null,
   );
+  const [grievanceCase, setGrievanceCase] = useState<DemoCase | null>(null);
 
-  useEffect(() => {
-    let cancelled = false;
-
-    queueMicrotask(() => {
-      const store = createDemoSessionStore(window.localStorage);
-      const session = store.load();
-      const restoredCase = session
-        ? demoDataService.loadCase(session.personaId)
-        : null;
-
-      if (!cancelled) {
-        setView(
-          restoredCase
-            ? {
-                status: "active",
-                demoCase: restoredCase,
-                source: "restored",
-                persisted: true,
-              }
-            : { status: "choosing" },
-        );
-      }
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const demoCases = demoDataService.listCases();
 
   function startCase(personaId: DemoPersonaId) {
     const selectedCase = demoDataService.loadCase(personaId);
-
     if (!selectedCase) {
       return;
     }
@@ -84,6 +85,7 @@ export function DemoSessionManager() {
     setInterpreterCase(null);
     setRecoveryCase(null);
     setReconciliationCase(null);
+    setGrievanceCase(null);
     setView({
       status: "active",
       demoCase: selectedCase,
@@ -101,6 +103,7 @@ export function DemoSessionManager() {
     setInterpreterCase(null);
     setRecoveryCase(null);
     setReconciliationCase(null);
+    setGrievanceCase(null);
     setView({ status: "choosing" });
   }
 
@@ -254,6 +257,21 @@ export function DemoSessionManager() {
       <SettlementReconciliation
         demoCase={reconciliationCase}
         onBack={() => setReconciliationCase(null)}
+        onPrepareGrievance={() => {
+          const current = reconciliationCase;
+          setReconciliationCase(null);
+          setGrievanceCase(current);
+        }}
+      />
+    );
+  }
+
+  if (grievanceCase) {
+    return (
+      <GrievanceManager
+        key={grievanceCase.persona.id}
+        demoCase={grievanceCase}
+        onBack={() => setGrievanceCase(null)}
       />
     );
   }
@@ -281,6 +299,7 @@ export function DemoSessionManager() {
           ? () => setReconciliationCase(view.demoCase)
           : undefined
       }
+      onPrepareGrievance={() => setGrievanceCase(view.demoCase)}
       onViewTimeline={() => setTimelineCase(view.demoCase)}
       onExplainIssue={() => setInterpreterCase(view.demoCase)}
       sessionMessage={
