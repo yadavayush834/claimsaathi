@@ -14,7 +14,7 @@ describe("HomePage", () => {
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: "Start with demo data" }),
+      screen.getByRole("link", { name: "Try the citizen journey" }),
     ).toHaveAttribute("href", "/demo");
     expect(
       screen.getByText(

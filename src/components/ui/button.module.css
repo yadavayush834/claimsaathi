@@ -1,70 +1,77 @@
 .button {
   display: inline-flex;
-  min-height: 2.85rem;
+  min-height: 3rem;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.65rem 1.35rem;
-  border: 1.5px solid transparent;
-  cursor: pointer;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  line-height: 1.25;
+  gap: var(--space-2);
+  padding: 0.78rem 1.15rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  font-family: var(--font-body), sans-serif;
+  font-size: var(--text-small);
+  font-weight: 750;
+  line-height: 1.1;
   text-align: center;
   text-decoration: none;
-  text-transform: uppercase;
-  transition: all var(--transition-fast);
-  user-select: none;
+  cursor: pointer;
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .button:hover:not(:disabled) {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .button:active:not(:disabled) {
-  transform: translateY(0);
+  transform: translateY(1px);
 }
 
 .button:disabled {
   cursor: not-allowed;
-  opacity: 0.35;
+  opacity: 0.55;
 }
 
-/* ── PRIMARY: Solid White background, Black text ── */
 .primary {
-  background: #ffffff;
-  color: #000000;
-  border-color: #ffffff;
+  background: var(--color-brand);
+  color: #ffffff;
+  box-shadow: 0 7px 0 #393599;
 }
 
 .primary:hover:not(:disabled) {
-  background: #e5e5e5;
-  border-color: #e5e5e5;
+  background: var(--color-brand-strong);
+  box-shadow: 0 9px 0 #2e2a7e;
 }
 
-/* ── SECONDARY: Transparent background, 1.5px solid white border, White text ── */
+.primary:active:not(:disabled) {
+  box-shadow: 0 3px 0 #2e2a7e;
+}
+
 .secondary {
-  background: transparent;
-  color: #ffffff;
-  border-color: #ffffff;
+  border-color: var(--color-line);
+  background: var(--color-paper);
+  color: var(--color-ink-strong);
+  box-shadow: var(--shadow-xs);
 }
 
 .secondary:hover:not(:disabled) {
-  background: #ffffff;
-  color: #000000;
+  border-color: var(--color-brand-accent);
+  background: var(--color-brand-soft);
+  color: var(--color-brand-strong);
+  box-shadow: var(--shadow-sm);
 }
 
-/* ── QUIET ── */
 .quiet {
-  border-color: transparent;
+  min-height: 2.5rem;
+  padding: 0.55rem 0.7rem;
   background: transparent;
-  color: #b0b0b0;
+  color: var(--color-ink-muted);
 }
 
 .quiet:hover:not(:disabled) {
-  color: #ffffff;
-  border-color: #333333;
-  background: #111111;
+  background: var(--color-paper-subtle);
+  color: var(--color-brand-strong);
 }

@@ -1,76 +1,69 @@
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  /* ── Surfaces & Canvas: Pure Black & Terminal Slate ── */
-  --color-canvas: #000000;
-  --color-canvas-subtle: #0a0a0a;
-  --color-paper: #000000;
-  --color-paper-muted: #0d0d0d;
-  --color-paper-subtle: #141414;
-  --color-paper-elevated: #111111;
+  /* Calm civic surfaces */
+  --color-canvas: #f4f6fb;
+  --color-canvas-subtle: #edf0f7;
+  --color-paper: #ffffff;
+  --color-paper-muted: #f8f9fd;
+  --color-paper-subtle: #f1f3f9;
+  --color-paper-elevated: #ffffff;
+  --color-bg: var(--color-canvas);
 
-  /* ── Typography & Ink: High-Contrast Pure White & Silver ── */
-  --color-ink: #ffffff;
-  --color-ink-strong: #ffffff;
-  --color-ink-muted: #b0b0b0;
-  --color-ink-subtle: #787878;
-  --color-line: #ffffff;
-  --color-line-strong: #ffffff;
-  --color-line-soft: #2a2a2a;
-  --color-line-subtle: #1a1a1a;
+  /* Deep indigo ink */
+  --color-ink: #182142;
+  --color-ink-strong: #101735;
+  --color-ink-muted: #5e6783;
+  --color-ink-subtle: #7b849d;
+  --color-fg: var(--color-ink);
+  --color-line: #cbd2e3;
+  --color-line-strong: #9ca7c1;
+  --color-line-soft: #e2e6f0;
+  --color-line-subtle: #edf0f6;
 
-  /* ── Brand & Terminal Accents ── */
-  --color-brand: #ffffff;
-  --color-brand-strong: #ffffff;
-  --color-brand-mid: #cccccc;
-  --color-brand-soft: #141c2b;
-  --color-brand-accent: #2e4368;
-  --color-brand-gradient: none;
-  --color-brand-glow: none;
+  /* Companion violet */
+  --color-brand: #5b56d6;
+  --color-brand-strong: #3f3aa8;
+  --color-brand-mid: #7772e3;
+  --color-brand-soft: #ecebff;
+  --color-brand-accent: #b8b4ff;
+  --color-brand-gradient: linear-gradient(135deg, #5b56d6, #7671e7);
+  --color-brand-glow: rgb(91 86 214 / 18%);
 
-  /* ── Signal: Vibrant Amber/Orange Accent (Used selectively) ── */
-  --color-signal: #ff8c00;
-  --color-signal-strong: #ffa500;
-  --color-signal-soft: #261600;
-  --color-signal-glow: none;
-  --color-signal-gradient: none;
+  /* Marigold route marker */
+  --color-signal: #f2a23a;
+  --color-signal-strong: #d77c12;
+  --color-signal-soft: #fff2d8;
+  --color-signal-glow: rgb(242 162 58 / 22%);
+  --color-signal-gradient: linear-gradient(135deg, #ffbd55, #ef9230);
 
-  /* ── Success: Terminal Green ── */
-  --color-success: #22c55e;
-  --color-success-strong: #4ade80;
-  --color-success-soft: #052e16;
-  --color-success-glow: none;
+  /* Feedback */
+  --color-success: #27886d;
+  --color-success-strong: #17634f;
+  --color-success-soft: #e1f3ed;
+  --color-success-glow: rgb(39 136 109 / 16%);
+  --color-info: #4f73b7;
+  --color-info-strong: #345892;
+  --color-info-soft: #e8eef9;
+  --color-warning: #c67b20;
+  --color-warning-strong: #8a5312;
+  --color-warning-soft: #fff0d8;
+  --color-critical: #c65462;
+  --color-critical-strong: #973744;
+  --color-critical-soft: #fdebed;
+  --color-focus: #3f3aa8;
 
-  /* ── Info: Terminal Blue Slate ── */
-  --color-info: #60a5fa;
-  --color-info-strong: #93c5fd;
-  --color-info-soft: #141c2b;
-
-  /* ── Warning: Amber ── */
-  --color-warning: #f59e0b;
-  --color-warning-strong: #fbbf24;
-  --color-warning-soft: #271a00;
-
-  /* ── Critical: Terminal Red ── */
-  --color-critical: #ef4444;
-  --color-critical-strong: #f87171;
-  --color-critical-soft: #2d0b0b;
-
-  /* ── Focus ── */
-  --color-focus: #ffffff;
-
-  /* ── Typography Scale ── */
-  --font-display: var(--font-display), "Space Grotesk", sans-serif;
-  --font-body: var(--font-mono), "Space Mono", monospace;
-  --font-mono: var(--font-mono), "Space Mono", monospace;
-
+  /* Type */
+  --font-display: "Bricolage Grotesque", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
   --text-caption: 0.75rem;
   --text-small: 0.875rem;
   --text-body: 1rem;
-  --text-lede: clamp(1rem, 0.92rem + 0.35vw, 1.15rem);
-  --text-title: clamp(2.4rem, 1.8rem + 3.2vw, 4.4rem);
+  --text-lede: clamp(1.05rem, 0.98rem + 0.32vw, 1.25rem);
+  --text-title: clamp(3.25rem, 1.8rem + 5vw, 6.8rem);
 
-  /* ── Spacing Scale ── */
+  /* Spacing */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -79,31 +72,27 @@
   --space-6: 2rem;
   --space-7: 3rem;
   --space-8: 4rem;
+  --space-9: 6rem;
 
-  /* ── Border Radii: Strict Zero ── */
-  --radius-xs: 0;
-  --radius-control: 0;
-  --radius-card: 0;
-  --radius-panel: 0;
-  --radius-pill: 0;
+  /* Shape and depth */
+  --radius-xs: 0.45rem;
+  --radius-control: 0.8rem;
+  --radius-card: 1.15rem;
+  --radius-panel: 1.6rem;
+  --radius-pill: 999px;
+  --shadow-xs: 0 1px 2px rgb(28 36 72 / 7%);
+  --shadow-sm: 0 8px 24px rgb(31 40 78 / 8%);
+  --shadow-md: 0 18px 48px rgb(31 40 78 / 12%);
+  --shadow-lg: 0 30px 80px rgb(31 40 78 / 14%);
+  --shadow-paper: 0 1px 0 rgb(255 255 255 / 75%) inset;
+  --shadow-glow-signal: 0 0 0 0.45rem var(--color-signal-glow);
+  --shadow-glow-brand: 0 0 0 0.45rem var(--color-brand-glow);
+  --shadow-offset: 0 12px 0 #dcdaf8;
+  --shadow-offset-sm: 0 6px 0 #dcdaf8;
 
-  /* ── Shadows: Hard Offset Lines ── */
-  --shadow-xs: none;
-  --shadow-sm: none;
-  --shadow-md: none;
-  --shadow-lg: none;
-  --shadow-paper: none;
-  --shadow-glow-signal: none;
-  --shadow-glow-brand: none;
-  --shadow-offset: 4px 4px 0 #ffffff;
-  --shadow-offset-sm: 2px 2px 0 #ffffff;
-
-  /* ── Transitions ── */
-  --transition-fast: 120ms ease;
-  --transition-base: 180ms ease;
-  --transition-smooth: 240ms ease;
-
-  /* ── Border Widths ── */
+  --transition-fast: 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  --transition-base: 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  --transition-smooth: 420ms cubic-bezier(0.16, 1, 0.3, 1);
   --border-thin: 1px;
   --border-thick: 1.5px;
   --border-heavy: 2px;
