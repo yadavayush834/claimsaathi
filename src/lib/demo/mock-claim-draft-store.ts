@@ -16,7 +16,7 @@ export interface MockClaimDraftStore {
 }
 
 function isMockClaimFormStep(value: unknown): value is MockClaimDraft["step"] {
-  return value === 1 || value === 2 || value === 3;
+  return value === 1 || value === 2 || value === 3 || value === 4;
 }
 
 function isNotificationRoute(
@@ -39,7 +39,11 @@ function isMockClaimDraft(value: unknown): value is MockClaimDraft {
     typeof candidate.fictionalCity === "string" &&
     isNotificationRoute(candidate.notificationRoute) &&
     typeof candidate.bankConfirmed === "boolean" &&
-    typeof candidate.declarationConfirmed === "boolean"
+    typeof candidate.declarationConfirmed === "boolean" &&
+    (candidate.consentConfirmed === undefined ||
+      typeof candidate.consentConfirmed === "boolean") &&
+    (candidate.simulatedOtp === undefined ||
+      typeof candidate.simulatedOtp === "string")
   );
 }
 

@@ -21,7 +21,8 @@
 .header p,
 .packetHeading p,
 .declaration p,
-.complete p {
+.complete p,
+.receiptEyebrow {
   margin: 0;
   color: var(--color-signal-strong);
   font-family: var(--font-mono), monospace;
@@ -97,7 +98,7 @@
 
 .progress ol {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-3);
   margin: 0;
   padding: 0;
@@ -266,9 +267,10 @@
 }
 
 .routeFieldset input,
-.confirmation input {
-  width: 1.1rem;
-  height: 1.1rem;
+.confirmation input,
+.consentLabel input {
+  width: 1.15rem;
+  height: 1.15rem;
   flex: 0 0 auto;
   margin: 0.05rem 0 0;
   accent-color: var(--color-brand);
@@ -352,6 +354,137 @@
   color: #ffffff;
 }
 
+/* Phase 10 Review Summary & OTP Styles */
+.reviewSummary {
+  display: grid;
+  gap: var(--space-3);
+  padding: 1.2rem;
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-card);
+  background: var(--color-paper-muted);
+}
+
+.reviewHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  border-bottom: 1px solid var(--color-line-soft);
+  padding-bottom: 0.6rem;
+}
+
+.reviewHeading h4 {
+  margin: 0;
+  color: var(--color-ink-strong);
+  font-size: var(--text-small);
+  font-weight: 750;
+}
+
+.reviewGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.reviewGrid dt {
+  color: var(--color-ink-subtle);
+  font-size: var(--text-caption);
+}
+
+.reviewGrid dd {
+  margin: 0.15rem 0 0;
+  color: var(--color-ink-strong);
+  font-size: var(--text-small);
+  font-weight: 600;
+}
+
+.reviewAmount {
+  color: var(--color-brand-strong);
+  font-family: var(--font-mono), monospace;
+  font-size: 1.15rem !important;
+  font-weight: 750 !important;
+}
+
+.consentBox {
+  display: grid;
+  gap: var(--space-3);
+  padding: 1.15rem;
+  border: 1px solid #d9d6fb;
+  border-radius: var(--radius-card);
+  background: var(--color-brand-soft);
+}
+
+.consentBox h4 {
+  margin: 0;
+  color: var(--color-brand-strong);
+  font-size: var(--text-small);
+  font-weight: 750;
+}
+
+.consentLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  color: var(--color-ink-strong);
+  font-size: var(--text-small);
+  font-weight: 600;
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.otpSection {
+  display: grid;
+  gap: var(--space-4);
+  padding: 1.25rem;
+  border: 1px dashed #d9c79f;
+  border-radius: var(--radius-card);
+  background: #fffdf7;
+}
+
+.otpHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.otpHeader h4 {
+  margin: 0;
+  color: var(--color-ink-strong);
+  font-size: var(--text-small);
+  font-weight: 750;
+}
+
+.otpHeader p {
+  margin: 0.2rem 0 0;
+  color: var(--color-ink-muted);
+  font-size: var(--text-caption);
+}
+
+.demoCodeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid #ecc37e;
+  border-radius: var(--radius-control);
+  background: var(--color-signal-soft);
+  color: #5c3b09;
+  font-size: var(--text-caption);
+  white-space: nowrap;
+}
+
+.demoCodeBadge strong {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.88rem;
+  letter-spacing: 0.08em;
+}
+
+.otpInputContainer {
+  max-width: 22rem;
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;
@@ -364,48 +497,49 @@
   margin-right: auto;
 }
 
-.complete {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
+/* Phase 10 Receipt View */
+.receipt {
+  display: grid;
+  gap: var(--space-5);
   margin-top: clamp(3rem, 7vw, 5rem);
-  padding: clamp(1.35rem, 4vw, 2.4rem);
+  padding: clamp(1.5rem, 4vw, 2.75rem);
   border: 1px solid #addfce;
   border-radius: var(--radius-panel);
-  background: var(--color-success-soft);
+  background: var(--color-paper);
+  box-shadow: var(--shadow-sm);
 }
 
-.complete > span {
+.receiptHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.receiptCheck {
   display: grid;
-  width: 3rem;
-  height: 3rem;
+  width: 3.2rem;
+  height: 3.2rem;
   flex: 0 0 auto;
   place-items: center;
-  border-radius: 0.9rem;
+  border-radius: 1rem;
   background: var(--color-success);
   color: #ffffff;
-  font-size: 1.35rem;
+  font-size: 1.45rem;
   font-weight: 800;
+  box-shadow: 0 0 0 0.35rem var(--color-success-soft);
 }
 
-.complete > div {
-  min-width: 0;
-}
-
-.complete p {
-  color: var(--color-success-strong);
-}
-
-.complete h2 {
+.receiptHeader h2 {
   margin: var(--space-2) 0 0;
   color: var(--color-ink-strong);
   font-family: var(--font-display), sans-serif;
-  font-size: clamp(1.55rem, 3vw, 2.35rem);
+  font-size: clamp(1.75rem, 3.5vw, 2.65rem);
   font-weight: 650;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
 }
 
-.complete div > span {
+.receiptHeader span {
   display: block;
   max-width: 42rem;
   margin-top: var(--space-2);
@@ -414,14 +548,101 @@
   line-height: 1.5;
 }
 
-.complete > button {
-  margin-left: auto;
-  white-space: nowrap;
+.receiptDetails {
+  display: grid;
+  gap: var(--space-4);
+  padding: 1.35rem;
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-card);
+  background: var(--color-paper-muted);
+}
+
+.receiptCodeBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-line-soft);
+}
+
+.receiptCodeBanner span {
+  color: var(--color-ink-subtle);
+  font-size: var(--text-caption);
+}
+
+.receiptCodeBanner strong {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--color-ink-strong);
+  font-family: var(--font-mono), monospace;
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+}
+
+.receiptGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+}
+
+.receiptGrid dt {
+  color: var(--color-ink-subtle);
+  font-size: var(--text-caption);
+}
+
+.receiptGrid dd {
+  margin: 0.15rem 0 0;
+  color: var(--color-ink-strong);
+  font-size: var(--text-small);
+  font-weight: 600;
+}
+
+.receiptAmount {
+  color: var(--color-success-strong) !important;
+  font-family: var(--font-mono), monospace;
+  font-size: 1.25rem !important;
+  font-weight: 750 !important;
+}
+
+.nextStepBox {
+  display: grid;
+  gap: var(--space-1);
+  padding: 1rem 1.15rem;
+  border: 1px solid #d4d8ed;
+  border-radius: var(--radius-card);
+  background: var(--color-paper-subtle);
+}
+
+.nextStepBox strong {
+  color: var(--color-ink-strong);
+  font-size: var(--text-small);
+}
+
+.nextStepBox p {
+  margin: 0;
+  color: var(--color-ink-muted);
+  font-size: var(--text-caption);
+  line-height: 1.5;
+}
+
+.receiptActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+.receiptActions > :first-child:not(:only-child) {
+  margin-right: auto;
 }
 
 @media (max-width: 48rem) {
   .fieldGrid,
-  .routeFieldset > div {
+  .routeFieldset > div,
+  .reviewGrid,
+  .receiptGrid {
     grid-template-columns: 1fr;
   }
 
@@ -434,17 +655,20 @@
   .header,
   .draftBar,
   .paymentSlip,
-  .complete {
+  .otpHeader,
+  .receiptHeader,
+  .receiptCodeBanner {
     display: grid;
   }
 
   .header > button,
-  .complete > button {
+  .receiptActions > button {
     justify-self: start;
     margin-left: 0;
   }
 
   .progress ol {
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--space-2);
   }
 
@@ -464,15 +688,18 @@
     font-size: 0.68rem;
   }
 
-  .actions > :first-child:not(:only-child) {
+  .actions > :first-child:not(:only-child),
+  .receiptActions > :first-child:not(:only-child) {
     margin-right: 0;
   }
 
-  .actions {
+  .actions,
+  .receiptActions {
     justify-content: stretch;
   }
 
-  .actions > button {
+  .actions > button,
+  .receiptActions > button {
     flex: 1 1 10rem;
   }
 }

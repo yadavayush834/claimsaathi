@@ -109,7 +109,7 @@ export type DemoSession = Readonly<{
   personaId: DemoPersonaId;
 }>;
 
-export type MockClaimFormStep = 1 | 2 | 3;
+export type MockClaimFormStep = 1 | 2 | 3 | 4;
 
 export type MockClaimDraft = Readonly<{
   version: typeof DEMO_DATA_VERSION;
@@ -120,7 +120,44 @@ export type MockClaimDraft = Readonly<{
   notificationRoute: "browser" | "mock_sms" | "mock_email";
   bankConfirmed: boolean;
   declarationConfirmed: boolean;
+  consentConfirmed?: boolean;
+  simulatedOtp?: string;
 }>;
+
+export type MockClaimSubmissionRequest = Readonly<{
+  personaId: DemoPersonaId;
+  treatmentNeed: string;
+  fictionalCity: string;
+  notificationRoute: "browser" | "mock_sms" | "mock_email";
+  bankConfirmed: boolean;
+  declarationConfirmed: boolean;
+  consentConfirmed: boolean;
+  simulatedOtp: string;
+  requestedAmountRupees?: number;
+}>;
+
+export type MockClaimSubmissionReceipt = Readonly<{
+  acknowledgementNumber: string;
+  claimReference: string;
+  submittedAt: string;
+  personaId: DemoPersonaId;
+  requestedAmountRupees: number;
+  notificationRoute: "browser" | "mock_sms" | "mock_email";
+  estimatedWorkingDays: number;
+  synthetic: true;
+}>;
+
+export type MockClaimSubmissionResult =
+  | Readonly<{
+      ok: true;
+      receipt: MockClaimSubmissionReceipt;
+    }>
+  | Readonly<{
+      ok: false;
+      error: string;
+      field?:
+        "simulatedOtp" | "consentConfirmed" | "treatmentNeed" | "fictionalCity";
+    }>;
 
 export function isDemoPersonaId(value: unknown): value is DemoPersonaId {
   return (
