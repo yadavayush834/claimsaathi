@@ -52,4 +52,26 @@ describe("DemoSessionManager", () => {
       screen.getByRole("heading", { level: 2, name: "Asha Verma" }),
     ).toBeVisible();
   });
+
+  it("opens the readiness preflight from the returned fictional case", async () => {
+    render(<DemoSessionManager />);
+
+    await screen.findByRole("heading", {
+      level: 2,
+      name: "Choose a fictional citizen",
+    });
+
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "Start Imran Sheikh's demo case",
+      }),
+    );
+    fireEvent.click(
+      screen.getByRole("button", { name: "Run readiness preflight" }),
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "Check what needs fixing first" }),
+    ).toBeVisible();
+  });
 });
