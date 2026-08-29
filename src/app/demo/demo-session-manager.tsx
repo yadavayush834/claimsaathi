@@ -13,6 +13,7 @@ import styles from "./demo-session-manager.module.css";
 import { KycPreflight } from "./kyc-preflight";
 import { MockClaimForm } from "./mock-claim-form";
 import { RejectionRecoveryJourney } from "./rejection-recovery-journey";
+import { SettlementReconciliation } from "./settlement-reconciliation";
 import { WithdrawalPlanner } from "./withdrawal-planner";
 
 type SessionView =
@@ -35,6 +36,9 @@ export function DemoSessionManager() {
   const [timelineCase, setTimelineCase] = useState<DemoCase | null>(null);
   const [interpreterCase, setInterpreterCase] = useState<DemoCase | null>(null);
   const [recoveryCase, setRecoveryCase] = useState<DemoCase | null>(null);
+  const [reconciliationCase, setReconciliationCase] = useState<DemoCase | null>(
+    null,
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -79,6 +83,7 @@ export function DemoSessionManager() {
     setTimelineCase(null);
     setInterpreterCase(null);
     setRecoveryCase(null);
+    setReconciliationCase(null);
     setView({
       status: "active",
       demoCase: selectedCase,
@@ -95,6 +100,7 @@ export function DemoSessionManager() {
     setTimelineCase(null);
     setInterpreterCase(null);
     setRecoveryCase(null);
+    setReconciliationCase(null);
     setView({ status: "choosing" });
   }
 
@@ -243,6 +249,15 @@ export function DemoSessionManager() {
     );
   }
 
+  if (reconciliationCase) {
+    return (
+      <SettlementReconciliation
+        demoCase={reconciliationCase}
+        onBack={() => setReconciliationCase(null)}
+      />
+    );
+  }
+
   return (
     <ClaimWorkspace
       demoCase={view.demoCase}
@@ -259,6 +274,11 @@ export function DemoSessionManager() {
       onStartRecovery={
         view.demoCase.persona.id === "imran-returned"
           ? () => setRecoveryCase(view.demoCase)
+          : undefined
+      }
+      onReconcileSettlement={
+        view.demoCase.persona.id === "latha-settlement"
+          ? () => setReconciliationCase(view.demoCase)
           : undefined
       }
       onViewTimeline={() => setTimelineCase(view.demoCase)}
