@@ -30,6 +30,12 @@ describe("DemoSessionManager", () => {
       screen.getByRole("heading", { level: 2, name: "Asha Verma" }),
     ).toBeVisible();
     expect(screen.getByText("DEMO-CLM-1001")).toBeVisible();
+    fireEvent.click(
+      screen.getByRole("button", { name: "Plan mock withdrawal" }),
+    );
+    expect(
+      screen.getByRole("heading", { name: "Plan a mock PF withdrawal" }),
+    ).toBeVisible();
     expect(
       JSON.parse(
         window.localStorage.getItem(DEMO_SESSION_STORAGE_KEY) ?? "null",

@@ -12,6 +12,7 @@ type ClaimWorkspaceProps = Readonly<{
   demoCase: DemoCase;
   sessionMessage: string;
   onSwitch: () => void;
+  onPlanWithdrawal?: () => void;
 }>;
 
 const claimStatusLabels: Record<DemoClaimStatus, string> = {
@@ -63,6 +64,7 @@ function getInitials(name: string) {
 
 export function ClaimWorkspace({
   demoCase,
+  onPlanWithdrawal,
   onSwitch,
   sessionMessage,
 }: ClaimWorkspaceProps) {
@@ -132,15 +134,23 @@ export function ClaimWorkspace({
         <div className={styles.nextActionBody}>
           <div className={styles.nextActionHeading}>
             <h3 id="next-action-title">{workspace.nextAction.title}</h3>
-            <StatusBadge tone="neutral">Journey preview</StatusBadge>
+            <StatusBadge tone={onPlanWithdrawal ? "info" : "neutral"}>
+              {onPlanWithdrawal ? "Available now" : "Journey preview"}
+            </StatusBadge>
           </div>
           <p className={styles.nextActionDesc}>
             {workspace.nextAction.description}
           </p>
           <small className={styles.nextActionHint}>
-            This workspace identifies the next step; the guided action is added
-            in its later build phase.
+            {onPlanWithdrawal
+              ? "Uses fictional answers and a deterministic mock policy."
+              : "This workspace identifies the next step; the guided action is added in its later build phase."}
           </small>
+          {onPlanWithdrawal ? (
+            <Button className={styles.planActionBtn} onClick={onPlanWithdrawal}>
+              Plan mock withdrawal
+            </Button>
+          ) : null}
         </div>
       </section>
 

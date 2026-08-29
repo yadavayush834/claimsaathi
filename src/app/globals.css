@@ -8,7 +8,6 @@
 }
 
 html {
-  min-width: 20rem;
   background-color: var(--color-canvas);
   color-scheme: dark;
   scroll-behavior: smooth;
