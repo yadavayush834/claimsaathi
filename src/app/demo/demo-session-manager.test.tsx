@@ -152,4 +152,36 @@ describe("DemoSessionManager", () => {
       screen.getByRole("heading", { level: 2, name: "Latha Nair" }),
     ).toBeVisible();
   });
+
+  it("navigates into the AI claim issue interpreter from the workspace", async () => {
+    render(<DemoSessionManager />);
+
+    await screen.findByRole("heading", {
+      level: 2,
+      name: "Choose a fictional citizen",
+    });
+
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "Start Imran Sheikh's demo case",
+      }),
+    );
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Explain with AI Interpreter →" }),
+    );
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Claim Issue & Rejection Interpreter",
+      }),
+    ).toBeVisible();
+    expect(screen.getByText("Step-by-step action checklist")).toBeVisible();
+
+    fireEvent.click(screen.getByRole("button", { name: "Back to workspace" }));
+
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Imran Sheikh" }),
+    ).toBeVisible();
+  });
 });

@@ -6,6 +6,7 @@ import { demoDataService } from "@/lib/demo/demo-service";
 import type { DemoCase, DemoPersonaId } from "@/lib/demo/model";
 import { createDemoSessionStore } from "@/lib/demo/session-store";
 
+import { ClaimIssueInterpreter } from "./claim-issue-interpreter";
 import { ClaimTimeline } from "./claim-timeline";
 import { ClaimWorkspace } from "./claim-workspace";
 import styles from "./demo-session-manager.module.css";
@@ -31,6 +32,7 @@ export function DemoSessionManager() {
   const [preflightCase, setPreflightCase] = useState<DemoCase | null>(null);
   const [claimFormCase, setClaimFormCase] = useState<DemoCase | null>(null);
   const [timelineCase, setTimelineCase] = useState<DemoCase | null>(null);
+  const [interpreterCase, setInterpreterCase] = useState<DemoCase | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -73,6 +75,7 @@ export function DemoSessionManager() {
     setPreflightCase(null);
     setClaimFormCase(null);
     setTimelineCase(null);
+    setInterpreterCase(null);
     setView({
       status: "active",
       demoCase: selectedCase,
@@ -87,6 +90,7 @@ export function DemoSessionManager() {
     setPreflightCase(null);
     setClaimFormCase(null);
     setTimelineCase(null);
+    setInterpreterCase(null);
     setView({ status: "choosing" });
   }
 
@@ -188,6 +192,20 @@ export function DemoSessionManager() {
     );
   }
 
+  if (interpreterCase) {
+    return (
+      <ClaimIssueInterpreter
+        demoCase={interpreterCase}
+        onBack={() => setInterpreterCase(null)}
+        onOpenPreflight={() => {
+          const current = interpreterCase;
+          setInterpreterCase(null);
+          setPreflightCase(current);
+        }}
+      />
+    );
+  }
+
   return (
     <ClaimWorkspace
       demoCase={view.demoCase}
@@ -202,6 +220,7 @@ export function DemoSessionManager() {
           : undefined
       }
       onViewTimeline={() => setTimelineCase(view.demoCase)}
+      onExplainIssue={() => setInterpreterCase(view.demoCase)}
       sessionMessage={
         view.persisted
           ? view.source === "restored"
