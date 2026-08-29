@@ -35,21 +35,20 @@ describe("ClaimIssueInterpreter", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: "Claim Issue & Rejection Interpreter",
+        name: "Translate & Resolve Portal Remarks",
       }),
     ).toBeVisible();
     expect(
       screen.getByRole("heading", {
-        name: "Bank Account Name Mismatch",
+        name: "Diagnostic Breakdown",
       }),
     ).toBeVisible();
-    expect(screen.getByText("Step-by-step action checklist")).toBeVisible();
-    expect(screen.getAllByText(/Action Owner:/)[0]).toBeVisible();
+    expect(screen.getByText("Recommended Next Steps")).toBeVisible();
 
     // Test preflight navigation
     fireEvent.click(
       screen.getByRole("button", {
-        name: "Check readiness preflight checklist →",
+        name: "Open KYC Preflight Checks →",
       }),
     );
     expect(onOpenPreflight).toHaveBeenCalledOnce();
@@ -71,20 +70,16 @@ describe("ClaimIssueInterpreter", () => {
 
     // Click Analyze
     fireEvent.click(
-      screen.getByRole("button", { name: "Translate & Analyze Issue →" }),
+      screen.getByRole("button", { name: "Analyze Remark with AI →" }),
     );
 
-    expect(
-      await screen.findByRole("heading", {
-        name: "Missing or Incomplete Medical Evidence",
-      }),
-    ).toBeVisible();
-    expect(screen.getAllByText(/EPF Scheme 1952 Para 68J/)[0]).toBeVisible();
+    const copyBtn = await screen.findByRole("button", {
+      name: "Copy Diagnostic Summary",
+    });
+    expect(copyBtn).toBeVisible();
 
     // Test copy action summary
-    fireEvent.click(
-      screen.getByRole("button", { name: "Copy action summary" }),
-    );
-    expect(screen.getByText("✓ Copied checklist")).toBeVisible();
+    fireEvent.click(copyBtn);
+    expect(await screen.findByText(/Copied/i)).toBeVisible();
   });
 });

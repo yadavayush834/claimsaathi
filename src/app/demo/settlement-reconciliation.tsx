@@ -3,7 +3,6 @@
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Callout } from "@/components/ui/callout";
 import { StatusBadge } from "@/components/ui/status-badge";
 import type { DemoCase } from "@/lib/demo/model";
 import type {
@@ -11,6 +10,7 @@ import type {
   SettlementReconciliationReport,
 } from "@/lib/demo/reconciliation-model";
 import { reconciliationService } from "@/lib/demo/reconciliation-service";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 import styles from "./settlement-reconciliation.module.css";
 
@@ -33,6 +33,8 @@ export function SettlementReconciliation({
   onBack,
   onPrepareGrievance,
 }: SettlementReconciliationProps) {
+  const { locale } = useLocale();
+
   const [report, setReport] = useState<SettlementReconciliationReport>(() =>
     reconciliationService.getReconciliationReport(demoCase.persona.id),
   );
@@ -60,19 +62,23 @@ export function SettlementReconciliation({
       <header className={styles.header}>
         <div className={styles.headerLeft}>
           <p className={styles.eyebrow}>
-            Synthetic Settlement Reconciliation · Claim {report.claimId}
+            {locale === "hi"
+              ? `काल्पनिक निपटान मिलान · दावा ${report.claimId}`
+              : `Synthetic Settlement Reconciliation · Claim ${report.claimId}`}
           </p>
           <h2 id="reconciliation-title" className={styles.title}>
-            Reconcile {demoCase.persona.displayName}&apos;s Settled Claim
+            {locale === "hi"
+              ? `${demoCase.persona.displayName} के निपटान का मिलान करें`
+              : `Reconcile ${demoCase.persona.displayName}'s Settled Claim`}
           </h2>
           <p className={styles.description}>
-            Compare requested, statutory eligible, and settled mock amounts side
-            by side with clear separation of confirmed disbursement facts and
-            scheme rules.
+            {locale === "hi"
+              ? "मांगी गई, कानूनी रूप से पात्र और वास्तव में प्राप्त राशि की तुलना करें और सरकारी नियमों के तहत कटौतियों को समझें।"
+              : "Compare requested, statutory eligible, and settled mock amounts side by side with clear separation of confirmed disbursement facts and scheme rules."}
           </p>
         </div>
         <Button variant="quiet" onClick={onBack}>
-          Back to workspace
+          {locale === "hi" ? "← वर्कस्पेस पर लौटें" : "Back to workspace"}
         </Button>
       </header>
 
@@ -83,7 +89,9 @@ export function SettlementReconciliation({
           aria-labelledby="card-requested"
         >
           <span id="card-requested" className={styles.summaryCardLabel}>
-            1. Requested Advance
+            {locale === "hi"
+              ? "1. मांगी गई अग्रिम राशि"
+              : "1. Requested Advance"}
           </span>
           <strong className={styles.summaryCardAmount}>
             {formatCurrency(report.requestedAmountRupees)}
@@ -97,193 +105,165 @@ export function SettlementReconciliation({
           aria-labelledby="card-eligible"
         >
           <span id="card-eligible" className={styles.summaryCardLabel}>
-            2. Statutory Eligible Cap
+            {locale === "hi"
+              ? "2. कानूनी पात्र सीमा (Cap)"
+              : "2. Statutory Eligible Cap"}
           </span>
           <strong className={styles.summaryCardAmount}>
             {formatCurrency(report.eligibleAmountRupees)}
           </strong>
           <span className={styles.summaryCardSubtext}>
-            24× monthly basic wage + DA ceiling rule
+            {locale === "hi" ? "ईपीएफ योजना सीमा" : "EPF Scheme Cap"}
           </span>
         </article>
 
         <article
           className={styles.summaryCard}
-          data-highlight="settled"
+          data-highlight="disbursed"
           aria-labelledby="card-settled"
         >
           <span id="card-settled" className={styles.summaryCardLabel}>
-            3. Settled & Disbursed
+            {locale === "hi"
+              ? "3. वास्तविक संवितरित राशि"
+              : "3. Actually Disbursed"}
           </span>
           <strong className={styles.summaryCardAmount}>
             {formatCurrency(report.settledAmountRupees)}
           </strong>
           <span className={styles.summaryCardSubtext}>
-            Credited on {report.disbursementDate} to{" "}
-            {report.disbursedBankMasked}
+            {locale === "hi"
+              ? `अंतर: ${formatCurrency(report.varianceRupees)}`
+              : `Shortfall: ${formatCurrency(report.varianceRupees)}`}
           </span>
         </article>
       </div>
 
-      {/* Callout on Amount Variance */}
-      {report.varianceRupees > 0 ? (
-        <Callout
-          title={`Total Amount Variance: ${formatCurrency(report.varianceRupees)}`}
-        >
-          The difference of {formatCurrency(report.varianceRupees)} between the
-          initial requested amount (
-          {formatCurrency(report.requestedAmountRupees)}) and the disbursed
-          settlement ({formatCurrency(report.settledAmountRupees)}) is 100%
-          accounted for by statutory EPFO wage-ceiling limits under Para 68B.
-        </Callout>
-      ) : null}
+      {/* Verified Facts Ledger */}
+      <section className={styles.factsSection} aria-labelledby="facts-heading">
+        <div className={styles.sectionHeader}>
+          <h3 id="facts-heading">
+            {locale === "hi" ? "सत्यापित तथ्य खाता" : "Verified Facts Ledger"}
+          </h3>
+          <span className={styles.sectionHint}>
+            {locale === "hi"
+              ? "काल्पनिक खाता बही विवरण"
+              : "Disbursement facts from synthetic fixture"}
+          </span>
+        </div>
 
-      {/* Main Analysis Sections */}
-      <div className={styles.sectionGrid}>
-        {/* Confirmed Facts Ledger */}
-        <section
-          className={styles.card}
-          aria-labelledby="confirmed-facts-title"
-        >
-          <div className={styles.cardHeader}>
-            <h3 id="confirmed-facts-title" className={styles.cardTitle}>
-              Confirmed Facts on Record
-            </h3>
-            <StatusBadge tone="success">
-              {report.confirmedFacts.length} Verified
-            </StatusBadge>
-          </div>
+        <dl className={styles.factsList}>
+          {report.confirmedFacts.map((fact) => (
+            <div key={fact.id} className={styles.factRow}>
+              <dt className={styles.factLabel}>
+                <strong>{fact.label}</strong>
+                <span className={styles.factNote}>{fact.source}</span>
+              </dt>
+              <dd className={styles.factValue}>{fact.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
 
-          <ul className={styles.factsList}>
-            {report.confirmedFacts.map((fact) => (
-              <li key={fact.id} className={styles.factItem}>
-                <div className={styles.factTopRow}>
-                  <span className={styles.factLabel}>{fact.label}</span>
-                  <span className={styles.sourceBadge}>{fact.source}</span>
-                </div>
-                <strong className={styles.factValue}>{fact.value}</strong>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* Statutory Factors & Deductions */}
-        <section className={styles.card} aria-labelledby="factors-title">
-          <div className={styles.cardHeader}>
-            <h3 id="factors-title" className={styles.cardTitle}>
-              Statutory Deductions & Factor Analysis
-            </h3>
-            <StatusBadge tone="info">Rule Breakdown</StatusBadge>
-          </div>
-
-          <ul className={styles.deductionList}>
-            {report.deductionsAndFactors.map((item) => (
-              <li key={item.id} className={styles.deductionItem}>
-                <div className={styles.deductionHeader}>
-                  <strong className={styles.deductionTitle}>
-                    {item.title}
-                  </strong>
-                  {item.amountRupees > 0 ? (
-                    <span className={styles.deductionAmount}>
-                      -{formatCurrency(item.amountRupees)}
-                    </span>
-                  ) : (
-                    <span className={styles.deductionAmount}>
-                      ₹0 (Eligible)
-                    </span>
-                  )}
-                </div>
-                <span className={styles.citationTag}>{item.ruleCitation}</span>
-                <p className={styles.deductionExplanation}>
-                  {item.explanation}
-                </p>
-              </li>
-            ))}
-          </ul>
-
-          <div className={styles.unexplainedBox}>
-            <span>✓</span>
-            <strong>
-              Unexplained Discrepancies:{" "}
-              {formatCurrency(report.unexplainedShortfallRupees)}
-            </strong>
-            <span>(No missing or unauthorized deductions found)</span>
-          </div>
-        </section>
-      </div>
-
-      {/* Resolution Actions Card */}
+      {/* Statutory Deductions Explanation */}
       <section
-        className={styles.resolutionCard}
-        aria-labelledby="resolution-title"
+        className={styles.deductionsSection}
+        aria-labelledby="deductions-heading"
       >
-        <h3 id="resolution-title" className={styles.resolutionTitle}>
-          Settlement Reconciliation Resolution
-        </h3>
+        <div className={styles.sectionHeader}>
+          <h3 id="deductions-heading">
+            {locale === "hi"
+              ? "कटौतियों का कानूनी विश्लेषण"
+              : "Statutory Deductions & Cap Analysis"}
+          </h3>
+        </div>
 
-        {report.resolutionStatus === "under_review" ? (
-          <>
-            <p className={styles.resolutionText}>
-              Do you accept the statutory 24-month wage limit explanation, or do
-              you want to raise a discrepancy dispute for grievance filing?
-            </p>
-            <div className={styles.resolutionActions}>
-              <Button
-                variant="primary"
-                onClick={() => handleSetStatus("accepted_statutory")}
-              >
-                I understand the statutory ceiling — Mark Reconciled
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={() => {
-                  handleSetStatus("disputed_for_grievance");
-                  if (onPrepareGrievance) {
-                    onPrepareGrievance();
-                  }
-                }}
-              >
-                Dispute calculation — Prepare Grievance →
-              </Button>
-            </div>
-          </>
-        ) : report.resolutionStatus === "accepted_statutory" ? (
-          <div className={styles.stateCallout} data-status="accepted_statutory">
-            <div>
-              <strong>Reconciliation Complete</strong>
-              <p className={styles.resolutionText}>
-                You confirmed understanding of the statutory 24-month wage cap.
-                Settlement is marked as fully reconciled.
+        <ul className={styles.deductionsList}>
+          {report.deductionsAndFactors.map((d) => (
+            <li key={d.id} className={styles.deductionItem}>
+              <div className={styles.deductionHeader}>
+                <strong>{d.title}</strong>
+                <span className={styles.deductionAmount}>
+                  -{formatCurrency(d.amountRupees)}
+                </span>
+              </div>
+              <p className={styles.deductionRule}>
+                {locale === "hi" ? "नियम: " : "Rule: "}
+                {d.ruleCitation}
               </p>
-            </div>
-            <Button variant="quiet" onClick={handleReset}>
-              Reset decision
-            </Button>
-          </div>
-        ) : (
-          <div
-            className={styles.stateCallout}
-            data-status="disputed_for_grievance"
+              <p className={styles.deductionExplain}>{d.explanation}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Resolution State Actions */}
+      <section
+        className={styles.resolutionSection}
+        aria-labelledby="resolution-heading"
+      >
+        <div className={styles.sectionHeader}>
+          <h3 id="resolution-heading">
+            {locale === "hi" ? "समाधान की स्थिति" : "Reconciliation Resolution"}
+          </h3>
+          <StatusBadge
+            tone={
+              report.resolutionStatus === "accepted_statutory"
+                ? "success"
+                : report.resolutionStatus === "disputed_for_grievance"
+                  ? "critical"
+                  : "warning"
+            }
           >
-            <div>
-              <strong>Discrepancy Flagged for Grievance</strong>
-              <p className={styles.resolutionText}>
-                The ₹18,000 difference has been flagged. You can prepare an
-                AI-assisted grievance petition with cited evidence.
-              </p>
-            </div>
-            <div className={styles.resolutionActions}>
-              {onPrepareGrievance ? (
-                <Button variant="primary" onClick={onPrepareGrievance}>
-                  Continue to Grievance Preparation →
-                </Button>
-              ) : null}
-              <Button variant="quiet" onClick={handleReset}>
-                Reset decision
-              </Button>
-            </div>
-          </div>
-        )}
+            {report.resolutionStatus === "accepted_statutory"
+              ? locale === "hi"
+                ? "निपटान स्वीकार किया गया"
+                : "Settlement Accepted"
+              : report.resolutionStatus === "disputed_for_grievance"
+                ? locale === "hi"
+                  ? "शिकायत दर्ज (Disputed)"
+                  : "Disputed / Grievance"
+                : locale === "hi"
+                  ? "समीक्षाधीन"
+                  : "Under Review"}
+          </StatusBadge>
+        </div>
+
+        <div className={styles.resolutionButtons}>
+          <Button
+            variant={
+              report.resolutionStatus === "accepted_statutory"
+                ? "primary"
+                : "secondary"
+            }
+            onClick={() => handleSetStatus("accepted_statutory")}
+          >
+            {locale === "hi"
+              ? "✓ कटौती समझी गई व स्वीकार की गई"
+              : "✓ Accept Reconciled Amount"}
+          </Button>
+
+          {onPrepareGrievance ? (
+            <Button
+              variant={
+                report.resolutionStatus === "disputed_for_grievance"
+                  ? "primary"
+                  : "secondary"
+              }
+              onClick={() => {
+                handleSetStatus("disputed_for_grievance");
+                onPrepareGrievance();
+              }}
+            >
+              {locale === "hi"
+                ? "शिकायत (Grievance) दर्ज करें →"
+                : "Dispute via Grievance →"}
+            </Button>
+          ) : null}
+
+          <Button variant="quiet" onClick={handleReset}>
+            {locale === "hi" ? "रीसेट करें" : "Reset Resolution"}
+          </Button>
+        </div>
       </section>
     </section>
   );

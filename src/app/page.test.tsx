@@ -10,16 +10,14 @@ describe("HomePage", () => {
     expect(
       screen.getByRole("heading", {
         level: 1,
-        name: "Withdraw your PF without guessing what comes next.",
+        name: /PF withdrawal guidance/i,
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: "Try the citizen journey" }),
+      screen.getAllByRole("link", { name: /Explore Interactive Demo/i })[0],
     ).toHaveAttribute("href", "/demo");
     expect(
-      screen.getByText(
-        "Nothing is submitted to EPFO or another government system.",
-      ),
+      screen.getByText(/Safety & Non-Affiliation Guarantees/i),
     ).toBeVisible();
     expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
   });

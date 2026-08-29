@@ -10,6 +10,7 @@ import type {
   DemoIssueTone,
 } from "@/lib/demo/model";
 import { getTimelineForPersona } from "@/lib/demo/timeline-service";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 import styles from "./claim-workspace.module.css";
 
@@ -26,7 +27,7 @@ type ClaimWorkspaceProps = Readonly<{
   onPrepareGrievance?: () => void;
 }>;
 
-const claimStatusLabels: Record<DemoClaimStatus, string> = {
+const claimStatusLabelsEn: Record<DemoClaimStatus, string> = {
   draft: "Draft ready",
   submitted: "Submitted in demo",
   under_process: "Under review",
@@ -34,6 +35,16 @@ const claimStatusLabels: Record<DemoClaimStatus, string> = {
   approved: "Approved",
   settled: "Settled in demo",
   rejected: "Rejected in demo",
+};
+
+const claimStatusLabelsHi: Record<DemoClaimStatus, string> = {
+  draft: "प्रारूप तैयार",
+  submitted: "सबमिट किया गया",
+  under_process: "समीक्षाधीन",
+  action_needed: "कार्रवाई आवश्यक",
+  approved: "स्वीकृत",
+  settled: "निपटारा पूर्ण",
+  rejected: "अस्वीकृत",
 };
 
 const claimStatusTones: Record<
@@ -61,13 +72,13 @@ const currencyFormatter = new Intl.NumberFormat("en-IN", {
   maximumFractionDigits: 0,
 });
 
-function formatDate(isoDate: string): string {
+function formatDate(isoDate: string, locale: "en" | "hi"): string {
   const [year, month, day] = isoDate.split("-").map(Number);
   if (!year || !month || !day) {
     return isoDate;
   }
   const date = new Date(year, month - 1, day);
-  return date.toLocaleDateString("en-IN", {
+  return date.toLocaleDateString(locale === "hi" ? "hi-IN" : "en-IN", {
     day: "numeric",
     month: "short",
     year: "numeric",
@@ -118,6 +129,7 @@ export function ClaimWorkspace({
   onReconcileSettlement,
   onPrepareGrievance,
 }: ClaimWorkspaceProps) {
+  const { locale, t } = useLocale();
   const { persona, workspace } = demoCase;
 
   const timeline = useMemo(() => {
@@ -131,7 +143,9 @@ export function ClaimWorkspace({
   const { employeeSharePct, employerSharePct, pensionSharePct, totalRupees } =
     computeSharePercentages(workspace.balance);
 
-  const claimHeading = `Active claim · ${persona.scenarioTitle}`;
+  const claimStatusLabels =
+    locale === "hi" ? claimStatusLabelsHi : claimStatusLabelsEn;
+  const claimHeading = `${t.demo.activeClaim} · ${persona.scenarioTitle}`;
 
   return (
     <section className={styles.workspace} aria-labelledby="workspace-title">
@@ -147,7 +161,9 @@ export function ClaimWorkspace({
           </div>
           <div className={styles.personaDetails}>
             <p className={styles.fixtureEyebrow}>
-              Fictional claim workspace · fixture v{demoCase.fixtureVersion}
+              {locale === "hi"
+                ? `काल्पनिक दावा वर्कस्पेस · फिक्सचर v${demoCase.fixtureVersion}`
+                : `Fictional claim workspace · fixture v${demoCase.fixtureVersion}`}
             </p>
             <h2 id="workspace-title">{persona.displayName}</h2>
             <div className={styles.scenarioRow}>
@@ -159,13 +175,16 @@ export function ClaimWorkspace({
           </div>
         </div>
         <div className={styles.headerBadges}>
-          <StatusBadge tone="success">Demo session active</StatusBadge>
+          <StatusBadge tone="success">
+            {locale === "hi" ? "डेमो सत्र सक्रिय" : "Demo session active"}
+          </StatusBadge>
           <Button
             variant="secondary"
             onClick={onSwitch}
             className={styles.switchTopBtn}
+            aria-label={t.common.switchCitizen}
           >
-            Switch citizen
+            {t.common.switchCitizen}
           </Button>
         </div>
       </header>
@@ -183,7 +202,7 @@ export function ClaimWorkspace({
       >
         <div className={styles.nextActionLabel}>
           <span aria-hidden="true">→</span>
-          <p>What to do next</p>
+          <p>{locale === "hi" ? "आगे क्या करना है" : "What to do next"}</p>
         </div>
         <div className={styles.nextActionBody}>
           <div className={styles.nextActionHeading}>
@@ -196,8 +215,12 @@ export function ClaimWorkspace({
               }
             >
               {onPlanWithdrawal || onReviewPreflight || onViewTimeline
-                ? "Available now"
-                : "Journey preview"}
+                ? locale === "hi"
+                  ? "अभी उपलब्ध"
+                  : "Available now"
+                : locale === "hi"
+                  ? "यात्रा पूर्वावलोकन"
+                  : "Journey preview"}
             </StatusBadge>
           </div>
           <p className={styles.nextActionDesc}>
@@ -205,12 +228,20 @@ export function ClaimWorkspace({
           </p>
           <small className={styles.nextActionHint}>
             {onPlanWithdrawal
-              ? "Uses fictional answers and a deterministic mock policy."
+              ? locale === "hi"
+                ? "काल्पनिक उत्तरों और नियम-आधारित पॉलिसी का उपयोग करता है।"
+                : "Uses fictional answers and a deterministic mock policy."
               : onReviewPreflight
-                ? "Compares local synthetic records and explains who owns each correction."
+                ? locale === "hi"
+                  ? "स्थानीय काल्पनिक रिकॉर्ड की तुलना करता है और सुधार का उत्तरदायित्व समझाता है।"
+                  : "Compares local synthetic records and explains who owns each correction."
                 : onViewTimeline
-                  ? "Tracks your submitted mock claim through the simulated verification stages."
-                  : "This workspace identifies the next step; the guided action is added in its later build phase."}
+                  ? locale === "hi"
+                    ? "सिम्युलेटेड सत्यापन चरणों के माध्यम से आपके दावे को ट्रैक करता है।"
+                    : "Tracks your submitted mock claim through the simulated verification stages."
+                  : locale === "hi"
+                    ? "यह वर्कस्पेस अगले चरण की पहचान करता है।"
+                    : "This workspace identifies the next step; the guided action is added in its later build phase."}
           </small>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
             {onPlanWithdrawal ? (
@@ -218,7 +249,9 @@ export function ClaimWorkspace({
                 className={styles.planActionBtn}
                 onClick={onPlanWithdrawal}
               >
-                Plan mock withdrawal
+                {locale === "hi"
+                  ? "मॉक निकासी राशि प्लान करें"
+                  : "Plan mock withdrawal"}
               </Button>
             ) : null}
             {onStartRecovery ? (
@@ -226,26 +259,34 @@ export function ClaimWorkspace({
                 className={styles.planActionBtn}
                 onClick={onStartRecovery}
               >
-                Start rejection recovery journey →
+                {locale === "hi"
+                  ? "रिजेक्शन सुधार यात्रा शुरू करें →"
+                  : "Start rejection recovery journey →"}
               </Button>
             ) : onReconcileSettlement ? (
               <Button
                 className={styles.planActionBtn}
                 onClick={onReconcileSettlement}
               >
-                Compare mock settlement amounts →
+                {locale === "hi"
+                  ? "मॉक निपटान राशियों की तुलना करें →"
+                  : "Compare mock settlement amounts →"}
               </Button>
             ) : onReviewPreflight ? (
               <Button
                 className={styles.planActionBtn}
                 onClick={onReviewPreflight}
               >
-                Run readiness preflight
+                {locale === "hi"
+                  ? "तैयारी प्री-फ्लाइट जांच चलाएं"
+                  : "Run readiness preflight"}
               </Button>
             ) : null}
             {onViewTimeline ? (
               <Button variant="secondary" onClick={onViewTimeline}>
-                Track claim timeline →
+                {locale === "hi"
+                  ? "दावा स्थिति समयरेखा देखें →"
+                  : "Track claim timeline →"}
               </Button>
             ) : null}
           </div>
@@ -258,10 +299,12 @@ export function ClaimWorkspace({
           aria-labelledby="balance-title"
         >
           <div className={styles.sectionLabel}>
-            <p>Balance</p>
-            <StatusBadge tone="neutral">Synthetic</StatusBadge>
+            <p>{locale === "hi" ? "शेष राशि" : "Balance"}</p>
+            <StatusBadge tone="neutral">{t.common.synthetic}</StatusBadge>
           </div>
-          <h3 id="balance-title">Synthetic PF balance</h3>
+          <h3 id="balance-title">
+            {locale === "hi" ? "काल्पनिक पीएफ शेष" : "Synthetic PF balance"}
+          </h3>
           <strong className={styles.balanceTotal}>
             {currencyFormatter.format(totalRupees)}
           </strong>
@@ -291,7 +334,7 @@ export function ClaimWorkspace({
                   className={`${styles.shareDot} ${styles.employeeDot}`}
                   aria-hidden="true"
                 />
-                Employee share
+                {locale === "hi" ? "कर्मचारी हिस्सा" : "Employee share"}
               </dt>
               <dd>
                 {currencyFormatter.format(
@@ -305,7 +348,7 @@ export function ClaimWorkspace({
                   className={`${styles.shareDot} ${styles.employerDot}`}
                   aria-hidden="true"
                 />
-                Employer share
+                {locale === "hi" ? "नियोक्ता हिस्सा" : "Employer share"}
               </dt>
               <dd>
                 {currencyFormatter.format(
@@ -319,7 +362,7 @@ export function ClaimWorkspace({
                   className={`${styles.shareDot} ${styles.pensionDot}`}
                   aria-hidden="true"
                 />
-                Pension share
+                {locale === "hi" ? "पेंशन हिस्सा" : "Pension share"}
               </dt>
               <dd>
                 {currencyFormatter.format(workspace.balance.pensionShareRupees)}
@@ -327,13 +370,15 @@ export function ClaimWorkspace({
             </div>
           </dl>
           <p className={styles.scopeNote}>
-            Balance on record is not an eligibility result.
+            {locale === "hi"
+              ? "रिकॉर्ड पर उपलब्ध शेष राशि सीधे पात्रता का परिणाम नहीं है।"
+              : "Balance on record is not an eligibility result."}
           </p>
         </section>
 
         <section className={styles.ledgerSection} aria-labelledby="claim-title">
           <div className={styles.sectionLabel}>
-            <p>Claim</p>
+            <p>{locale === "hi" ? "दावा" : "Claim"}</p>
             <StatusBadge tone={claimStatusTones[activeStatus]}>
               {claimStatusLabels[activeStatus]}
             </StatusBadge>
@@ -344,24 +389,27 @@ export function ClaimWorkspace({
           </strong>
           <dl className={styles.claimDetails}>
             <div>
-              <dt>Reference</dt>
+              <dt>{locale === "hi" ? "संदर्भ संख्या" : "Reference"}</dt>
               <dd className={styles.refCode}>{timeline.claimId}</dd>
             </div>
             <div>
-              <dt>Request type</dt>
-              <dd>PF advance</dd>
+              <dt>{locale === "hi" ? "अनुरोध प्रकार" : "Request type"}</dt>
+              <dd>{locale === "hi" ? "पीएफ अग्रिम" : "PF advance"}</dd>
             </div>
             {timeline.acknowledgementNumber ? (
               <div>
-                <dt>Acknowledgement</dt>
+                <dt>{locale === "hi" ? "पावती" : "Acknowledgement"}</dt>
                 <dd className={styles.refCode}>
                   {timeline.acknowledgementNumber}
                 </dd>
               </div>
             ) : (
               <div>
-                <dt>Last update</dt>
-                <dd>{activeEvents[0]?.title ?? "Draft opened"}</dd>
+                <dt>{locale === "hi" ? "अंतिम अपडेट" : "Last update"}</dt>
+                <dd>
+                  {activeEvents[0]?.title ??
+                    (locale === "hi" ? "प्रारूप खोला गया" : "Draft opened")}
+                </dd>
               </div>
             )}
           </dl>
@@ -372,7 +420,9 @@ export function ClaimWorkspace({
                 onClick={onViewTimeline}
                 style={{ padding: "0.4rem 0.6rem", fontSize: "0.85rem" }}
               >
-                View full status timeline →
+                {locale === "hi"
+                  ? "पूर्ण स्थिति समयरेखा देखें →"
+                  : "View full status timeline →"}
               </Button>
             </div>
           ) : null}
@@ -386,7 +436,7 @@ export function ClaimWorkspace({
           aria-labelledby="issue-title"
         >
           <div className={styles.sectionLabel}>
-            <p>Issue state</p>
+            <p>{locale === "hi" ? "समस्या स्थिति" : "Issue state"}</p>
             <StatusBadge tone={issueTones[workspace.issue.tone]}>
               {workspace.issue.ownerLabel}
             </StatusBadge>
@@ -407,7 +457,9 @@ export function ClaimWorkspace({
                 onClick={onExplainIssue}
                 style={{ padding: "0.45rem 0.8rem", fontSize: "0.85rem" }}
               >
-                Explain with AI Interpreter →
+                {locale === "hi"
+                  ? "एआई इंटरप्रेटर से समझें →"
+                  : "Explain with AI Interpreter →"}
               </Button>
             ) : null}
             {onPrepareGrievance ? (
@@ -416,7 +468,9 @@ export function ClaimWorkspace({
                 onClick={onPrepareGrievance}
                 style={{ padding: "0.45rem 0.8rem", fontSize: "0.85rem" }}
               >
-                Prepare EPFiGMS Grievance →
+                {locale === "hi"
+                  ? "EPFiGMS शिकायत पत्र तैयार करें →"
+                  : "Prepare EPFiGMS Grievance →"}
               </Button>
             ) : null}
           </div>
@@ -427,15 +481,19 @@ export function ClaimWorkspace({
           aria-labelledby="events-title"
         >
           <div className={styles.sectionLabel}>
-            <p>Recent activity</p>
-            <span className={styles.eventsMeta}>Newest first</span>
+            <p>{locale === "hi" ? "हाल की गतिविधि" : "Recent activity"}</p>
+            <span className={styles.eventsMeta}>
+              {locale === "hi" ? "नवीनतम पहले" : "Newest first"}
+            </span>
           </div>
-          <h3 id="events-title">Recent events</h3>
+          <h3 id="events-title">
+            {locale === "hi" ? "हाल की घटनाएं" : "Recent events"}
+          </h3>
           <ol>
             {activeEvents.map((event) => (
               <li key={event.id}>
                 <time dateTime={event.occurredOn}>
-                  {formatDate(event.occurredOn)}
+                  {formatDate(event.occurredOn, locale)}
                 </time>
                 <div>
                   <strong>{event.title}</strong>

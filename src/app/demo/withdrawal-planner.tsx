@@ -17,6 +17,7 @@ import {
   type WithdrawalPurpose,
 } from "@/lib/eligibility/policy";
 import type { DemoCase } from "@/lib/demo/model";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 import styles from "./withdrawal-planner.module.css";
 
@@ -28,7 +29,8 @@ type WithdrawalPlannerProps = Readonly<{
 
 type PlannerStep = 1 | 2 | 3 | 4;
 
-const plannerSteps = ["Goal", "Details", "Amount", "Result"] as const;
+const plannerStepsEn = ["Goal", "Details", "Amount", "Result"] as const;
+const plannerStepsHi = ["उद्देश्य", "विवरण", "राशि", "परिणाम"] as const;
 
 const currencyFormatter = new Intl.NumberFormat("en-IN", {
   style: "currency",
@@ -46,6 +48,7 @@ export function WithdrawalPlanner({
   onBack,
   onStartMockClaim,
 }: WithdrawalPlannerProps) {
+  const { locale, t } = useLocale();
   const [step, setStep] = useState<PlannerStep>(1);
   const [purpose, setPurpose] = useState<WithdrawalPurpose>("medical");
   const [serviceMonths, setServiceMonths] = useState("36");
@@ -61,6 +64,8 @@ export function WithdrawalPlanner({
     demoCase.workspace.balance.employeeShareRupees +
     demoCase.workspace.balance.employerShareRupees;
 
+  const plannerSteps = locale === "hi" ? plannerStepsHi : plannerStepsEn;
+
   function continueFromGoal(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setStep(2);
@@ -71,7 +76,11 @@ export function WithdrawalPlanner({
     const months = parseWholeNumber(serviceMonths);
 
     if (months < 0 || months > 600 || !Number.isFinite(months)) {
-      setServiceError("Enter synthetic service between 0 and 600 months.");
+      setServiceError(
+        locale === "hi"
+          ? "0 से 600 महीनों के बीच सेवा अवधि दर्ज करें।"
+          : "Enter synthetic service between 0 and 600 months.",
+      );
       return;
     }
 
@@ -84,7 +93,11 @@ export function WithdrawalPlanner({
     const amount = parseWholeNumber(amountNeeded);
 
     if (amount <= 0 || amount > 10000000 || !Number.isFinite(amount)) {
-      setAmountError("Enter a synthetic amount from ₹1 to ₹1,00,00,000.");
+      setAmountError(
+        locale === "hi"
+          ? "₹1 से ₹1,00,00,000 तक की राशि दर्ज करें।"
+          : "Enter a synthetic amount from ₹1 to ₹1,00,00,000.",
+      );
       return;
     }
 
@@ -106,16 +119,31 @@ export function WithdrawalPlanner({
     <section className={styles.planner} aria-labelledby="planner-title">
       <header className={styles.header}>
         <div>
-          <p>Fictional planning tool · no submission</p>
-          <h2 id="planner-title">Plan a mock PF withdrawal</h2>
-          <span>{demoCase.persona.displayName}&apos;s synthetic case</span>
+          <p>
+            {locale === "hi"
+              ? "काल्पनिक योजना टूल · कोई सबमिशन नहीं"
+              : "Fictional planning tool · no submission"}
+          </p>
+          <h2 id="planner-title">
+            {locale === "hi"
+              ? "मॉक पीएफ निकासी की योजना बनाएं"
+              : "Plan a mock PF withdrawal"}
+          </h2>
+          <span>
+            {locale === "hi"
+              ? `${demoCase.persona.displayName} का काल्पनिक केस`
+              : `${demoCase.persona.displayName}'s synthetic case`}
+          </span>
         </div>
         <Button variant="quiet" onClick={onBack}>
-          Back to workspace
+          {locale === "hi" ? "← वर्कस्पेस पर लौटें" : "Back to workspace"}
         </Button>
       </header>
 
-      <nav className={styles.progress} aria-label="Planning progress">
+      <nav
+        className={styles.progress}
+        aria-label={locale === "hi" ? "योजना प्रगति" : "Planning progress"}
+      >
         <ol>
           {plannerSteps.map((label, index) => {
             const stepNumber = (index + 1) as PlannerStep;
@@ -140,21 +168,38 @@ export function WithdrawalPlanner({
         </ol>
       </nav>
 
-      <Callout title="Use fictional answers only">
-        This tool estimates a mock amount from a published policy snapshot. It
-        does not check a real EPFO account or confirm entitlement.
+      <Callout
+        title={
+          locale === "hi"
+            ? "केवल काल्पनिक उत्तरों का उपयोग करें"
+            : "Use fictional answers only"
+        }
+      >
+        {locale === "hi"
+          ? "यह टूल ईपीएफओ नीति स्नैपशॉट से अनुमानित राशि की गणना करता है। यह किसी वास्तविक खाते की जांच नहीं करता।"
+          : "This tool estimates a mock amount from a published policy snapshot. It does not check a real EPFO account or confirm entitlement."}
       </Callout>
 
       {step === 1 ? (
         <form className={styles.step} onSubmit={continueFromGoal}>
           <div className={styles.stepHeading}>
-            <p>Question 1 of 3</p>
-            <h3>What is the withdrawal for?</h3>
-            <span>Choose one fictional need for this calculation.</span>
+            <p>{locale === "hi" ? "प्रश्न 1 / 3" : "Question 1 of 3"}</p>
+            <h3>
+              {locale === "hi"
+                ? "निकासी किस उद्देश्य के लिए है?"
+                : "What is the withdrawal for?"}
+            </h3>
+            <span>
+              {locale === "hi"
+                ? "इस गणना हेतु एक उद्देश्य चुनें।"
+                : "Choose one fictional need for this calculation."}
+            </span>
           </div>
 
           <fieldset className={styles.purposeFieldset}>
-            <legend>Withdrawal purpose</legend>
+            <legend>
+              {locale === "hi" ? "निकासी का उद्देश्य" : "Withdrawal purpose"}
+            </legend>
             {WITHDRAWAL_PURPOSES.map((item) => (
               <label key={item.id}>
                 <input
@@ -177,7 +222,9 @@ export function WithdrawalPlanner({
           </fieldset>
 
           <div className={styles.actions}>
-            <Button type="submit">Continue to details</Button>
+            <Button type="submit">
+              {locale === "hi" ? "विवरण पर आगे बढ़ें" : "Continue to details"}
+            </Button>
           </div>
         </form>
       ) : null}
@@ -185,19 +232,32 @@ export function WithdrawalPlanner({
       {step === 2 ? (
         <form className={styles.step} onSubmit={continueFromDetails}>
           <div className={styles.stepHeading}>
-            <p>Question 2 of 3</p>
-            <h3>Does this fictional case meet the basic checks?</h3>
+            <p>{locale === "hi" ? "प्रश्न 2 / 3" : "Question 2 of 3"}</p>
+            <h3>
+              {locale === "hi"
+                ? "क्या यह केस बुनियादी सेवा शर्तों को पूरा करता है?"
+                : "Does this fictional case meet the basic checks?"}
+            </h3>
             <span>
-              The demo checks total service and prior{" "}
-              {purposePolicy.label.toLowerCase()} withdrawals.
+              {locale === "hi"
+                ? `डेमो कुल सेवा और पूर्व ${purposePolicy.label.toLowerCase()} निकासियों की जांच करता है।`
+                : `The demo checks total service and prior ${purposePolicy.label.toLowerCase()} withdrawals.`}
             </span>
           </div>
 
           <div className={styles.fieldGrid}>
             <TextField
               id="synthetic-service-months"
-              label="Total service in months"
-              hint="Synthetic value only. The demo minimum is 12 months."
+              label={
+                locale === "hi"
+                  ? "महीनों में कुल सेवा अवधि"
+                  : "Total service in months"
+              }
+              hint={
+                locale === "hi"
+                  ? "काल्पनिक मान। डेमो में न्यूनतम 12 महीने आवश्यक हैं।"
+                  : "Synthetic value only. The demo minimum is 12 months."
+              }
               error={serviceError}
               type="number"
               inputMode="numeric"
@@ -210,11 +270,14 @@ export function WithdrawalPlanner({
 
             <div className={styles.selectField}>
               <label htmlFor="previous-withdrawals">
-                Previous {purposePolicy.label.toLowerCase()} withdrawals
+                {locale === "hi"
+                  ? `पूर्व ${purposePolicy.label} निकासियां`
+                  : `Previous ${purposePolicy.label.toLowerCase()} withdrawals`}
               </label>
               <span id="previous-withdrawals-hint">
-                Demo limit: {purposePolicy.frequencyLimit}{" "}
-                {purposePolicy.frequencyWindow}.
+                {locale === "hi"
+                  ? `डेमो सीमा: ${purposePolicy.frequencyLimit} ${purposePolicy.frequencyWindow}`
+                  : `Demo limit: ${purposePolicy.frequencyLimit} ${purposePolicy.frequencyWindow}.`}
               </span>
               <select
                 id="previous-withdrawals"
@@ -236,9 +299,11 @@ export function WithdrawalPlanner({
 
           <div className={styles.actions}>
             <Button variant="quiet" onClick={() => setStep(1)}>
-              Back
+              {t.common.back}
             </Button>
-            <Button type="submit">Continue to amount</Button>
+            <Button type="submit">
+              {locale === "hi" ? "राशि पर आगे बढ़ें" : "Continue to amount"}
+            </Button>
           </div>
         </form>
       ) : null}
@@ -246,20 +311,34 @@ export function WithdrawalPlanner({
       {step === 3 ? (
         <form className={styles.step} onSubmit={calculateResult}>
           <div className={styles.stepHeading}>
-            <p>Question 3 of 3</p>
-            <h3>How much is needed in this demo?</h3>
+            <p>{locale === "hi" ? "प्रश्न 3 / 3" : "Question 3 of 3"}</p>
+            <h3>
+              {locale === "hi"
+                ? "इस डेमो में कितनी राशि की आवश्यकता है?"
+                : "How much is needed in this demo?"}
+            </h3>
             <span>
-              The calculator may return less if the mock policy cap is lower.
+              {locale === "hi"
+                ? "यदि लागू नियम सीमा कम है, तो कैलकुलेटर कम राशि दर्शा सकता है।"
+                : "The calculator may return less if the mock policy cap is lower."}
             </span>
           </div>
 
           <div className={styles.amountContext}>
             <div>
-              <span>Employee + employer shares considered</span>
+              <span>
+                {locale === "hi"
+                  ? "कर्मचारी + नियोक्ता हिस्सा"
+                  : "Employee + employer shares considered"}
+              </span>
               <strong>{currencyFormatter.format(contributionBalance)}</strong>
             </div>
             <div>
-              <span>Pension share excluded</span>
+              <span>
+                {locale === "hi"
+                  ? "पेंशन हिस्सा (सुरक्षित)"
+                  : "Pension share excluded"}
+              </span>
               <strong>
                 {currencyFormatter.format(
                   demoCase.workspace.balance.pensionShareRupees,
@@ -270,8 +349,12 @@ export function WithdrawalPlanner({
 
           <TextField
             id="synthetic-amount-needed"
-            label="Amount needed"
-            hint="Enter a fictional rupee amount. No money is moved."
+            label={locale === "hi" ? "आवश्यक राशि" : "Amount needed"}
+            hint={
+              locale === "hi"
+                ? "काल्पनिक रुपया राशि दर्ज करें। कोई वास्तविक धन ट्रांसफर नहीं होता।"
+                : "Enter a fictional rupee amount. No money is moved."
+            }
             error={amountError}
             type="number"
             inputMode="numeric"
@@ -284,9 +367,13 @@ export function WithdrawalPlanner({
 
           <div className={styles.actions}>
             <Button variant="quiet" onClick={() => setStep(2)}>
-              Back
+              {t.common.back}
             </Button>
-            <Button type="submit">Calculate mock result</Button>
+            <Button type="submit">
+              {locale === "hi"
+                ? "काल्पनिक पात्रता गणना करें"
+                : "Calculate mock result"}
+            </Button>
           </div>
         </form>
       ) : null}
@@ -316,6 +403,8 @@ function EligibilityResultView({
   onStartMockClaim,
   result,
 }: EligibilityResultViewProps) {
+  const { locale } = useLocale();
+
   return (
     <section
       className={styles.result}
@@ -324,30 +413,48 @@ function EligibilityResultView({
       <header className={styles.resultHeader}>
         <StatusBadge tone={result.eligible ? "success" : "critical"}>
           {result.eligible
-            ? "Eligible in this demo"
-            : "Not eligible in this demo"}
+            ? locale === "hi"
+              ? "इस डेमो में पात्र"
+              : "Eligible in this demo"
+            : locale === "hi"
+              ? "इस डेमो में अपात्र"
+              : "Not eligible in this demo"}
         </StatusBadge>
-        <p>Mock eligibility result</p>
+        <p>
+          {locale === "hi"
+            ? "काल्पनिक पात्रता परिणाम"
+            : "Mock eligibility result"}
+        </p>
         <h3 id="eligibility-result-title">
           {result.eligible
-            ? `Up to ${currencyFormatter.format(result.amounts.eligibleAmountRupees)} in this demo`
-            : "₹0 under these answers"}
+            ? locale === "hi"
+              ? `इस डेमो में अधिकतम ${currencyFormatter.format(result.amounts.eligibleAmountRupees)} तक`
+              : `Up to ${currencyFormatter.format(result.amounts.eligibleAmountRupees)} in this demo`
+            : locale === "hi"
+              ? "इन उत्तरों के आधार पर ₹0"
+              : "₹0 under these answers"}
         </h3>
         <span>{result.limitingRule}</span>
       </header>
 
       <div className={styles.resultGrid}>
         <section aria-labelledby="breakdown-title">
-          <h4 id="breakdown-title">Amount breakdown</h4>
+          <h4 id="breakdown-title">
+            {locale === "hi" ? "राशि विवरण" : "Amount breakdown"}
+          </h4>
           <dl className={styles.breakdown}>
             <div>
-              <dt>Amount entered</dt>
+              <dt>{locale === "hi" ? "दर्ज की गई राशि" : "Amount entered"}</dt>
               <dd>
                 {currencyFormatter.format(result.amounts.amountNeededRupees)}
               </dd>
             </div>
             <div>
-              <dt>Employee + employer shares</dt>
+              <dt>
+                {locale === "hi"
+                  ? "कर्मचारी + नियोक्ता हिस्सा"
+                  : "Employee + employer shares"}
+              </dt>
               <dd>
                 {currencyFormatter.format(
                   result.amounts.contributionBalanceRupees,
@@ -355,88 +462,86 @@ function EligibilityResultView({
               </dd>
             </div>
             <div>
-              <dt>Protected 25%</dt>
+              <dt>
+                {locale === "hi"
+                  ? "पेंशन शेयर (सुरक्षित)"
+                  : "Protected pension share"}
+              </dt>
               <dd>
-                −
-                {currencyFormatter.format(
-                  result.amounts.protectedBalanceRupees,
-                )}
+                {currencyFormatter.format(result.amounts.pensionExcludedRupees)}
               </dd>
             </div>
             <div>
-              <dt>Mock policy maximum</dt>
-              <dd>
-                {currencyFormatter.format(result.amounts.policyMaximumRupees)}
-              </dd>
-            </div>
-            <div className={styles.breakdownTotal}>
-              <dt>Mock eligible amount</dt>
-              <dd>
+              <dt>
+                {locale === "hi" ? "अंतिम पात्र राशि" : "Final eligible amount"}
+              </dt>
+              <dd className={styles.eligibleAmount}>
                 {currencyFormatter.format(result.amounts.eligibleAmountRupees)}
               </dd>
             </div>
-            <div>
-              <dt>Contribution balance after</dt>
-              <dd>
-                {currencyFormatter.format(
-                  result.amounts.contributionBalanceAfterRupees,
-                )}
-              </dd>
-            </div>
           </dl>
-          <p className={styles.excludedAmount}>
-            Pension share excluded from this calculation:{" "}
-            {currencyFormatter.format(result.amounts.pensionExcludedRupees)}.
-          </p>
         </section>
 
         <section aria-labelledby="checks-title">
-          <h4 id="checks-title">Why this result?</h4>
-          <ul className={styles.checks}>
+          <h4 id="checks-title">
+            {locale === "hi" ? "पॉलिसी जांच" : "Policy checks"}
+          </h4>
+          <ul className={styles.checkList}>
             {result.checks.map((check) => (
-              <li key={check.id}>
-                <StatusBadge tone={check.passed ? "success" : "critical"}>
-                  {check.passed ? "Passed" : "Not met"}
-                </StatusBadge>
+              <li key={check.id} data-status={check.passed ? "pass" : "fail"}>
                 <div>
                   <strong>{check.label}</strong>
                   <p>{check.explanation}</p>
                 </div>
+                <StatusBadge tone={check.passed ? "success" : "critical"}>
+                  {check.passed
+                    ? locale === "hi"
+                      ? "सफल"
+                      : "Pass"
+                    : locale === "hi"
+                      ? "विफल"
+                      : "Fail"}
+                </StatusBadge>
               </li>
             ))}
           </ul>
         </section>
       </div>
 
-      <aside
-        className={styles.policyNote}
-        aria-label="Policy source and limitation"
-      >
-        <strong>Policy snapshot, not an entitlement decision</strong>
-        <p>
-          This demo models the EPFO reform framework announced on 13 October
-          2025: 12 months&apos; service, purpose frequency limits, and a 25%
-          protected balance. Actual notified rules and portal decisions may
-          differ.
-        </p>
+      <div className={styles.sourceBox}>
+        <div>
+          <span>
+            {locale === "hi" ? "नियम संदर्भ" : "Rule basis on record"}
+          </span>
+          <p>{result.limitingRule}</p>
+        </div>
         <a
           href={ELIGIBILITY_POLICY_SOURCE_URL}
           target="_blank"
           rel="noreferrer"
+          className={styles.sourceLink}
         >
-          Read the official EPFO press brief ↗
+          {locale === "hi"
+            ? "ईपीएफओ स्रोत दिशानिर्देश देखें"
+            : "Review EPFO source guidelines"}{" "}
+          <span aria-hidden="true">↗</span>
         </a>
-      </aside>
+      </div>
 
       <div className={styles.actions}>
-        <Button variant="secondary" onClick={onChangeAnswers}>
-          Change answers
+        <Button variant="quiet" onClick={onChangeAnswers}>
+          {locale === "hi" ? "उत्तर बदलें" : "Change answers"}
+        </Button>
+        <Button variant="secondary" onClick={onBack}>
+          {locale === "hi" ? "वर्कस्पेस पर लौटें" : "Back to workspace"}
         </Button>
         {result.eligible ? (
-          <Button onClick={onStartMockClaim}>Continue to claim details</Button>
-        ) : (
-          <Button onClick={onBack}>Return to workspace</Button>
-        )}
+          <Button onClick={onStartMockClaim}>
+            {locale === "hi"
+              ? "मॉक दावा फॉर्म शुरू करें →"
+              : "Start simplified mock claim →"}
+          </Button>
+        ) : null}
       </div>
     </section>
   );

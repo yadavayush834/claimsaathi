@@ -8,6 +8,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { DemoCase } from "@/lib/demo/model";
 import { DemoGrievanceRecord } from "@/lib/demo/grievance-model";
 import { grievanceService } from "@/lib/demo/grievance-service";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 import styles from "./grievance-manager.module.css";
 
@@ -17,6 +18,8 @@ export interface GrievanceManagerProps {
 }
 
 export function GrievanceManager({ demoCase, onBack }: GrievanceManagerProps) {
+  const { locale, t } = useLocale();
+
   const [record, setRecord] = useState<DemoGrievanceRecord>(() =>
     grievanceService.getOrInitializeGrievance(demoCase),
   );
@@ -64,13 +67,16 @@ export function GrievanceManager({ demoCase, onBack }: GrievanceManagerProps) {
   const handleCopyText = async () => {
     const textToCopy = grievanceService.exportPetitionAsText(record);
     try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
+      if (
+        typeof navigator !== "undefined" &&
+        navigator.clipboard &&
+        typeof navigator.clipboard.writeText === "function"
+      ) {
         await navigator.clipboard.writeText(textToCopy);
       }
       setCopied(true);
       setTimeout(() => setCopied(false), 3000);
     } catch {
-      // Fallback
       setCopied(true);
       setTimeout(() => setCopied(false), 3000);
     }
@@ -97,216 +103,295 @@ export function GrievanceManager({ demoCase, onBack }: GrievanceManagerProps) {
       <header className={styles.header}>
         <div className={styles.headerLeft}>
           <p className={styles.eyebrow}>
-            AI-Assisted Grievance Gateway · EPFiGMS Simulation
+            {locale === "hi"
+              ? "एआई-सहायक शिकायत पोर्टल · EPFiGMS सिमुलेशन"
+              : "AI-Assisted Grievance Gateway · EPFiGMS Simulation"}
           </p>
           <h2 id="grievance-title" className={styles.title}>
-            Prepare Grievance for {demoCase.persona.displayName}
+            {locale === "hi"
+              ? `${demoCase.persona.displayName} हेतु शिकायत याचिका तैयार करें`
+              : `Draft Statutory Grievance for ${demoCase.persona.displayName}`}
           </h2>
           <p className={styles.description}>
-            Draft a formal representation citing statutory scheme rules, verify
-            required evidence attachments, export for EPFiGMS filing, or
-            simulate registration with automated 15-day Citizens&apos; Charter
-            SLA tracking.
+            {locale === "hi"
+              ? "ईपीएफओ के नियम संदर्भों, बैंक विवरणों और साक्ष्यों के साथ सटीक याचिका पत्र तैयार करें और 15-दिवसीय नागरिक चार्टर समयसीमा ट्रैक करें।"
+              : "Generate an explainable, regulation-cited petition for EPFiGMS, track required documentary evidence, and manage statutory Citizen's Charter SLAs."}
           </p>
         </div>
         <Button variant="quiet" onClick={onBack}>
-          Back to workspace
+          {locale === "hi" ? "← वर्कस्पेस पर लौटें" : "Back to workspace"}
         </Button>
       </header>
 
-      {isRegistered ? (
-        <div
-          className={styles.statusBanner}
-          role="region"
-          aria-label="Grievance Registration Details"
-        >
-          <div className={styles.statusInfo}>
-            <span className={styles.statusDocket}>
-              Docket Ref: {record.registrationNumber}
-            </span>
-            <span className={styles.statusMeta}>
-              Filed on 2026-08-29 under EPFO Citizens&apos; Charter 15-Day
-              Resolution SLA
-            </span>
-          </div>
-          <div
-            style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}
-          >
-            <span className={styles.slaTag}>
-              ⏱ {record.slaDaysRemaining} Days SLA Target
-            </span>
-            <Button
-              variant={record.reminderActive ? "primary" : "secondary"}
-              onClick={handleToggleReminder}
-            >
-              {record.reminderActive
-                ? "✓ SLA Reminder Active"
-                : "+ Enable SLA Reminder"}
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <Callout title="AI-Assisted Formal Petition Ready for Review">
-          This draft incorporates statutory citations under EPF Scheme 1952
-          (e.g. Para 68 / Para 72) and isolates the specific dispute for the
-          Regional P.F. Commissioner. Review, customize, and verify your
-          supporting evidence below before filing.
-        </Callout>
-      )}
+      <Callout
+        title={
+          locale === "hi"
+            ? "EPFiGMS सिमुलेशन दिशानिर्देश"
+            : "EPFiGMS Portal Mock Guidelines"
+        }
+      >
+        {locale === "hi"
+          ? "यह याचिका ड्राफ्ट ईपीएफ योजना नियमों (उदा. आवास अग्रिम हेतु Para 68B) का उल्लेख करता है। वास्तविक EPFiGMS पोर्टल पर सबमिट करने हेतु कॉपी या डाउनलोड करें।"
+          : "This draft cites EPFO statutory provisions and verified transaction facts. Export or copy the text to file on the live EPFiGMS portal."}
+      </Callout>
 
-      <div className={styles.layoutGrid}>
-        {/* Left Column: Editor & Actions */}
-        <div className={styles.card}>
-          <div className={styles.cardHeader}>
-            <h3 className={styles.cardTitle}>Formal Representation Petition</h3>
-            <StatusBadge tone={isRegistered ? "success" : "info"}>
-              {isRegistered ? "Registered" : "Editable Draft"}
-            </StatusBadge>
+      <div className={styles.bodyGrid}>
+        {/* Left Column: Editable Petition Form */}
+        <section
+          className={styles.petitionSection}
+          aria-labelledby="petition-heading"
+        >
+          <div className={styles.sectionHeader}>
+            <h3 id="petition-heading">
+              {locale === "hi"
+                ? "याचिका पत्र संपादक"
+                : "Statutory Petition Editor"}
+            </h3>
+            <span className={styles.sectionMeta}>
+              {record.category} · {record.claimId}
+            </span>
           </div>
 
           <div className={styles.fieldGroup}>
             <label htmlFor="grievance-subject" className={styles.fieldLabel}>
-              Subject Line
+              {locale === "hi"
+                ? "शिकायत का विषय (Grievance Subject)"
+                : "Grievance Subject"}
             </label>
             <input
               id="grievance-subject"
-              className={styles.subjectInput}
+              type="text"
+              className={styles.input}
               value={record.subject}
               onChange={handleSubjectChange}
-              disabled={isRegistered}
+              aria-label={
+                locale === "hi" ? "शिकायत का विषय" : "Grievance Subject"
+              }
             />
+          </div>
+
+          <div className={styles.statutoryBox}>
+            <span className={styles.statutoryTitle}>
+              {locale === "hi"
+                ? "कानूनी आधार एवं नियम संदर्भ:"
+                : "Statutory Scheme Grounds:"}
+            </span>
+            <p className={styles.statutoryText}>{record.subject}</p>
           </div>
 
           <div className={styles.fieldGroup}>
-            <label htmlFor="grievance-body" className={styles.fieldLabel}>
-              Petition Letter Body (Editable)
-            </label>
+            <div className={styles.labelRow}>
+              <label htmlFor="petition-body" className={styles.fieldLabel}>
+                {locale === "hi"
+                  ? "औपचारिक याचिका पत्र"
+                  : "Formal Petition Text"}
+              </label>
+              <span className={styles.charCount}>
+                {record.petitionText.length}{" "}
+                {locale === "hi" ? "अक्षर" : "characters"}
+              </span>
+            </div>
             <textarea
-              id="grievance-body"
-              className={styles.petitionTextarea}
+              id="petition-body"
+              className={styles.textarea}
+              rows={12}
               value={record.petitionText}
               onChange={handlePetitionChange}
-              disabled={isRegistered}
+              aria-label={
+                locale === "hi" ? "औपचारिक याचिका पत्र" : "Formal Petition Text"
+              }
             />
           </div>
 
-          <div className={styles.editorActions}>
-            <Button variant="secondary" onClick={handleCopyText}>
-              Copy petition text
-            </Button>
-            <Button variant="secondary" onClick={handleDownloadText}>
-              Export .txt file
-            </Button>
-            {copied && (
-              <span className={styles.copiedToast} role="status">
-                ✓ Copied to clipboard!
-              </span>
-            )}
-            {!isRegistered ? (
-              <Button variant="primary" onClick={handleRegister}>
-                Register on simulated EPFiGMS →
-              </Button>
-            ) : (
-              <Button variant="quiet" onClick={handleReset}>
-                Reset to draft
-              </Button>
-            )}
-          </div>
-        </div>
-
-        {/* Right Column: Evidence & Timeline */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "var(--space-6)",
-          }}
-        >
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <h3 className={styles.cardTitle}>
-                Supporting Evidence Checklist
-              </h3>
-              <StatusBadge tone={attachedCount >= 2 ? "success" : "warning"}>
-                {`${attachedCount} of ${record.evidenceList.length} Attached`}
-              </StatusBadge>
-            </div>
-            <p
-              style={{
-                fontSize: "var(--font-size-xs)",
-                color: "var(--color-text-muted)",
-                margin: 0,
-              }}
+          <div className={styles.petitionActions}>
+            <Button
+              variant="secondary"
+              onClick={handleCopyText}
+              aria-live="polite"
             >
-              Verify and attach supporting documents required for officer
-              review.
+              {copied
+                ? t.common.copied
+                : locale === "hi"
+                  ? "याचिका कॉपी करें"
+                  : "Copy Petition to Clipboard"}
+            </Button>
+            <Button variant="quiet" onClick={handleDownloadText}>
+              {locale === "hi" ? "डाउनलोड करें (.txt)" : "Download (.txt)"}
+            </Button>
+            <Button variant="quiet" onClick={handleReset}>
+              {locale === "hi" ? "मूल ड्राफ्ट रीसेट करें" : "Reset Default"}
+            </Button>
+          </div>
+        </section>
+
+        {/* Right Column: Evidence Checklist & EPFiGMS Registration */}
+        <aside
+          className={styles.sideSection}
+          aria-labelledby="evidence-heading"
+        >
+          {/* Evidence Checklist */}
+          <section className={styles.card}>
+            <div className={styles.cardHeader}>
+              <h3 id="evidence-heading">
+                {locale === "hi"
+                  ? "संलग्न साक्ष्य दस्तावेज"
+                  : "Supporting Evidence"}
+              </h3>
+              <span className={styles.evidenceCounter}>
+                {attachedCount} / {record.evidenceList.length}{" "}
+                {locale === "hi" ? "संलग्न" : "attached"}
+              </span>
+            </div>
+            <p className={styles.cardSub}>
+              {locale === "hi"
+                ? "त्वरित समाधान हेतु आवश्यक दस्तावेज संलग्न करें:"
+                : "Check items included with your petition for faster resolution:"}
             </p>
 
             <ul className={styles.evidenceList}>
               {record.evidenceList.map((item) => (
-                <li
-                  key={item.id}
-                  className={styles.evidenceItem}
-                  onClick={() => !isRegistered && handleToggleEvidence(item.id)}
-                >
-                  <input
-                    type="checkbox"
-                    className={styles.evidenceCheckbox}
-                    checked={item.attached}
-                    onChange={() => {}}
-                    disabled={isRegistered}
-                    aria-label={`Attach ${item.title}`}
-                  />
-                  <div className={styles.evidenceContent}>
-                    <div className={styles.evidenceTitleRow}>
-                      <span className={styles.evidenceTitle}>{item.title}</span>
-                      {item.required && (
-                        <span className={styles.requiredChip}>Required</span>
-                      )}
+                <li key={item.id} className={styles.evidenceItem}>
+                  <label className={styles.evidenceLabel}>
+                    <input
+                      type="checkbox"
+                      checked={item.attached}
+                      onChange={() => handleToggleEvidence(item.id)}
+                      className={styles.checkbox}
+                      aria-label={`Toggle evidence: ${item.title}`}
+                    />
+                    <div className={styles.evidenceText}>
+                      <strong>{item.title}</strong>
+                      <small>{item.description}</small>
                     </div>
-                    <p className={styles.evidenceDesc}>{item.description}</p>
-                    {item.attached && item.fileName && (
-                      <span className={styles.evidenceFile}>
-                        📄 {item.fileName}
-                      </span>
-                    )}
-                  </div>
+                  </label>
                 </li>
               ))}
             </ul>
-          </div>
+          </section>
 
-          <div className={styles.card}>
+          {/* EPFiGMS Docket Registration Simulation */}
+          <section
+            className={styles.card}
+            aria-labelledby="registration-heading"
+          >
             <div className={styles.cardHeader}>
-              <h3 className={styles.cardTitle}>Tracking &amp; Charter SLA</h3>
-              <StatusBadge tone="info">15-Day Target</StatusBadge>
+              <h3 id="registration-heading">
+                {locale === "hi" ? "EPFiGMS डॉकेट" : "EPFiGMS Registration"}
+              </h3>
+              <StatusBadge tone={isRegistered ? "success" : "warning"}>
+                {isRegistered
+                  ? locale === "hi"
+                    ? "डॉकेट दर्ज"
+                    : "Docket Registered"
+                  : locale === "hi"
+                    ? "प्रारूप तैयार"
+                    : "Draft Ready"}
+              </StatusBadge>
             </div>
-            <p
-              style={{
-                fontSize: "var(--font-size-xs)",
-                color: "var(--color-text-muted)",
-                margin: 0,
-              }}
-            >
-              EPFO Citizen&apos;s Charter standard guarantees a response within
-              15 working days for grievance dockets.
+
+            {isRegistered ? (
+              <div className={styles.docketBox}>
+                <span className={styles.docketLabel}>
+                  {locale === "hi"
+                    ? "सिम्युलेटेड डॉकेट नंबर"
+                    : "Mock EPFiGMS Docket Number"}
+                </span>
+                <strong className={styles.docketNum}>
+                  {record.registrationNumber}
+                </strong>
+                <small className={styles.docketDate}>
+                  {locale === "hi" ? "पंजीकरण तिथि: " : "Registered on: "}
+                  {record.registeredAt
+                    ? new Date(record.registeredAt).toLocaleDateString(
+                        locale === "hi" ? "hi-IN" : "en-IN",
+                        {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        },
+                      )
+                    : ""}
+                </small>
+              </div>
+            ) : (
+              <div className={styles.unregisteredBox}>
+                <p>
+                  {locale === "hi"
+                    ? "याचिका समीक्षा के उपरांत एक काल्पनिक डॉकेट संदर्भ संख्या उत्पन्न करें।"
+                    : "Simulate registration to test 15-day SLA reminder tracking in this demo."}
+                </p>
+                <Button onClick={handleRegister} className={styles.registerBtn}>
+                  {locale === "hi"
+                    ? "सिम्युलेटेड डॉकेट दर्ज करें →"
+                    : "Simulate EPFiGMS Registration →"}
+                </Button>
+              </div>
+            )}
+          </section>
+
+          {/* 15-Day Citizen's Charter SLA Tracker */}
+          <section className={styles.card} aria-labelledby="sla-heading">
+            <div className={styles.cardHeader}>
+              <h3 id="sla-heading">
+                {locale === "hi"
+                  ? "15-दिवसीय नागरिक चार्टर"
+                  : "15-Day Citizen's Charter SLA"}
+              </h3>
+              <StatusBadge tone="info">
+                {locale === "hi" ? "15 दिन SLA" : "15-Day Target"}
+              </StatusBadge>
+            </div>
+
+            <p className={styles.cardSub}>
+              {locale === "hi"
+                ? "ईपीएफओ नागरिक चार्टर के अनुसार प्रत्येक शिकायत का 15 कार्य दिवसों में समाधान अनिवार्य है।"
+                : "EPFO Citizen's Charter mandates resolution within 15 working days from registration."}
             </p>
 
-            <ul className={styles.timelineList}>
-              {record.events.map((evt) => (
-                <li key={evt.id} className={styles.timelineItem}>
-                  <span className={styles.timelineDot} />
-                  <span className={styles.timelineTitle}>{evt.title}</span>
-                  <p className={styles.timelineDesc}>{evt.description}</p>
-                  <div className={styles.timelineMeta}>
-                    <span>{evt.by}</span>
-                    <span>{evt.date}</span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+            <div className={styles.slaMeterWrap}>
+              <div className={styles.slaStats}>
+                <span>
+                  {locale === "hi" ? "शेष समयसीमा:" : "Resolution Window:"}
+                </span>
+                <strong>
+                  {record.slaDaysRemaining} / 15{" "}
+                  {locale === "hi" ? "दिन शेष" : "days remaining"}
+                </strong>
+              </div>
+              <div
+                className={styles.slaProgressBar}
+                aria-label={locale === "hi" ? "SLA प्रगति" : "SLA Progress"}
+              >
+                <span
+                  className={styles.slaProgressFill}
+                  style={{
+                    width: `${Math.max(
+                      10,
+                      ((15 - record.slaDaysRemaining) / 15) * 100,
+                    )}%`,
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className={styles.reminderToggle}>
+              <label className={styles.reminderLabel}>
+                <input
+                  type="checkbox"
+                  checked={record.reminderActive}
+                  onChange={handleToggleReminder}
+                  className={styles.checkbox}
+                  aria-label="Toggle calendar SLA reminder"
+                />
+                <span>
+                  {locale === "hi"
+                    ? "15-दिवसीय समाप्ति पर कैलेंडर रिमाइंडर सक्षम करें"
+                    : "Enable mock reminder at Day 15 SLA deadline"}
+                </span>
+              </label>
+            </div>
+          </section>
+        </aside>
       </div>
     </section>
   );

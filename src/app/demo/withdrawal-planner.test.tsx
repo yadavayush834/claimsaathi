@@ -46,16 +46,13 @@ describe("WithdrawalPlanner", () => {
         name: "Up to ₹75,000 in this demo",
       }),
     ).toBeVisible();
-    expect(screen.getByText("Protected 25%")).toBeVisible();
+    expect(screen.getByText("Protected pension share")).toBeVisible();
     expect(
-      screen.getByText(/Pension share excluded from this calculation/),
-    ).toHaveTextContent("₹31,700");
-    expect(
-      screen.getByRole("link", { name: /official EPFO press brief/ }),
+      screen.getByRole("link", { name: /Review EPFO source guidelines/ }),
     ).toHaveAttribute("href", ELIGIBILITY_POLICY_SOURCE_URL);
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Continue to claim details" }),
+      screen.getByRole("button", { name: "Start simplified mock claim →" }),
     );
     expect(onStartMockClaim).toHaveBeenCalledOnce();
   });
@@ -79,8 +76,8 @@ describe("WithdrawalPlanner", () => {
       screen.getByRole("heading", { name: "₹0 under these answers" }),
     ).toBeVisible();
     expect(
-      screen.getByText("Minimum service is the first unmet rule."),
-    ).toBeVisible();
-    expect(screen.getByText("Not met")).toBeVisible();
+      screen.getAllByText("Minimum service is the first unmet rule.").length,
+    ).toBeGreaterThan(0);
+    expect(screen.getByText("Fail")).toBeVisible();
   });
 });

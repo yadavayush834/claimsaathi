@@ -27,7 +27,7 @@ describe("ClaimTimeline", () => {
     const { onBack } = renderTimeline("asha-planning");
 
     expect(
-      screen.getByRole("heading", { name: "Asha Verma's Claim Status" }),
+      screen.getByRole("heading", { name: "Asha Verma's Claim Timeline" }),
     ).toBeVisible();
     expect(screen.getByText("1. Submission")).toBeVisible();
     expect(screen.getByText("2. Field review")).toBeVisible();
@@ -43,20 +43,20 @@ describe("ClaimTimeline", () => {
 
     // Advance 1: draft -> submitted
     fireEvent.click(
-      screen.getByRole("button", { name: "Advance simulated status →" }),
+      screen.getByRole("button", { name: "Simulate next lifecycle step →" }),
     );
     expect(screen.getAllByText("Submitted in demo").length).toBeGreaterThan(0);
 
     // Advance 2: submitted -> under_process
     fireEvent.click(
-      screen.getByRole("button", { name: "Advance simulated status →" }),
+      screen.getByRole("button", { name: "Simulate next lifecycle step →" }),
     );
     expect(screen.getAllByText("Under field review").length).toBeGreaterThan(0);
     expect(screen.getByText("Under field office review")).toBeVisible();
 
     // Advance 3: under_process -> approved
     fireEvent.click(
-      screen.getByRole("button", { name: "Advance simulated status →" }),
+      screen.getByRole("button", { name: "Simulate next lifecycle step →" }),
     );
     expect(screen.getAllByText("Approved & sanctioned").length).toBeGreaterThan(
       0,
@@ -65,13 +65,13 @@ describe("ClaimTimeline", () => {
 
     // Advance 4: approved -> settled
     fireEvent.click(
-      screen.getByRole("button", { name: "Advance simulated status →" }),
+      screen.getByRole("button", { name: "Simulate next lifecycle step →" }),
     );
     expect(screen.getAllByText("Settled in demo").length).toBeGreaterThan(0);
     expect(screen.getByText("Settlement completed")).toBeVisible();
 
     // Reset back to baseline
-    fireEvent.click(screen.getByRole("button", { name: "Reset to baseline" }));
+    fireEvent.click(screen.getByRole("button", { name: "Reset timeline" }));
     expect(screen.getAllByText("Draft ready").length).toBeGreaterThan(0);
   });
 });

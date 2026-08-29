@@ -22,12 +22,26 @@ body {
     radial-gradient(circle at 8% 2%, rgb(184 180 255 / 22%), transparent 28rem),
     linear-gradient(180deg, #f8f9fd 0%, var(--color-canvas) 34rem);
   color: var(--color-ink);
-  font-family: var(--font-body), sans-serif;
+  font-family: var(--font-body), var(--font-devanagari), system-ui, sans-serif;
   font-size: var(--text-body);
   line-height: 1.6;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+[data-lang="hi"],
+[lang="hi"] {
+  font-family: var(--font-devanagari), var(--font-body), system-ui, sans-serif;
+  line-height: 1.7;
+}
+
+[data-lang="hi"] h1,
+[data-lang="hi"] h2,
+[data-lang="hi"] h3,
+[data-lang="hi"] strong {
+  font-family:
+    var(--font-devanagari), var(--font-display), system-ui, sans-serif;
 }
 
 button,
