@@ -10,6 +10,7 @@ describe("ClaimWorkspace", () => {
     const demoCase = demoDataService.loadCase("imran-returned");
     const onSwitch = vi.fn();
     const onViewTimeline = vi.fn();
+    const onExplainIssue = vi.fn();
 
     expect(demoCase).not.toBeNull();
     render(
@@ -18,6 +19,7 @@ describe("ClaimWorkspace", () => {
         sessionMessage="Session restored after refresh."
         onSwitch={onSwitch}
         onViewTimeline={onViewTimeline}
+        onExplainIssue={onExplainIssue}
       />,
     );
 
@@ -45,6 +47,11 @@ describe("ClaimWorkspace", () => {
     expect(
       screen.getByText("Balance on record is not an eligibility result."),
     ).toBeVisible();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Explain with AI Interpreter →" }),
+    );
+    expect(onExplainIssue).toHaveBeenCalledOnce();
 
     fireEvent.click(
       screen.getByRole("button", { name: "Track claim timeline →" }),

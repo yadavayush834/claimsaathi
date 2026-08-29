@@ -20,6 +20,7 @@ type ClaimWorkspaceProps = Readonly<{
   onPlanWithdrawal?: () => void;
   onReviewPreflight?: () => void;
   onViewTimeline?: () => void;
+  onExplainIssue?: () => void;
 }>;
 
 const claimStatusLabels: Record<DemoClaimStatus, string> = {
@@ -79,6 +80,7 @@ function getInitials(name: string) {
 
 export function ClaimWorkspace({
   demoCase,
+  onExplainIssue,
   onPlanWithdrawal,
   onReviewPreflight,
   onSwitch,
@@ -361,6 +363,17 @@ export function ClaimWorkspace({
           </div>
           <h3 id="issue-title">{workspace.issue.title}</h3>
           <p>{workspace.issue.description}</p>
+          {onExplainIssue ? (
+            <div style={{ marginTop: "0.85rem" }}>
+              <Button
+                variant="secondary"
+                onClick={onExplainIssue}
+                style={{ padding: "0.45rem 0.8rem", fontSize: "0.85rem" }}
+              >
+                Explain with AI Interpreter →
+              </Button>
+            </div>
+          ) : null}
         </section>
 
         <section
