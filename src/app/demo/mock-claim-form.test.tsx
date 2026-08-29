@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { demoDataService } from "@/lib/demo/demo-service";
-import { MOCK_CLAIM_DRAFT_STORAGE_KEY } from "@/lib/demo/mock-claim-draft-store";
+import { DEFAULT_SIMULATED_OTP } from "@/lib/demo/mock-claim-submission-service";
 
 import { MockClaimForm } from "./mock-claim-form";
 
@@ -11,11 +11,18 @@ afterEach(cleanup);
 function renderForm() {
   const demoCase = demoDataService.loadCase("asha-planning");
   const onBack = vi.fn();
+  const onSubmitted = vi.fn();
 
   expect(demoCase).not.toBeNull();
-  render(<MockClaimForm demoCase={demoCase!} onBack={onBack} />);
+  render(
+    <MockClaimForm
+      demoCase={demoCase!}
+      onBack={onBack}
+      onSubmitted={onSubmitted}
+    />,
+  );
 
-  return { onBack };
+  return { onBack, onSubmitted };
 }
 
 function completeNeed() {
@@ -30,12 +37,30 @@ function completeNeed() {
   );
 }
 
+function completePayment() {
+  fireEvent.click(
+    screen.getByLabelText("I checked this fictional bank record for the demo."),
+  );
+  fireEvent.click(
+    screen.getByRole("button", { name: "Continue to declaration" }),
+  );
+}
+
+function completeDeclaration() {
+  fireEvent.click(
+    screen.getByLabelText("I confirm this fictional declaration."),
+  );
+  fireEvent.click(
+    screen.getByRole("button", { name: "Continue to review & submit" }),
+  );
+}
+
 describe("MockClaimForm", () => {
   beforeEach(() => {
     window.localStorage.clear();
   });
 
-  it("shows actionable errors instead of allowing an empty mock claim", () => {
+  it("shows actionable errors instead of allowing an empty mock claim in part 1", () => {
     renderForm();
 
     fireEvent.submit(
@@ -54,40 +79,81 @@ describe("MockClaimForm", () => {
     ).toBeVisible();
   });
 
-  it("saves a fictional draft through the declaration step", () => {
-    const { onBack } = renderForm();
+  it("navigates through review, verifies simulated OTP, and generates synthetic receipt", async () => {
+    const { onBack, onSubmitted } = renderForm();
 
     completeNeed();
+    completePayment();
+    completeDeclaration();
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Review summary & simulated OTP",
+      }),
+    ).toBeVisible();
+
+    // Verify packet review summary data
+    expect(screen.getByText("Asha Verma")).toBeVisible();
+    expect(screen.getByText("Faridabad")).toBeVisible();
+    expect(
+      screen.getByText("Medical treatment · Fictional outpatient treatment"),
+    ).toBeVisible();
+
+    // Attempt submission without consent
     fireEvent.click(
-      screen.getByLabelText(
-        "I checked this fictional bank record for the demo.",
-      ),
-    );
-    fireEvent.click(
-      screen.getByRole("button", { name: "Continue to declaration" }),
-    );
-    fireEvent.click(
-      screen.getByLabelText("I confirm this fictional declaration."),
-    );
-    fireEvent.click(
-      screen.getByRole("button", { name: "Save mock claim details" }),
+      screen.getByRole("button", { name: "Verify & Submit Mock Claim" }),
     );
 
     expect(
-      screen.getByRole("heading", { name: "Ready for the review step." }),
-    ).toBeVisible();
-    expect(
-      JSON.parse(
-        window.localStorage.getItem(MOCK_CLAIM_DRAFT_STORAGE_KEY) ?? "null",
+      screen.getByText(
+        "Consent is required to simulate this mock claim submission.",
       ),
-    ).toMatchObject({
-      personaId: "asha-planning",
-      treatmentNeed: "Fictional outpatient treatment",
-      fictionalCity: "Faridabad",
-      bankConfirmed: true,
-      declarationConfirmed: true,
+    ).toBeVisible();
+
+    // Give consent and test invalid OTP
+    fireEvent.click(
+      screen.getByLabelText(/I authorize ClaimSaathi to simulate/),
+    );
+    fireEvent.change(screen.getByLabelText("6-digit simulated OTP"), {
+      target: { value: "000000" },
     });
 
+    fireEvent.click(
+      screen.getByRole("button", { name: "Verify & Submit Mock Claim" }),
+    );
+
+    expect(
+      await screen.findByText(
+        new RegExp(`Enter the 6-digit demo code: ${DEFAULT_SIMULATED_OTP}`),
+      ),
+    ).toBeVisible();
+
+    // Enter correct simulated OTP and submit
+    fireEvent.change(screen.getByLabelText("6-digit simulated OTP"), {
+      target: { value: DEFAULT_SIMULATED_OTP },
+    });
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Verify & Submit Mock Claim" }),
+    );
+
+    // Verify receipt appears
+    expect(
+      await screen.findByRole("heading", {
+        name: "Your mock claim has been received",
+      }),
+    ).toBeVisible();
+    expect(screen.getByText(/ACK-2026-AV-9482/)).toBeVisible();
+    expect(screen.getByText("DEMO-CLM-1001")).toBeVisible();
+    expect(onSubmitted).toHaveBeenCalledOnce();
+
+    // Test copy receipt summary
+    fireEvent.click(
+      screen.getByRole("button", { name: "Copy acknowledgement summary" }),
+    );
+    expect(screen.getByText("✓ Copied receipt")).toBeVisible();
+
+    // Return to workspace
     fireEvent.click(
       screen.getByRole("button", { name: "Return to workspace" }),
     );

@@ -42,7 +42,7 @@ describe("MockClaimDraftStore", () => {
     const store = createMockClaimDraftStore(window.localStorage);
     window.localStorage.setItem(
       MOCK_CLAIM_DRAFT_STORAGE_KEY,
-      JSON.stringify({ ...draft, step: 4 }),
+      JSON.stringify({ ...draft, step: 5 }),
     );
 
     expect(store.load("asha-planning")).toBeNull();
