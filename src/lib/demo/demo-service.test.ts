@@ -25,7 +25,7 @@ describe("DemoDataService", () => {
       claim: { id: "DEMO-CLM-1002", status: "action_needed" },
       workspace: {
         issue: { tone: "attention" },
-        nextAction: { title: "Check the fictional bank-name mismatch" },
+        nextAction: { title: "Run the fictional readiness preflight" },
       },
     });
     expect(service.loadCase("not-a-demo-persona")).toBeNull();

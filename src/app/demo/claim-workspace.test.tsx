@@ -37,7 +37,7 @@ describe("ClaimWorkspace", () => {
     ).toHaveTextContent("Mock claim submitted");
     expect(
       screen.getByRole("region", {
-        name: "Check the fictional bank-name mismatch",
+        name: "Run the fictional readiness preflight",
       }),
     ).toBeVisible();
     expect(

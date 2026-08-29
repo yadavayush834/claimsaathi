@@ -10,6 +10,8 @@ export type DemoPersonaId = (typeof DEMO_PERSONA_IDS)[number];
 export type DemoClaimStatus = "draft" | "action_needed" | "settled";
 export type DemoClaimKind = "pf_advance";
 export type DemoIssueTone = "clear" | "attention" | "review";
+export type DemoPreflightCategory = "identity" | "bank" | "evidence";
+export type DemoPreflightStatus = "ready" | "action_needed";
 
 export type DemoPersona = Readonly<{
   id: DemoPersonaId;
@@ -69,12 +71,32 @@ export type DemoNextAction = Readonly<{
   description: string;
 }>;
 
+export type DemoPreflightCheck = Readonly<{
+  id: string;
+  category: DemoPreflightCategory;
+  label: string;
+  status: DemoPreflightStatus;
+  summary: string;
+  comparedRecords: readonly Readonly<{
+    label: string;
+    value: string;
+  }>[];
+  ownerLabel: string;
+  actionLabel: string;
+  correctionSteps: readonly string[];
+}>;
+
+export type DemoPreflightSnapshot = Readonly<{
+  checks: readonly DemoPreflightCheck[];
+}>;
+
 export type DemoWorkspaceSnapshot = Readonly<{
   personaId: DemoPersonaId;
   balance: DemoBalance;
   recentEvents: readonly DemoClaimEvent[];
   issue: DemoIssue;
   nextAction: DemoNextAction;
+  preflight: DemoPreflightSnapshot;
 }>;
 
 export type DemoWorkspaceDataset = Readonly<{

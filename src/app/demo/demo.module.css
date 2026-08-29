@@ -6,29 +6,34 @@
 
 .page:has(
   [aria-labelledby="workspace-title"],
-  [aria-labelledby="planner-title"]
+  [aria-labelledby="planner-title"],
+  [aria-labelledby="preflight-title"]
 ) {
   padding-top: clamp(1.5rem, 4vw, 3rem);
 }
 
 .page:has(
     [aria-labelledby="workspace-title"],
-    [aria-labelledby="planner-title"]
+    [aria-labelledby="planner-title"],
+    [aria-labelledby="preflight-title"]
   )
   > .header,
 .page:has(
     [aria-labelledby="workspace-title"],
-    [aria-labelledby="planner-title"]
+    [aria-labelledby="planner-title"],
+    [aria-labelledby="preflight-title"]
   )
   > .calloutWrap,
 .page:has(
     [aria-labelledby="workspace-title"],
-    [aria-labelledby="planner-title"]
+    [aria-labelledby="planner-title"],
+    [aria-labelledby="preflight-title"]
   )
   > .checksWrapper,
 .page:has(
     [aria-labelledby="workspace-title"],
-    [aria-labelledby="planner-title"]
+    [aria-labelledby="planner-title"],
+    [aria-labelledby="preflight-title"]
   )
   > .backBtn {
   display: none;

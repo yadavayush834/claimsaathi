@@ -8,6 +8,7 @@ import { createDemoSessionStore } from "@/lib/demo/session-store";
 
 import { ClaimWorkspace } from "./claim-workspace";
 import styles from "./demo-session-manager.module.css";
+import { KycPreflight } from "./kyc-preflight";
 import { WithdrawalPlanner } from "./withdrawal-planner";
 
 type SessionView =
@@ -25,6 +26,7 @@ const demoCases = demoDataService.listCases();
 export function DemoSessionManager() {
   const [view, setView] = useState<SessionView>({ status: "loading" });
   const [plannerCase, setPlannerCase] = useState<DemoCase | null>(null);
+  const [preflightCase, setPreflightCase] = useState<DemoCase | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -64,6 +66,7 @@ export function DemoSessionManager() {
 
     const store = createDemoSessionStore(window.localStorage);
     setPlannerCase(null);
+    setPreflightCase(null);
     setView({
       status: "active",
       demoCase: selectedCase,
@@ -75,6 +78,7 @@ export function DemoSessionManager() {
   function switchCase() {
     createDemoSessionStore(window.localStorage).clear();
     setPlannerCase(null);
+    setPreflightCase(null);
     setView({ status: "choosing" });
   }
 
@@ -140,12 +144,26 @@ export function DemoSessionManager() {
     );
   }
 
+  if (preflightCase) {
+    return (
+      <KycPreflight
+        demoCase={preflightCase}
+        onBack={() => setPreflightCase(null)}
+      />
+    );
+  }
+
   return (
     <ClaimWorkspace
       demoCase={view.demoCase}
       onPlanWithdrawal={
         view.demoCase.persona.id === "asha-planning"
           ? () => setPlannerCase(view.demoCase)
+          : undefined
+      }
+      onReviewPreflight={
+        view.demoCase.persona.id === "imran-returned"
+          ? () => setPreflightCase(view.demoCase)
           : undefined
       }
       sessionMessage={
