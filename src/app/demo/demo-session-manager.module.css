@@ -1,215 +1,256 @@
+.manager,
 .loading {
-  display: grid;
-  gap: var(--space-2);
-  padding: var(--space-5);
-  border: 1px solid #333333;
-  background: #0d0d0d;
+  margin-top: clamp(3rem, 7vw, 5rem);
+}
+
+.loading {
+  padding: 2rem;
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-panel);
+  background: var(--color-paper);
+  box-shadow: var(--shadow-sm);
 }
 
 .loading strong {
-  display: block;
-  color: #ffffff;
-  font-family: var(--font-mono), monospace;
-  font-size: 1.05rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  color: var(--color-ink-strong);
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.4rem;
 }
 
 .loading p {
-  margin: 0;
-  color: #888888;
-  font-family: var(--font-mono), monospace;
-  font-size: var(--text-small);
+  margin: var(--space-2) 0 0;
+  color: var(--color-ink-muted);
 }
 
-.manager {
+.sectionHeading {
   display: grid;
-  gap: var(--space-6);
+  grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.7fr);
+  column-gap: clamp(2rem, 7vw, 6rem);
+  align-items: end;
 }
 
 .sectionHeading > p {
-  margin: 0;
-  color: #888888;
+  grid-column: 1 / -1;
+  margin: 0 0 var(--space-3);
+  color: var(--color-brand-strong);
   font-family: var(--font-mono), monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
 .sectionHeading h2 {
-  margin: var(--space-2) 0 0;
-  color: #ffffff;
-  font-family: var(--font-display), "Space Grotesk", sans-serif;
-  font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.4rem);
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  line-height: 1.1;
-  text-transform: uppercase;
+  margin: 0;
+  color: var(--color-ink-strong);
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  font-weight: 650;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
 }
 
 .sectionHeading > span {
-  display: block;
-  max-width: 40rem;
-  margin-top: var(--space-2);
-  color: #888888;
-  font-family: var(--font-mono), monospace;
-  font-size: var(--text-small);
-  line-height: 1.5;
+  color: var(--color-ink-muted);
+  font-size: var(--text-lede);
 }
 
 .caseList {
   display: grid;
-  gap: var(--space-3);
-  margin: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: clamp(2.5rem, 6vw, 4.5rem) 0 0;
   padding: 0;
   list-style: none;
 }
 
+.caseList li {
+  min-width: 0;
+}
+
 .caseButton {
+  position: relative;
   display: grid;
   width: 100%;
-  grid-template-columns: 4.25rem minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--space-4);
-  padding: var(--space-5);
-  border: 1px solid #2a2a2a;
-  background: #000000;
-  color: #ffffff;
-  cursor: pointer;
+  min-height: 25rem;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--space-5);
+  overflow: hidden;
+  padding: 1.35rem;
+  border: 1px solid var(--color-line-soft);
+  border-radius: 1.35rem 1.35rem 1.35rem 0.35rem;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-sm);
   text-align: left;
-  transition: all var(--transition-fast);
+  cursor: pointer;
+  transition:
+    transform var(--transition-smooth),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-smooth);
+}
+
+.caseButton::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 0.35rem;
+  background: var(--color-brand);
+  content: "";
+}
+
+.caseList li:nth-child(2) .caseButton::before {
+  background: var(--color-signal);
+}
+
+.caseList li:nth-child(3) .caseButton::before {
+  background: var(--color-success);
 }
 
 .caseButton:hover {
-  border-color: #ffffff;
-  background: #0d0d0d;
+  z-index: 2;
+  border-color: var(--color-brand-accent);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-0.65rem) rotate(-0.4deg);
 }
 
-.caseButton:focus-visible {
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
+.caseList li:nth-child(2) .caseButton:hover {
+  transform: translateY(-0.65rem) rotate(0.4deg);
 }
 
 .caseIndex {
-  display: grid;
-  width: 4.25rem;
-  height: 4.25rem;
-  place-content: center;
-  border: 1px solid #333333;
-  background: #111111;
-  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--color-brand-strong);
   font-family: var(--font-mono), monospace;
-  font-size: 1.4rem;
-  font-weight: 800;
-  line-height: 1;
-  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 600;
 }
 
 .caseIndex small {
-  margin-bottom: 0.2rem;
-  color: #888888;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.55rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  color: var(--color-ink-subtle);
+  font-family: var(--font-body), sans-serif;
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .caseBody {
-  display: block;
+  display: flex;
   min-width: 0;
+  flex-direction: column;
 }
 
-.caseBody small {
-  display: block;
-  color: #888888;
-  font-family: var(--font-mono), monospace;
+.caseBody > small {
+  color: var(--color-ink-subtle);
   font-size: var(--text-caption);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-weight: 650;
 }
 
-.caseBody strong {
-  display: block;
-  margin-top: 0.15rem;
-  color: #ffffff;
-  font-family: var(--font-display), "Space Grotesk", sans-serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  line-height: 1.15;
-  text-transform: uppercase;
+.caseBody > strong {
+  margin-top: auto;
+  color: var(--color-ink-strong);
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  line-height: 1;
 }
 
 .caseBody > span {
-  display: inline-block;
-  margin-top: 0.25rem;
-  color: #a0a0a0;
-  font-family: var(--font-mono), monospace;
+  margin-top: var(--space-3);
+  color: var(--color-brand-strong);
   font-size: var(--text-small);
-  font-weight: 600;
+  font-weight: 750;
 }
 
 .caseBody p {
-  margin: var(--space-2) 0 0;
-  color: #777777;
-  font-family: var(--font-mono), monospace;
+  margin: var(--space-3) 0 0;
+  color: var(--color-ink-muted);
   font-size: var(--text-small);
-  line-height: 1.45;
+  line-height: 1.55;
 }
 
 .caseAction {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.5rem 0.85rem;
-  border: 1px solid #333333;
-  background: #111111;
-  color: #ffffff;
-  font-family: var(--font-mono), monospace;
+  justify-content: space-between;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-line-soft);
+  color: var(--color-ink-strong);
   font-size: var(--text-small);
-  font-weight: 700;
-  white-space: nowrap;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  transition: all var(--transition-fast);
-}
-
-.caseButton:hover .caseAction {
-  background: #ffffff;
-  color: #000000;
-  border-color: #ffffff;
+  font-weight: 750;
 }
 
 .caseAction b {
-  font-size: 1.15rem;
-  transition: transform var(--transition-fast);
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border-radius: 0.75rem;
+  background: var(--color-brand-soft);
+  color: var(--color-brand-strong);
+  font-size: 1.1rem;
+  transition:
+    transform var(--transition-fast),
+    background var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .caseButton:hover .caseAction b {
-  transform: translateX(3px);
+  background: var(--color-brand);
+  color: #ffffff;
+  transform: translateX(0.2rem);
 }
 
-@media (max-width: 48rem) {
-  .caseButton {
-    grid-template-columns: 3.5rem minmax(0, 1fr);
-    align-items: start;
-    gap: var(--space-3);
-    padding: var(--space-4);
+@media (max-width: 58rem) {
+  .sectionHeading {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
   }
 
-  .caseIndex {
-    width: 3.5rem;
-    height: 3.5rem;
-    font-size: 1.25rem;
+  .caseList {
+    grid-template-columns: 1fr;
+  }
+
+  .caseButton {
+    min-height: 0;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-rows: 1fr;
+    align-items: stretch;
+  }
+
+  .caseBody > strong {
+    margin-top: var(--space-7);
+  }
+
+  .caseAction {
+    display: grid;
+    align-content: end;
+    justify-items: center;
+    gap: var(--space-3);
+    padding-top: 0;
+    padding-left: var(--space-4);
+    border-top: 0;
+    border-left: 1px solid var(--color-line-soft);
+  }
+}
+
+@media (max-width: 38rem) {
+  .caseButton {
+    grid-template-columns: auto minmax(0, 1fr);
   }
 
   .caseAction {
     grid-column: 1 / -1;
-    justify-content: center;
-    width: 100%;
-    margin-top: var(--space-1);
+    grid-auto-flow: column;
+    justify-content: space-between;
+    padding-top: var(--space-4);
+    padding-left: 0;
+    border-top: 1px solid var(--color-line-soft);
+    border-left: 0;
   }
 }

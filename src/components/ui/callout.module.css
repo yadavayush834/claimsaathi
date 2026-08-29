@@ -1,41 +1,37 @@
 .callout {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
   gap: var(--space-3);
-  padding: var(--space-4);
-  border: 1px solid #333333;
-  border-left: 3px solid #ffffff;
-  background: #0a0a0a;
-  color: #ffffff;
+  padding: 1.1rem 1.25rem;
+  border: 1px solid #d9d6ff;
+  border-radius: var(--radius-card);
+  background: linear-gradient(135deg, #f5f4ff, #ffffff);
+  box-shadow: var(--shadow-paper);
 }
 
 .marker {
   display: grid;
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 1.8rem;
+  height: 1.8rem;
   place-items: center;
-  border: 1px solid #ffffff;
-  background: #ffffff;
-  color: #000000;
-  font-family: var(--font-mono), monospace;
-  font-size: var(--text-caption);
+  border-radius: 0.6rem;
+  background: var(--color-brand);
+  color: #ffffff;
+  font-family: var(--font-display), sans-serif;
+  font-size: 0.9rem;
   font-weight: 800;
 }
 
 .callout strong {
   display: block;
-  margin-bottom: var(--space-1);
-  color: #ffffff;
-  font-family: var(--font-mono), monospace;
+  color: var(--color-ink-strong);
   font-size: var(--text-small);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
 }
 
 .callout p {
-  margin: 0;
-  color: #b0b0b0;
+  margin: 0.25rem 0 0;
+  color: var(--color-ink-muted);
   font-size: var(--text-small);
-  line-height: 1.5;
+  line-height: 1.55;
 }

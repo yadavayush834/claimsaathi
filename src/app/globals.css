@@ -8,17 +8,21 @@
 }
 
 html {
-  background-color: var(--color-canvas);
-  color-scheme: dark;
+  background: var(--color-canvas);
+  color-scheme: light;
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
 
 body {
   min-height: 100vh;
   margin: 0;
-  background-color: var(--color-canvas);
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 8% 2%, rgb(184 180 255 / 22%), transparent 28rem),
+    linear-gradient(180deg, #f8f9fd 0%, var(--color-canvas) 34rem);
   color: var(--color-ink);
-  font-family: var(--font-body), monospace;
+  font-family: var(--font-body), sans-serif;
   font-size: var(--text-body);
   line-height: 1.6;
   text-rendering: optimizeLegibility;
@@ -33,28 +37,32 @@ select {
   font: inherit;
 }
 
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
 a {
   color: inherit;
   text-decoration-thickness: 1.5px;
   text-underline-offset: 3px;
-  transition: color var(--transition-fast);
-}
-
-a:hover {
-  color: #ffffff;
 }
 
 ::selection {
-  background: #ffffff;
-  color: #000000;
+  background: var(--color-signal-soft);
+  color: var(--color-ink-strong);
 }
 
 :focus-visible {
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   *,
   *::before,
   *::after {

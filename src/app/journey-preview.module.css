@@ -1,0 +1,329 @@
+.preview {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #d6daea;
+  border-radius: 2rem 2rem 2rem 0.65rem;
+  background: #ffffff;
+  box-shadow: var(--shadow-lg);
+  animation: previewArrive 700ms 180ms both cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.preview::after {
+  position: absolute;
+  z-index: 0;
+  right: -5rem;
+  bottom: -6rem;
+  width: 14rem;
+  height: 14rem;
+  border-radius: 50%;
+  background: var(--color-brand-soft);
+  content: "";
+}
+
+.previewHeader,
+.previewFooter {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 1rem 1.2rem;
+  color: var(--color-ink-subtle);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.previewHeader {
+  border-bottom: 1px solid var(--color-line-soft);
+}
+
+.previewHeader > div {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-ink);
+}
+
+.liveDot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--color-success);
+  box-shadow: 0 0 0 0.25rem var(--color-success-soft);
+  animation: livePulse 2.2s infinite;
+}
+
+.previewBody {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-height: 31rem;
+  grid-template-columns: 7.25rem minmax(0, 1fr);
+}
+
+.route {
+  position: relative;
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  padding: 1.3rem 0.65rem;
+  border-right: 1px solid var(--color-line-soft);
+  background: #fafbfe;
+}
+
+.routeLine {
+  position: absolute;
+  z-index: 0;
+  top: calc(12.5% + 1.3rem);
+  bottom: calc(12.5% + 1.3rem);
+  left: 1.42rem;
+  width: 2px;
+  overflow: hidden;
+  background: var(--color-line-soft);
+}
+
+.routeProgress {
+  display: block;
+  width: 100%;
+  height: calc((var(--active-step) / 3) * 100%);
+  background: var(--color-brand);
+  transition: height var(--transition-smooth);
+}
+
+.route button {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.55rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-ink-subtle);
+  font-size: 0.73rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.route button:hover,
+.route button[aria-pressed="true"] {
+  color: var(--color-brand-strong);
+}
+
+.routeDot {
+  display: grid;
+  width: 1.05rem;
+  height: 1.05rem;
+  place-self: center;
+  border: 3px solid #fafbfe;
+  border-radius: 50%;
+  background: var(--color-line);
+  box-shadow: 0 0 0 1px var(--color-line);
+  transition:
+    background var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.route button[aria-pressed="true"] .routeDot {
+  background: var(--color-signal);
+  box-shadow:
+    0 0 0 1px var(--color-signal),
+    var(--shadow-glow-signal);
+  transform: scale(1.08);
+}
+
+.stageCard {
+  display: grid;
+  align-content: space-between;
+  gap: var(--space-6);
+  padding: clamp(1.6rem, 4vw, 2.5rem);
+  animation: stageSwap 380ms both cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stageCopy > span {
+  color: var(--color-brand-strong);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.69rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.stageCopy h2 {
+  max-width: 20rem;
+  margin: 0.75rem 0 0;
+  color: var(--color-ink-strong);
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+}
+
+.stageCopy p {
+  max-width: 27rem;
+  margin: 1rem 0 0;
+  color: var(--color-ink-muted);
+  font-size: 0.95rem;
+}
+
+.metricSlip {
+  position: relative;
+  display: grid;
+  width: min(100%, 24rem);
+  justify-self: end;
+  padding: 1.2rem 1.3rem;
+  border: 1px solid var(--color-line-soft);
+  border-radius: 1rem 1rem 1rem 0.25rem;
+  background: var(--color-paper);
+  box-shadow: var(--shadow-md);
+  transform: rotate(-1.5deg);
+}
+
+.stageCard[data-tone="amber"] .metricSlip {
+  background: #fff9ef;
+}
+
+.stageCard[data-tone="blue"] .metricSlip {
+  background: #f2f6ff;
+}
+
+.stageCard[data-tone="green"] .metricSlip {
+  background: #eff9f5;
+}
+
+.slipHandle {
+  position: absolute;
+  top: -0.42rem;
+  left: 1.2rem;
+  width: 3rem;
+  height: 0.8rem;
+  border-radius: 0.25rem;
+  background: var(--color-signal);
+  opacity: 0.9;
+}
+
+.metricSlip > span {
+  color: var(--color-ink-subtle);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.metricSlip strong {
+  margin-top: 0.35rem;
+  color: var(--color-ink-strong);
+  font-family: var(--font-mono), monospace;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1.1;
+}
+
+.metricSlip small {
+  display: flex;
+  align-items: center;
+  gap: 0.42rem;
+  margin-top: 0.8rem;
+  padding-top: 0.7rem;
+  border-top: 1px dashed var(--color-line);
+  color: var(--color-ink-muted);
+}
+
+.metricSlip small span {
+  display: grid;
+  width: 1.15rem;
+  height: 1.15rem;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-success-soft);
+  color: var(--color-success-strong);
+  font-weight: 800;
+}
+
+.previewFooter {
+  border-top: 1px solid var(--color-line-soft);
+}
+
+@keyframes previewArrive {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem) rotate(1deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+}
+
+@keyframes stageSwap {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes livePulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0.22rem var(--color-success-soft);
+  }
+  50% {
+    box-shadow: 0 0 0 0.42rem transparent;
+  }
+}
+
+@media (max-width: 38rem) {
+  .previewBody {
+    min-height: 29rem;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .route {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+    padding: 0.8rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-line-soft);
+  }
+
+  .routeLine {
+    top: 1.55rem;
+    right: 12.5%;
+    bottom: auto;
+    left: 12.5%;
+    width: auto;
+    height: 2px;
+  }
+
+  .routeProgress {
+    width: calc((var(--active-step) / 3) * 100%);
+    height: 100%;
+    transition: width var(--transition-smooth);
+  }
+
+  .route button {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 0.35rem;
+    text-align: center;
+  }
+
+  .stageCard {
+    padding: 1.4rem;
+  }
+
+  .previewHeader > span,
+  .previewFooter span:last-child {
+    display: none;
+  }
+}

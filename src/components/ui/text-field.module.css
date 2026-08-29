@@ -1,67 +1,50 @@
 .field {
   display: grid;
-  min-width: 0;
-  gap: 0.375rem;
+  align-content: start;
+  gap: 0.4rem;
 }
 
 .label {
-  color: #ffffff;
-  font-family: var(--font-mono), monospace;
+  color: var(--color-ink-strong);
   font-size: var(--text-small);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.hint,
-.error {
-  font-size: var(--text-caption);
-  line-height: 1.4;
+  font-weight: 750;
 }
 
 .hint {
-  color: #787878;
-}
-
-.error {
-  color: #ef4444;
-  font-weight: 700;
+  color: var(--color-ink-subtle);
+  font-size: var(--text-caption);
 }
 
 .input {
   width: 100%;
-  min-width: 0;
-  min-height: 2.85rem;
-  padding: 0.65rem 0.85rem;
-  border: 1px solid #333333;
-  background: #0d0d0d;
-  color: #ffffff;
-  font-family: var(--font-mono), monospace;
-  font-size: var(--text-small);
-  line-height: 1.4;
-  transition: all var(--transition-fast);
-}
-
-.input::placeholder {
-  color: #555555;
+  min-height: 3.15rem;
+  padding: 0.72rem 0.9rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+  background: var(--color-paper);
+  color: var(--color-ink-strong);
+  box-shadow: var(--shadow-xs);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .input:hover {
-  border-color: #777777;
+  border-color: var(--color-line-strong);
 }
 
 .input:focus {
-  border-color: #ffffff;
-  background: #000000;
-  outline: none;
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 0.22rem var(--color-brand-glow);
+  outline: 0;
 }
 
 .input[aria-invalid="true"] {
-  border-color: #ef4444;
-  background: #2d0b0b;
+  border-color: var(--color-critical);
 }
 
-.input[aria-invalid="true"]:focus {
-  border-color: #ef4444;
-  box-shadow: 0 0 0 1px #ef4444;
+.error {
+  color: var(--color-critical-strong);
+  font-size: var(--text-caption);
+  font-weight: 700;
 }
