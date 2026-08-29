@@ -187,4 +187,38 @@ describe("DemoSessionManager", () => {
       screen.getByRole("heading", { level: 2, name: "Imran Sheikh" }),
     ).toBeVisible();
   });
+
+  it("navigates into settlement reconciliation for Latha Nair from the workspace", async () => {
+    render(<DemoSessionManager />);
+
+    await screen.findByRole("heading", {
+      level: 2,
+      name: "Choose a fictional citizen",
+    });
+
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "Start Latha Nair's demo case",
+      }),
+    );
+
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "Compare mock settlement amounts →",
+      }),
+    );
+
+    expect(
+      screen.getByRole("heading", {
+        level: 2,
+        name: "Reconcile Latha Nair's Settled Claim",
+      }),
+    ).toBeVisible();
+
+    fireEvent.click(screen.getByRole("button", { name: "Back to workspace" }));
+
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Latha Nair" }),
+    ).toBeVisible();
+  });
 });

@@ -22,6 +22,7 @@ type ClaimWorkspaceProps = Readonly<{
   onViewTimeline?: () => void;
   onExplainIssue?: () => void;
   onStartRecovery?: () => void;
+  onReconcileSettlement?: () => void;
 }>;
 
 const claimStatusLabels: Record<DemoClaimStatus, string> = {
@@ -85,6 +86,7 @@ export function ClaimWorkspace({
   onPlanWithdrawal,
   onReviewPreflight,
   onStartRecovery,
+  onReconcileSettlement,
   onSwitch,
   onViewTimeline,
   sessionMessage,
@@ -206,6 +208,13 @@ export function ClaimWorkspace({
               >
                 Start rejection recovery journey →
               </Button>
+            ) : onReconcileSettlement ? (
+              <Button
+                className={styles.planActionBtn}
+                onClick={onReconcileSettlement}
+              >
+                Compare mock settlement amounts →
+              </Button>
             ) : onReviewPreflight ? (
               <Button
                 className={styles.planActionBtn}
@@ -217,7 +226,10 @@ export function ClaimWorkspace({
             {onViewTimeline ? (
               <Button
                 variant={
-                  onPlanWithdrawal || onReviewPreflight || onStartRecovery
+                  onPlanWithdrawal ||
+                  onReviewPreflight ||
+                  onStartRecovery ||
+                  onReconcileSettlement
                     ? "secondary"
                     : "primary"
                 }
