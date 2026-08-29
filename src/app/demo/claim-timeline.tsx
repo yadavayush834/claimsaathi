@@ -21,6 +21,7 @@ import styles from "./claim-timeline.module.css";
 type ClaimTimelineProps = Readonly<{
   demoCase: DemoCase;
   onBack: () => void;
+  onStartRecovery?: () => void;
 }>;
 
 const statusConfig: Record<
@@ -65,7 +66,11 @@ function getInitials(name: string) {
     .toUpperCase();
 }
 
-export function ClaimTimeline({ demoCase, onBack }: ClaimTimelineProps) {
+export function ClaimTimeline({
+  demoCase,
+  onBack,
+  onStartRecovery,
+}: ClaimTimelineProps) {
   const [timeline, setTimeline] = useState<DemoClaimTimelineRecord>(() =>
     getTimelineForPersona(demoCase.persona.id),
   );
@@ -204,6 +209,16 @@ export function ClaimTimeline({ demoCase, onBack }: ClaimTimelineProps) {
               <dd>3–5 working days</dd>
             </div>
           </dl>
+
+          {onStartRecovery &&
+          (timeline.status === "action_needed" ||
+            timeline.status === "rejected") ? (
+            <div style={{ marginTop: "1rem" }}>
+              <Button onClick={onStartRecovery}>
+                Start rejection recovery journey →
+              </Button>
+            </div>
+          ) : null}
         </section>
 
         {/* Simulation Controls for Demo Reviewer */}

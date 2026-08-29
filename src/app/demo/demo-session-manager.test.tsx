@@ -69,11 +69,13 @@ describe("DemoSessionManager", () => {
       }),
     );
     fireEvent.click(
-      screen.getByRole("button", { name: "Run readiness preflight" }),
+      screen.getByRole("button", { name: "Explain with AI Interpreter →" }),
     );
 
     expect(
-      screen.getByRole("heading", { name: "Check what needs fixing first" }),
+      screen.getByRole("heading", {
+        name: "Claim Issue & Rejection Interpreter",
+      }),
     ).toBeVisible();
   });
 
@@ -153,7 +155,7 @@ describe("DemoSessionManager", () => {
     ).toBeVisible();
   });
 
-  it("navigates into the AI claim issue interpreter from the workspace", async () => {
+  it("navigates into the rejection recovery journey from the workspace", async () => {
     render(<DemoSessionManager />);
 
     await screen.findByRole("heading", {
@@ -168,15 +170,16 @@ describe("DemoSessionManager", () => {
     );
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Explain with AI Interpreter →" }),
+      screen.getByRole("button", {
+        name: "Start rejection recovery journey →",
+      }),
     );
 
     expect(
       screen.getByRole("heading", {
-        name: "Claim Issue & Rejection Interpreter",
+        name: "Fix & Recover Imran Sheikh's Claim",
       }),
     ).toBeVisible();
-    expect(screen.getByText("Step-by-step action checklist")).toBeVisible();
 
     fireEvent.click(screen.getByRole("button", { name: "Back to workspace" }));
 

@@ -12,6 +12,7 @@ import { ClaimWorkspace } from "./claim-workspace";
 import styles from "./demo-session-manager.module.css";
 import { KycPreflight } from "./kyc-preflight";
 import { MockClaimForm } from "./mock-claim-form";
+import { RejectionRecoveryJourney } from "./rejection-recovery-journey";
 import { WithdrawalPlanner } from "./withdrawal-planner";
 
 type SessionView =
@@ -33,6 +34,7 @@ export function DemoSessionManager() {
   const [claimFormCase, setClaimFormCase] = useState<DemoCase | null>(null);
   const [timelineCase, setTimelineCase] = useState<DemoCase | null>(null);
   const [interpreterCase, setInterpreterCase] = useState<DemoCase | null>(null);
+  const [recoveryCase, setRecoveryCase] = useState<DemoCase | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -76,6 +78,7 @@ export function DemoSessionManager() {
     setClaimFormCase(null);
     setTimelineCase(null);
     setInterpreterCase(null);
+    setRecoveryCase(null);
     setView({
       status: "active",
       demoCase: selectedCase,
@@ -91,6 +94,7 @@ export function DemoSessionManager() {
     setClaimFormCase(null);
     setTimelineCase(null);
     setInterpreterCase(null);
+    setRecoveryCase(null);
     setView({ status: "choosing" });
   }
 
@@ -188,6 +192,15 @@ export function DemoSessionManager() {
       <ClaimTimeline
         demoCase={timelineCase}
         onBack={() => setTimelineCase(null)}
+        onStartRecovery={
+          timelineCase.persona.id === "imran-returned"
+            ? () => {
+                const current = timelineCase;
+                setTimelineCase(null);
+                setRecoveryCase(current);
+              }
+            : undefined
+        }
       />
     );
   }
@@ -206,6 +219,30 @@ export function DemoSessionManager() {
     );
   }
 
+  if (recoveryCase) {
+    return (
+      <RejectionRecoveryJourney
+        demoCase={recoveryCase}
+        onBack={() => setRecoveryCase(null)}
+        onOpenPreflight={() => {
+          const current = recoveryCase;
+          setRecoveryCase(null);
+          setPreflightCase(current);
+        }}
+        onStartResubmission={() => {
+          const current = recoveryCase;
+          setRecoveryCase(null);
+          setClaimFormCase(current);
+        }}
+        onViewTimeline={() => {
+          const current = recoveryCase;
+          setRecoveryCase(null);
+          setTimelineCase(current);
+        }}
+      />
+    );
+  }
+
   return (
     <ClaimWorkspace
       demoCase={view.demoCase}
@@ -217,6 +254,11 @@ export function DemoSessionManager() {
       onReviewPreflight={
         view.demoCase.persona.id === "imran-returned"
           ? () => setPreflightCase(view.demoCase)
+          : undefined
+      }
+      onStartRecovery={
+        view.demoCase.persona.id === "imran-returned"
+          ? () => setRecoveryCase(view.demoCase)
           : undefined
       }
       onViewTimeline={() => setTimelineCase(view.demoCase)}
