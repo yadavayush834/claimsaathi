@@ -13,9 +13,9 @@ export function Callout({ children, title }: CalloutProps) {
       <span className={styles.marker} aria-hidden="true">
         i
       </span>
-      <div>
-        <strong>{title}</strong>
-        <p>{children}</p>
+      <div className={styles.body}>
+        <p className={styles.title}>{title}</p>
+        <p className={styles.text}>{children}</p>
       </div>
     </aside>
   );

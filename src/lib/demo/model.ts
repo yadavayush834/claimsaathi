@@ -4,6 +4,23 @@ export const DEMO_PERSONA_IDS = [
   "asha-planning",
   "imran-returned",
   "latha-settlement",
+  "rohit-medical",
+  "meera-childcare",
+  "vikram-renovation",
+  "priya-wedding",
+  "arjun-education",
+  "sunita-parentcare",
+  "karthik-business",
+  "neha-emergency",
+  "deepak-housing",
+  "aarav-travel",
+  "pooja-medical",
+  "suresh-debt",
+  "kavita-ceremony",
+  "mohit-training",
+  "ananya-relocation",
+  "ramesh-medical",
+  "divya-parentcare",
 ] as const;
 
 export type DemoPersonaId = (typeof DEMO_PERSONA_IDS)[number];

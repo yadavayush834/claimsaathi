@@ -87,12 +87,14 @@ export function DemoSessionManager() {
     return (
       <section className={styles.manager} aria-labelledby="choose-case-title">
         <div className={styles.sectionHeading}>
-          <p>Demo case files · fixture v{demoDataService.fixtureVersion}</p>
+          <p className={styles.sectionEyebrow}>
+            Demo case files · fixture v{demoDataService.fixtureVersion}
+          </p>
           <h2 id="choose-case-title">Choose a fictional citizen</h2>
-          <span>
+          <p>
             Each case starts at a different point in the same mock withdrawal
             journey.
-          </span>
+          </p>
         </div>
 
         <ul className={styles.caseList}>
@@ -112,8 +114,12 @@ export function DemoSessionManager() {
                   <small>
                     Fictional citizen · {demoCase.persona.homeState}
                   </small>
-                  <strong>{demoCase.persona.displayName}</strong>
-                  <span>{demoCase.persona.scenarioTitle}</span>
+                  <p className={styles.caseTitle}>
+                    {demoCase.persona.displayName}
+                  </p>
+                  <span className={styles.caseScenario}>
+                    {demoCase.persona.scenarioTitle}
+                  </span>
                   <p>{demoCase.persona.scenarioDescription}</p>
                 </span>
                 <span className={styles.caseAction} aria-hidden="true">

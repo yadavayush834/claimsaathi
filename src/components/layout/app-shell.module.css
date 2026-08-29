@@ -2,115 +2,138 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: var(--color-bg);
-  color: var(--color-fg);
+  background: var(--color-canvas);
+  color: var(--color-ink);
 }
 
 .skipLink {
   position: absolute;
   top: -100%;
   left: 0;
-  padding: var(--space-4);
-  background: var(--color-fg);
-  color: var(--color-bg);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-ink-strong);
+  color: var(--color-canvas);
   font-family: var(--font-mono), monospace;
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.8rem;
+  font-weight: 600;
   z-index: 9999;
-  text-decoration: none;
-}
-.skipLink:focus {
-  top: 0;
+  border-radius: var(--radius-xs);
 }
 
-/* ── BRUTALIST TOPBAR ── */
+.skipLink:focus {
+  top: var(--space-3);
+  left: var(--space-3);
+}
+
+/* ── Topbar ─────────────────────────────────────────────────────────── */
 .topbar {
   position: sticky;
   top: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: var(--space-4);
   padding: var(--space-4) var(--space-6);
-  background: var(--color-bg);
-  border-bottom: 2px solid var(--color-fg);
-  z-index: 100;
+  background: color-mix(in oklab, var(--color-canvas) 88%, transparent);
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+  border-bottom: 1px solid var(--color-line);
+  z-index: 50;
 }
 
 .brand {
-  display: flex;
+  display: inline-flex;
   align-items: baseline;
   gap: 0.4rem;
-  font-family: var(--font-display), "Space Grotesk", sans-serif;
-  font-size: 1.5rem;
-  font-weight: 900;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
   letter-spacing: -0.02em;
-  text-transform: uppercase;
   text-decoration: none;
+  color: var(--color-ink-strong);
 }
-.brand:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
+
+.brand:hover .brandEn {
+  color: var(--color-saffron);
 }
 
 .brandEn {
-  color: var(--color-fg);
+  transition: color var(--transition-base);
 }
 
 .brandHi {
-  font-family: "Noto Sans Devanagari", sans-serif;
-  font-size: 1.65rem;
+  font-family: var(--font-devanagari), sans-serif;
+  font-size: 1.55rem;
   font-weight: 700;
   letter-spacing: 0;
-  /* Tricolor flag base with sweeping shine animation */
-  background:
-    linear-gradient(
-      60deg,
-      transparent 20%,
-      rgba(255, 255, 255, 0.7) 50%,
-      transparent 80%
-    ),
-    linear-gradient(90deg, #ff9933 0%, #ffffff 50%, #138808 100%);
-  background-size:
-    200% 100%,
-    100% 100%;
+  background: linear-gradient(
+    92deg,
+    var(--color-saffron) 0%,
+    var(--color-tricolor-mid) 50%,
+    var(--color-green) 100%
+  );
+  background-size: 220% 100%;
+  background-position: 0% 50%;
   color: transparent;
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
-  animation: shineSweep 3s linear infinite;
+  transition: background-position var(--transition-smooth);
 }
 
-@keyframes shineSweep {
-  0% {
-    background-position:
-      200% center,
-      0% center;
-  }
-  100% {
-    background-position:
-      -200% center,
-      0% center;
-  }
+.brand:hover .brandHi {
+  background-position: 100% 50%;
 }
 
-.environmentTag {
-  color: var(--color-fg);
-  font-family: var(--font-mono), monospace;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+/* Tricolor hairline under the brand */
+.brandRule {
+  display: block;
+  height: 2px;
+  width: 100%;
+  margin-top: var(--space-2);
+  background: linear-gradient(
+    90deg,
+    var(--color-saffron) 0%,
+    var(--color-saffron) 33%,
+    var(--color-tricolor-mid) 33%,
+    var(--color-tricolor-mid) 66%,
+    var(--color-green) 66%,
+    var(--color-green) 100%
+  );
+  border-radius: var(--radius-pill);
 }
 
-/* ── FRAME ── */
+.topbarActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.navLink {
+  font-family: var(--font-sans);
+  font-size: var(--text-small);
+  font-weight: 500;
+  color: var(--color-ink-muted);
+  letter-spacing: 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-control);
+  transition:
+    color var(--transition-fast),
+    background var(--transition-fast);
+}
+
+.navLink:hover {
+  color: var(--color-ink-strong);
+  background: var(--color-paper-muted);
+}
+
+/* ── Frame ──────────────────────────────────────────────────────────── */
 .frame {
   flex: 1;
-  display: block;
   width: 100%;
-  /* Strict rigid grid max-width */
-  max-width: 90rem;
+  max-width: var(--frame-max);
   margin: 0 auto;
-  padding: 0 var(--space-6);
+  padding: var(--space-7) var(--frame-pad-x) var(--space-8);
 }
 
 .main {
@@ -118,49 +141,65 @@
   min-height: 100%;
 }
 
-/* ── BRUTALIST FOOTER ── */
+/* ── Footer ─────────────────────────────────────────────────────────── */
 .siteFooter {
-  padding: var(--space-4) var(--space-6);
-  border-top: 2px solid var(--color-fg);
-  background: var(--color-bg);
+  padding: var(--space-6) var(--space-6);
+  border-top: 1px solid var(--color-line);
+  background: var(--color-canvas-subtle);
 }
 
 .footerGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  color: var(--color-fg);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  max-width: var(--frame-max);
+  margin: 0 auto;
+  color: var(--color-ink-subtle);
   font-family: var(--font-mono), monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-.alignRight {
-  text-align: right;
+.footerGrid > span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.footerMark {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-saffron);
+  display: inline-block;
 }
 
 @media (max-width: 48rem) {
   .topbar {
-    padding: var(--space-4);
+    padding: var(--space-3) var(--space-4);
   }
   .brand {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
   }
-  .environmentTag {
+  .brandHi {
+    font-size: 1.35rem;
+  }
+  .navLink {
     display: none;
   }
   .frame {
-    padding: 0 var(--space-4);
+    padding: var(--space-6) var(--space-4) var(--space-7);
   }
   .siteFooter {
-    padding: var(--space-4);
+    padding: var(--space-5) var(--space-4);
   }
   .footerGrid {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: flex-start;
     gap: var(--space-2);
-  }
-  .alignRight {
-    text-align: left;
   }
 }

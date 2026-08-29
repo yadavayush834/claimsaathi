@@ -1,0 +1,46 @@
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.85rem;
+  background: transparent;
+  border: 1px solid var(--color-line-heavy);
+  border-radius: var(--radius-pill);
+  color: var(--color-ink-muted);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    color var(--transition-fast),
+    background var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.toggle:hover {
+  color: var(--color-ink-strong);
+  background: var(--color-paper-muted);
+  border-color: var(--color-ink-muted);
+}
+
+.dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--color-saffron);
+  box-shadow: 0 0 0 3px var(--color-saffron-soft);
+  transition:
+    background var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.light .dot {
+  background: var(--color-navy);
+  box-shadow: 0 0 0 3px var(--color-navy-soft);
+}
+
+.placeholder {
+  width: 7.5rem;
+  height: 2.1rem;
+  border-radius: var(--radius-pill);
+}

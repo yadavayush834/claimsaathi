@@ -90,7 +90,7 @@ export function ClaimWorkspace({
             {getInitials(persona.displayName)}
           </div>
           <div className={styles.personaDetails}>
-            <p className={styles.fixtureEyebrow}>
+            <p className={styles.eyebrow}>
               Fictional claim workspace · fixture v{demoCase.fixtureVersion}
             </p>
             <h2 id="workspace-title">{persona.displayName}</h2>

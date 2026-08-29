@@ -1,110 +1,220 @@
+/* ──────────────────────────────────────────────────────────────────────────
+ * ClaimSaathi design tokens
+ *
+ * Editorial-minimalist. Restrained type, hairline rules, a single
+ * tricolor brand accent, calm signal colors. Two themes via `.light`
+ * class on <html> (next-themes).
+ * ──────────────────────────────────────────────────────────────────────── */
+
 :root {
   color-scheme: dark;
 
-  /* ── Surfaces & Canvas: Pure Black & Terminal Slate ── */
-  --color-canvas: #000000;
-  --color-canvas-subtle: #0a0a0a;
-  --color-paper: #000000;
-  --color-paper-muted: #0d0d0d;
-  --color-paper-subtle: #141414;
-  --color-paper-elevated: #111111;
+  /* ── Surfaces & canvas (dark) ─────────────────────────────────────── */
+  --color-canvas: #0b0b0f;
+  --color-canvas-subtle: #111116;
+  --color-paper: #131319;
+  --color-paper-muted: #181820;
+  --color-paper-subtle: #1e1e27;
+  --color-paper-elevated: #232330;
+  --color-paper-inset: #0e0e14;
 
-  /* ── Typography & Ink: High-Contrast Pure White & Silver ── */
-  --color-ink: #ffffff;
+  /* ── Ink (dark) ───────────────────────────────────────────────────── */
+  --color-ink: #ececf1;
   --color-ink-strong: #ffffff;
-  --color-ink-muted: #b0b0b0;
-  --color-ink-subtle: #787878;
-  --color-line: #ffffff;
-  --color-line-strong: #ffffff;
-  --color-line-soft: #2a2a2a;
-  --color-line-subtle: #1a1a1a;
+  --color-ink-muted: #b6b6c2;
+  --color-ink-subtle: #8b8b97;
+  --color-ink-faint: #5f5f6c;
 
-  /* ── Brand & Terminal Accents ── */
-  --color-brand: #ffffff;
+  /* ── Lines / borders (dark) ──────────────────────────────────────── */
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-line-strong: rgba(255, 255, 255, 0.16);
+  --color-line-heavy: rgba(255, 255, 255, 0.28);
+  --color-line-soft: rgba(255, 255, 255, 0.06);
+  --color-line-subtle: rgba(255, 255, 255, 0.04);
+
+  /* ── Aliases ─────────────────────────────────────────────────────── */
+  --color-bg: var(--color-canvas);
+  --color-fg: var(--color-ink);
+
+  /* ── Brand: tricolor (saffron · navy · green) ────────────────────── */
+  --color-saffron: #ff8a1e;
+  --color-saffron-soft: rgba(255, 138, 30, 0.14);
+  --color-navy: #2a3a6b;
+  --color-navy-soft: rgba(42, 58, 107, 0.18);
+  --color-green: #1f8a4c;
+  --color-green-soft: rgba(31, 138, 76, 0.14);
+
+  --color-tricolor-mid: #ffffff; /* used by logo shine sweep */
+
+  --color-brand: var(--color-ink-strong);
   --color-brand-strong: #ffffff;
-  --color-brand-mid: #cccccc;
-  --color-brand-soft: #141c2b;
-  --color-brand-accent: #2e4368;
-  --color-brand-gradient: none;
-  --color-brand-glow: none;
+  --color-brand-mid: #c5c5cf;
+  --color-brand-soft: var(--color-paper-muted);
+  --color-brand-accent: var(--color-saffron);
 
-  /* ── Signal: Vibrant Amber/Orange Accent (Used selectively) ── */
-  --color-signal: #ff8c00;
-  --color-signal-strong: #ffa500;
-  --color-signal-soft: #261600;
-  --color-signal-glow: none;
-  --color-signal-gradient: none;
+  /* ── Signal palette (calm, low-saturation) ───────────────────────── */
+  --color-signal: #ff8a1e;
+  --color-signal-strong: #ffa64a;
+  --color-signal-soft: rgba(255, 138, 30, 0.14);
 
-  /* ── Success: Terminal Green ── */
-  --color-success: #22c55e;
-  --color-success-strong: #4ade80;
-  --color-success-soft: #052e16;
-  --color-success-glow: none;
+  --color-success: #4ec38a;
+  --color-success-strong: #7ed8aa;
+  --color-success-soft: rgba(78, 195, 138, 0.14);
 
-  /* ── Info: Terminal Blue Slate ── */
-  --color-info: #60a5fa;
-  --color-info-strong: #93c5fd;
-  --color-info-soft: #141c2b;
+  --color-info: #7aa2ff;
+  --color-info-strong: #a8c0ff;
+  --color-info-soft: rgba(122, 162, 255, 0.14);
 
-  /* ── Warning: Amber ── */
-  --color-warning: #f59e0b;
-  --color-warning-strong: #fbbf24;
-  --color-warning-soft: #271a00;
+  --color-warning: #f0b94a;
+  --color-warning-strong: #f5cf76;
+  --color-warning-soft: rgba(240, 185, 74, 0.14);
 
-  /* ── Critical: Terminal Red ── */
-  --color-critical: #ef4444;
-  --color-critical-strong: #f87171;
-  --color-critical-soft: #2d0b0b;
+  --color-critical: #f06464;
+  --color-critical-strong: #ff8a8a;
+  --color-critical-soft: rgba(240, 100, 100, 0.14);
 
-  /* ── Focus ── */
-  --color-focus: #ffffff;
+  /* ── Focus ring ──────────────────────────────────────────────────── */
+  --color-focus: var(--color-saffron);
 
-  /* ── Typography Scale ── */
-  --font-display: var(--font-display), "Space Grotesk", sans-serif;
-  --font-body: var(--font-mono), "Space Mono", monospace;
-  --font-mono: var(--font-mono), "Space Mono", monospace;
+  /* ── Typography ──────────────────────────────────────────────────── */
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body:
+    var(--font-sans), "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+    sans-serif;
+  --font-sans: var(--font-sans), "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Space Mono", ui-monospace, monospace;
+  --font-devanagari: "Noto Sans Devanagari", "Noto Sans", sans-serif;
 
   --text-caption: 0.75rem;
   --text-small: 0.875rem;
   --text-body: 1rem;
-  --text-lede: clamp(1rem, 0.92rem + 0.35vw, 1.15rem);
-  --text-title: clamp(2.4rem, 1.8rem + 3.2vw, 4.4rem);
+  --text-lede: clamp(1.05rem, 0.95rem + 0.45vw, 1.25rem);
+  --text-h3: clamp(1.4rem, 1.2rem + 0.6vw, 1.75rem);
+  --text-h2: clamp(1.85rem, 1.5rem + 1.2vw, 2.6rem);
+  --text-title: clamp(2.75rem, 2.2rem + 3.4vw, 5rem);
 
-  /* ── Spacing Scale ── */
+  --leading-tight: 1.08;
+  --leading-snug: 1.25;
+  --leading-normal: 1.55;
+  --leading-relaxed: 1.7;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.04em;
+  --tracking-eyebrow: 0.12em;
+
+  /* ── Spacing ─────────────────────────────────────────────────────── */
+  --space-0: 0;
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
   --space-4: 1rem;
   --space-5: 1.5rem;
   --space-6: 2rem;
-  --space-7: 3rem;
+  --space-7: 2.75rem;
   --space-8: 4rem;
+  --space-9: 6rem;
 
-  /* ── Border Radii: Strict Zero ── */
-  --radius-xs: 0;
-  --radius-control: 0;
-  --radius-card: 0;
-  --radius-panel: 0;
-  --radius-pill: 0;
+  /* ── Radii ───────────────────────────────────────────────────────── */
+  --radius-xs: 4px;
+  --radius-control: 10px;
+  --radius-card: 16px;
+  --radius-panel: 20px;
+  --radius-pill: 999px;
 
-  /* ── Shadows: Hard Offset Lines ── */
-  --shadow-xs: none;
-  --shadow-sm: none;
-  --shadow-md: none;
-  --shadow-lg: none;
-  --shadow-paper: none;
-  --shadow-glow-signal: none;
-  --shadow-glow-brand: none;
-  --shadow-offset: 4px 4px 0 #ffffff;
-  --shadow-offset-sm: 2px 2px 0 #ffffff;
+  /* ── Shadows (soft, single-offset) ───────────────────────────────── */
+  --shadow-xs: 0 1px 0 rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 6px 24px -12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 18px 60px -24px rgba(0, 0, 0, 0.6);
+  --shadow-paper:
+    0 1px 0 var(--color-line), 0 18px 60px -32px rgba(0, 0, 0, 0.5);
 
-  /* ── Transitions ── */
-  --transition-fast: 120ms ease;
-  --transition-base: 180ms ease;
-  --transition-smooth: 240ms ease;
+  /* Editorial hard-offset accent for primary actions */
+  --shadow-offset: 4px 4px 0 var(--color-saffron);
+  --shadow-offset-sm: 2px 2px 0 var(--color-saffron);
 
-  /* ── Border Widths ── */
+  /* ── Motion ──────────────────────────────────────────────────────── */
+  --transition-fast: 120ms cubic-bezier(0.2, 0.6, 0.2, 1);
+  --transition-base: 200ms cubic-bezier(0.2, 0.6, 0.2, 1);
+  --transition-smooth: 320ms cubic-bezier(0.2, 0.6, 0.2, 1);
+
+  /* ── Border widths ───────────────────────────────────────────────── */
   --border-thin: 1px;
   --border-thick: 1.5px;
   --border-heavy: 2px;
+
+  /* ── Layout ──────────────────────────────────────────────────────── */
+  --frame-max: 76rem;
+  --frame-pad-x: clamp(1rem, 0.6rem + 2vw, 2rem);
+}
+
+/* ── Light theme ────────────────────────────────────────────────────── */
+:root.light {
+  color-scheme: light;
+
+  --color-canvas: #fafaf7;
+  --color-canvas-subtle: #f3f2ec;
+  --color-paper: #ffffff;
+  --color-paper-muted: #f6f5ef;
+  --color-paper-subtle: #efece4;
+  --color-paper-elevated: #ffffff;
+  --color-paper-inset: #f1efe7;
+
+  --color-ink: #16161b;
+  --color-ink-strong: #0b0b0f;
+  --color-ink-muted: #4a4a55;
+  --color-ink-subtle: #6e6e78;
+  --color-ink-faint: #9a9aa3;
+
+  --color-line: rgba(11, 11, 15, 0.08);
+  --color-line-strong: rgba(11, 11, 15, 0.16);
+  --color-line-heavy: rgba(11, 11, 15, 0.28);
+  --color-line-soft: rgba(11, 11, 15, 0.06);
+  --color-line-subtle: rgba(11, 11, 15, 0.04);
+
+  --color-saffron: #d96d00;
+  --color-saffron-soft: rgba(217, 109, 0, 0.12);
+  --color-navy: #1f2c52;
+  --color-navy-soft: rgba(31, 44, 82, 0.12);
+  --color-green: #15753e;
+  --color-green-soft: rgba(21, 117, 62, 0.1);
+
+  --color-tricolor-mid: #1f2c52;
+
+  --color-brand: #0b0b0f;
+  --color-brand-strong: #0b0b0f;
+  --color-brand-mid: #44444d;
+  --color-brand-soft: #f0eee6;
+
+  --color-signal: #d96d00;
+  --color-signal-strong: #b35b00;
+  --color-signal-soft: rgba(217, 109, 0, 0.12);
+
+  --color-success: #15753e;
+  --color-success-strong: #0e5a30;
+  --color-success-soft: rgba(21, 117, 62, 0.1);
+
+  --color-info: #1f4dcc;
+  --color-info-strong: #163aa0;
+  --color-info-soft: rgba(31, 77, 204, 0.1);
+
+  --color-warning: #a86d00;
+  --color-warning-strong: #835400;
+  --color-warning-soft: rgba(168, 109, 0, 0.1);
+
+  --color-critical: #c9302c;
+  --color-critical-strong: #9a1f1c;
+  --color-critical-soft: rgba(201, 48, 44, 0.1);
+
+  --color-focus: var(--color-saffron);
+
+  --shadow-xs: 0 1px 0 rgba(11, 11, 15, 0.04);
+  --shadow-sm: 0 1px 2px rgba(11, 11, 15, 0.06);
+  --shadow-md: 0 8px 24px -16px rgba(11, 11, 15, 0.18);
+  --shadow-lg: 0 24px 60px -28px rgba(11, 11, 15, 0.22);
+  --shadow-paper:
+    0 1px 0 var(--color-line), 0 18px 60px -32px rgba(11, 11, 15, 0.16);
+  --shadow-offset: 4px 4px 0 var(--color-saffron);
+  --shadow-offset-sm: 2px 2px 0 var(--color-saffron);
 }

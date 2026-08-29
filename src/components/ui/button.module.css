@@ -1,21 +1,27 @@
 .button {
   display: inline-flex;
-  min-height: 2.85rem;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.65rem 1.35rem;
-  border: 1.5px solid transparent;
+  min-height: 2.75rem;
+  padding: 0.6rem 1.1rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
   cursor: pointer;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  line-height: 1.25;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.2;
   text-align: center;
   text-decoration: none;
-  text-transform: uppercase;
-  transition: all var(--transition-fast);
+  white-space: nowrap;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
   user-select: none;
 }
 
@@ -29,42 +35,46 @@
 
 .button:disabled {
   cursor: not-allowed;
-  opacity: 0.35;
+  opacity: 0.4;
 }
 
-/* ── PRIMARY: Solid White background, Black text ── */
+/* ── Primary: solid ink ─────────────────────────────────────────────── */
 .primary {
-  background: #ffffff;
-  color: #000000;
-  border-color: #ffffff;
+  background: var(--color-ink-strong);
+  color: var(--color-canvas);
+  border-color: var(--color-ink-strong);
+  box-shadow: var(--shadow-offset-sm);
 }
 
 .primary:hover:not(:disabled) {
-  background: #e5e5e5;
-  border-color: #e5e5e5;
+  background: var(--color-ink);
+  color: var(--color-canvas);
+  border-color: var(--color-ink);
+  box-shadow: var(--shadow-offset);
 }
 
-/* ── SECONDARY: Transparent background, 1.5px solid white border, White text ── */
+/* ── Secondary: hairline outline ────────────────────────────────────── */
 .secondary {
   background: transparent;
-  color: #ffffff;
-  border-color: #ffffff;
+  color: var(--color-ink-strong);
+  border-color: var(--color-line-heavy);
 }
 
 .secondary:hover:not(:disabled) {
-  background: #ffffff;
-  color: #000000;
+  border-color: var(--color-ink-strong);
+  background: var(--color-paper-muted);
 }
 
-/* ── QUIET ── */
+/* ── Quiet / ghost ─────────────────────────────────────────────────── */
 .quiet {
-  border-color: transparent;
   background: transparent;
-  color: #b0b0b0;
+  color: var(--color-ink-muted);
+  border-color: transparent;
+  padding: 0.45rem 0.7rem;
+  min-height: auto;
 }
 
 .quiet:hover:not(:disabled) {
-  color: #ffffff;
-  border-color: #333333;
-  background: #111111;
+  color: var(--color-ink-strong);
+  background: var(--color-paper-muted);
 }

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import {
+  Inter,
+  JetBrains_Mono,
   Noto_Sans_Devanagari,
   Space_Grotesk,
-  Space_Mono,
 } from "next/font/google";
 import type { ReactNode } from "react";
 
@@ -15,11 +16,18 @@ const displayFont = Space_Grotesk({
   weight: ["500", "600", "700"],
 });
 
-const monoFont = Space_Mono({
+const bodyFont = Inter({
+  variable: "--font-sans",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
+
+const monoFont = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "700"],
+  weight: ["400", "500", "700"],
 });
 
 const devanagariFont = Noto_Sans_Devanagari({
@@ -35,6 +43,8 @@ export const metadata: Metadata = {
     "An independent, citizen-first prototype for a clearer, stress-free EPF withdrawal journey.",
 };
 
+import { ThemeProvider } from "@/components/theme-provider";
+
 type RootLayoutProps = Readonly<{
   children: ReactNode;
 }>;
@@ -43,9 +53,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
       lang="en"
-      className={`${displayFont.variable} ${monoFont.variable} ${devanagariFont.variable}`}
+      className={`${displayFont.variable} ${bodyFont.variable} ${monoFont.variable} ${devanagariFont.variable}`}
+      suppressHydrationWarning
     >
-      <body>{children}</body>
+      <body>
+        <ThemeProvider attribute="class" defaultTheme="dark">
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
