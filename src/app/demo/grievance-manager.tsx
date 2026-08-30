@@ -4,11 +4,13 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Callout } from "@/components/ui/callout";
+import { PiiWarningBanner } from "@/components/ui/pii-warning-banner";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { DemoCase } from "@/lib/demo/model";
 import { DemoGrievanceRecord } from "@/lib/demo/grievance-model";
 import { grievanceService } from "@/lib/demo/grievance-service";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { detectSensitivePii } from "@/lib/safety/pii-detector";
 
 import styles from "./grievance-manager.module.css";
 
@@ -24,8 +26,19 @@ export function GrievanceManager({ demoCase, onBack }: GrievanceManagerProps) {
     grievanceService.getOrInitializeGrievance(demoCase),
   );
   const [copied, setCopied] = useState(false);
+  const [blockedPiiDetection, setBlockedPiiDetection] = useState(() =>
+    detectSensitivePii(""),
+  );
 
   const handleSubjectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const detection = detectSensitivePii(
+      `${e.target.value} ${record.petitionText}`,
+    );
+    if (detection.hasPii) {
+      setBlockedPiiDetection(detection);
+      return;
+    }
+    setBlockedPiiDetection(detectSensitivePii(""));
     const updated = grievanceService.updateSubject(
       demoCase.persona.id,
       e.target.value,
@@ -34,6 +47,12 @@ export function GrievanceManager({ demoCase, onBack }: GrievanceManagerProps) {
   };
 
   const handlePetitionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const detection = detectSensitivePii(`${record.subject} ${e.target.value}`);
+    if (detection.hasPii) {
+      setBlockedPiiDetection(detection);
+      return;
+    }
+    setBlockedPiiDetection(detectSensitivePii(""));
     const updated = grievanceService.updatePetitionText(
       demoCase.persona.id,
       e.target.value,
@@ -104,18 +123,18 @@ export function GrievanceManager({ demoCase, onBack }: GrievanceManagerProps) {
         <div className={styles.headerLeft}>
           <p className={styles.eyebrow}>
             {locale === "hi"
-              ? "एआई-सहायक शिकायत पोर्टल · EPFiGMS सिमुलेशन"
-              : "AI-Assisted Grievance Gateway · EPFiGMS Simulation"}
+              ? "एआई-सहायक शिकायत ड्राफ्ट · स्थानीय सिमुलेशन"
+              : "AI-Assisted Grievance Draft · Local Simulation"}
           </p>
           <h2 id="grievance-title" className={styles.title}>
             {locale === "hi"
-              ? `${demoCase.persona.displayName} हेतु शिकायत याचिका तैयार करें`
-              : `Draft Statutory Grievance for ${demoCase.persona.displayName}`}
+              ? `${demoCase.persona.displayName} हेतु मॉक शिकायत तैयार करें`
+              : `Prepare a mock grievance for ${demoCase.persona.displayName}`}
           </h2>
           <p className={styles.description}>
             {locale === "hi"
-              ? "ईपीएफओ के नियम संदर्भों, बैंक विवरणों और साक्ष्यों के साथ सटीक याचिका पत्र तैयार करें और 15-दिवसीय नागरिक चार्टर समयसीमा ट्रैक करें।"
-              : "Generate an explainable, regulation-cited petition for EPFiGMS, track required documentary evidence, and manage statutory Citizen's Charter SLAs."}
+              ? "काल्पनिक विवरणों से शिकायत ड्राफ्ट तैयार करें, मॉक साक्ष्य जांचें और स्थानीय फॉलो-अप रिमाइंडर आजमाएं।"
+              : "Edit a fictional grievance draft, review mock evidence, and try a local follow-up reminder. Nothing is filed with a government portal."}
           </p>
         </div>
         <Button variant="quiet" onClick={onBack}>
@@ -131,9 +150,11 @@ export function GrievanceManager({ demoCase, onBack }: GrievanceManagerProps) {
         }
       >
         {locale === "hi"
-          ? "यह याचिका ड्राफ्ट ईपीएफ योजना नियमों (उदा. आवास अग्रिम हेतु Para 68B) का उल्लेख करता है। वास्तविक EPFiGMS पोर्टल पर सबमिट करने हेतु कॉपी या डाउनलोड करें।"
-          : "This draft cites EPFO statutory provisions and verified transaction facts. Export or copy the text to file on the live EPFiGMS portal."}
+          ? "यह काल्पनिक ड्राफ्ट उदाहरण योजना संदर्भों और मॉक लेन-देन तथ्यों का उपयोग करता है। क्लेमसाथी EPFiGMS पर कुछ भी सबमिट नहीं करता।"
+          : "This fictional draft uses illustrative scheme references and synthetic transaction facts. You can copy or download it for review, but ClaimSaathi does not submit anything to EPFiGMS."}
       </Callout>
+
+      <PiiWarningBanner detection={blockedPiiDetection} />
 
       <div className={styles.bodyGrid}>
         {/* Left Column: Editable Petition Form */}
@@ -145,7 +166,7 @@ export function GrievanceManager({ demoCase, onBack }: GrievanceManagerProps) {
             <h3 id="petition-heading">
               {locale === "hi"
                 ? "याचिका पत्र संपादक"
-                : "Statutory Petition Editor"}
+                : "Mock Grievance Draft Editor"}
             </h3>
             <span className={styles.sectionMeta}>
               {record.category} · {record.claimId}
@@ -173,8 +194,8 @@ export function GrievanceManager({ demoCase, onBack }: GrievanceManagerProps) {
           <div className={styles.statutoryBox}>
             <span className={styles.statutoryTitle}>
               {locale === "hi"
-                ? "कानूनी आधार एवं नियम संदर्भ:"
-                : "Statutory Scheme Grounds:"}
+                ? "उदाहरण योजना संदर्भ:"
+                : "Illustrative scheme context:"}
             </span>
             <p className={styles.statutoryText}>{record.subject}</p>
           </div>
@@ -276,7 +297,9 @@ export function GrievanceManager({ demoCase, onBack }: GrievanceManagerProps) {
           >
             <div className={styles.cardHeader}>
               <h3 id="registration-heading">
-                {locale === "hi" ? "EPFiGMS डॉकेट" : "EPFiGMS Registration"}
+                {locale === "hi"
+                  ? "मॉक पंजीकरण ट्रैकर"
+                  : "Mock Registration Tracker"}
               </h3>
               <StatusBadge tone={isRegistered ? "success" : "warning"}>
                 {isRegistered
@@ -294,7 +317,7 @@ export function GrievanceManager({ demoCase, onBack }: GrievanceManagerProps) {
                 <span className={styles.docketLabel}>
                   {locale === "hi"
                     ? "सिम्युलेटेड डॉकेट नंबर"
-                    : "Mock EPFiGMS Docket Number"}
+                    : "Fictional docket number"}
                 </span>
                 <strong className={styles.docketNum}>
                   {record.registrationNumber}
@@ -334,18 +357,18 @@ export function GrievanceManager({ demoCase, onBack }: GrievanceManagerProps) {
             <div className={styles.cardHeader}>
               <h3 id="sla-heading">
                 {locale === "hi"
-                  ? "15-दिवसीय नागरिक चार्टर"
-                  : "15-Day Citizen's Charter SLA"}
+                  ? "मॉक 15-दिवसीय फॉलो-अप"
+                  : "Mock 15-Day Follow-up"}
               </h3>
               <StatusBadge tone="info">
-                {locale === "hi" ? "15 दिन SLA" : "15-Day Target"}
+                {locale === "hi" ? "डेमो लक्ष्य" : "Demo target"}
               </StatusBadge>
             </div>
 
             <p className={styles.cardSub}>
               {locale === "hi"
-                ? "ईपीएफओ नागरिक चार्टर के अनुसार प्रत्येक शिकायत का 15 कार्य दिवसों में समाधान अनिवार्य है।"
-                : "EPFO Citizen's Charter mandates resolution within 15 working days from registration."}
+                ? "यह केवल एक स्थानीय रिमाइंडर उदाहरण है; यह सरकारी समाधान समय की गारंटी नहीं देता।"
+                : "This is an illustrative local reminder, not a government resolution promise or verified service-level guarantee."}
             </p>
 
             <div className={styles.slaMeterWrap}>
@@ -385,8 +408,8 @@ export function GrievanceManager({ demoCase, onBack }: GrievanceManagerProps) {
                 />
                 <span>
                   {locale === "hi"
-                    ? "15-दिवसीय समाप्ति पर कैलेंडर रिमाइंडर सक्षम करें"
-                    : "Enable mock reminder at Day 15 SLA deadline"}
+                    ? "15वें दिन मॉक फॉलो-अप रिमाइंडर सक्षम करें"
+                    : "Enable a mock follow-up reminder for Day 15"}
                 </span>
               </label>
             </div>

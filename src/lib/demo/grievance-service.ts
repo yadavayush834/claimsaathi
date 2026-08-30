@@ -16,7 +16,7 @@ function generateBaselineEvidence(
       {
         id: "claim-ack",
         title: "Claim Acknowledgement Slip",
-        description: `Official submission receipt for Form 31 (Ref: ${claimId}).`,
+        description: `Synthetic Form 31 acknowledgement used only in this demo (Ref: ${claimId}).`,
         required: true,
         attached: true,
         fileName: `Receipt_${claimId}.pdf`,
@@ -55,7 +55,7 @@ function generateBaselineEvidence(
       {
         id: "claim-ack",
         title: "Claim Acknowledgement Slip",
-        description: `Official submission receipt for Form 19 (Ref: ${claimId}).`,
+        description: `Synthetic Form 19 acknowledgement used only in this demo (Ref: ${claimId}).`,
         required: true,
         attached: true,
         fileName: `Receipt_${claimId}.pdf`,
@@ -84,7 +84,7 @@ function generateBaselineEvidence(
     {
       id: "claim-ack",
       title: "Claim Acknowledgement Slip",
-      description: `Official submission receipt (Ref: ${claimId}).`,
+      description: `Synthetic acknowledgement used only in this demo (Ref: ${claimId}).`,
       required: true,
       attached: true,
       fileName: `Receipt_${claimId}.pdf`,
@@ -108,7 +108,9 @@ function buildDefaultPetitionText(demoCase: DemoCase): {
 
   if (persona.id === "latha-settlement") {
     const subject = `Grievance regarding short settlement of Form 31 Housing Advance (Claim ID: ${claim.id})`;
-    const text = `To,
+    const text = `[CLAIMSAATHI DEMO DRAFT — FICTIONAL DATA — NOT SUBMITTED]
+
+To,
 The Regional P.F. Commissioner,
 Employees' Provident Fund Organisation (EPFO),
 Regional Office, Kochi / Kerala.
@@ -136,7 +138,9 @@ Date: 2026-08-29`;
 
   if (persona.id === "imran-returned") {
     const subject = `Grievance regarding rejected claim for bank KYC verification (Claim ID: ${claim.id})`;
-    const text = `To,
+    const text = `[CLAIMSAATHI DEMO DRAFT — FICTIONAL DATA — NOT SUBMITTED]
+
+To,
 The Regional P.F. Commissioner,
 Employees' Provident Fund Organisation (EPFO),
 Regional Office, Mumbai / Bandra.
@@ -161,7 +165,9 @@ Date: 2026-08-29`;
   }
 
   const subject = `Grievance regarding status of claim ${claim.id}`;
-  const text = `To,
+  const text = `[CLAIMSAATHI DEMO DRAFT — FICTIONAL DATA — NOT SUBMITTED]
+
+To,
 The Regional P.F. Commissioner,
 Employees' Provident Fund Organisation (EPFO).
 
@@ -216,7 +222,7 @@ export const grievanceService = {
           date: "2026-08-29",
           title: "AI-Assisted Petition Drafted",
           description:
-            "Context-aware grievance petition initialized with statutory scheme citations.",
+            "A fictional grievance draft was initialized with illustrative scheme references.",
           by: "ClaimSaathi Grievance Assistant",
         },
       ],
@@ -279,15 +285,15 @@ export const grievanceService = {
     const existing = grievanceStore.load(personaId);
     if (!existing) return null;
 
-    const registrationNumber = `EPFiG/E/2026/${Math.floor(10000 + Math.random() * 90000)}`;
+    const registrationNumber = `DEMO-EPFIG-2026-${Math.floor(10000 + Math.random() * 90000)}`;
     const nowIso = new Date().toISOString();
 
     const newEvent = {
       id: `evt-reg-${Date.now()}`,
       date: "2026-08-29",
-      title: "Grievance Registered on Simulated EPFiGMS",
-      description: `Filed with registration docket number ${registrationNumber}. 15-day resolution SLA initiated.`,
-      by: "EPFiGMS Portal Gateway",
+      title: "Mock grievance registered locally",
+      description: `ClaimSaathi generated fictional docket ${registrationNumber}. A demo 15-day follow-up timer was started; nothing was filed with EPFiGMS.`,
+      by: "ClaimSaathi local simulator",
     };
 
     const updated: DemoGrievanceRecord = {

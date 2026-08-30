@@ -22,7 +22,7 @@ describe("GrievanceManager", () => {
     expect(
       screen.getByRole("heading", {
         level: 2,
-        name: "Draft Statutory Grievance for Latha Nair",
+        name: "Prepare a mock grievance for Latha Nair",
       }),
     ).toBeVisible();
 
@@ -85,8 +85,8 @@ describe("GrievanceManager", () => {
       }),
     );
 
-    expect(screen.getByText(/EPFiG\/E\/2026\/\d+/i)).toBeVisible();
-    expect(screen.getByText("15-Day Target")).toBeVisible();
+    expect(screen.getByText(/DEMO-EPFIG-2026-\d+/i)).toBeVisible();
+    expect(screen.getByText("Demo target")).toBeVisible();
 
     const reminderCheckbox = screen.getByLabelText(
       "Toggle calendar SLA reminder",

@@ -57,4 +57,20 @@ describe("POST /api/demo/submit-claim", () => {
     expect(json.ok).toBe(false);
     expect(json.error).toContain(DEFAULT_SIMULATED_OTP);
   });
+
+  it("rejects sensitive identifiers without creating a mock receipt", async () => {
+    const request = new Request("http://localhost:3000/api/demo/submit-claim", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        personaId: "asha-planning",
+        treatmentNeed: "Please use UAN 109988776655",
+        fictionalCity: "Faridabad",
+      }),
+    });
+
+    const response = await POST(request);
+    expect(response.status).toBe(400);
+    expect((await response.json()).error).toContain("fictional details only");
+  });
 });

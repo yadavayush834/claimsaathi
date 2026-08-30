@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Callout } from "@/components/ui/callout";
+import { PiiWarningBanner } from "@/components/ui/pii-warning-banner";
 import { StatusBadge } from "@/components/ui/status-badge";
 import type {
   ClaimIssueInterpretation,
@@ -12,6 +13,7 @@ import type {
 import { interpretWithRuleFallback } from "@/lib/ai/rule-fallback-interpreter";
 import type { DemoCase } from "@/lib/demo/model";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { detectSensitivePii } from "@/lib/safety/pii-detector";
 
 import styles from "./claim-issue-interpreter.module.css";
 
@@ -99,6 +101,10 @@ export function ClaimIssueInterpreter({
       }),
     );
   const [copied, setCopied] = useState(false);
+  const [blockedPiiDetection, setBlockedPiiDetection] = useState(() =>
+    detectSensitivePii(""),
+  );
+  const [fallbackNotice, setFallbackNotice] = useState<string | null>(null);
 
   async function handleAnalyze() {
     const query = remarkText.trim();
@@ -111,8 +117,21 @@ export function ClaimIssueInterpreter({
       return;
     }
 
+    const piiDetection = detectSensitivePii(query);
+    if (piiDetection.hasPii) {
+      setBlockedPiiDetection(piiDetection);
+      setError(
+        locale === "hi"
+          ? "संवेदनशील पहचान या लॉगिन विवरण हटाएं। इसे इस डेमो या एआई सेवा को नहीं भेजा गया है।"
+          : "Remove the sensitive identifier or credential. It was not sent to this demo or the AI service.",
+      );
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
+    setBlockedPiiDetection(detectSensitivePii(""));
+    setFallbackNotice(null);
 
     const payload = {
       rawStatusText: query,
@@ -124,40 +143,46 @@ export function ClaimIssueInterpreter({
     };
 
     try {
-      let result: InterpretationResponse;
-      try {
-        const response = await fetch("/api/demo/interpret-issue", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
+      let result: InterpretationResponse | null = null;
+      const response = await fetch("/api/demo/interpret-issue", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-        if (response.ok) {
-          result = (await response.json()) as InterpretationResponse;
-        } else {
-          result = {
-            ok: true,
-            interpretation: interpretWithRuleFallback(payload),
-          };
-        }
-      } catch {
-        result = {
-          ok: true,
-          interpretation: interpretWithRuleFallback(payload),
-        };
+      if (response.ok) {
+        result = (await response.json()) as InterpretationResponse;
+      } else {
+        const fallbackMessage =
+          response.status === 429
+            ? locale === "hi"
+              ? "डेमो AI अनुरोध सीमा पूरी हो गई है। स्थानीय नियम-आधारित मार्गदर्शन दिखाया जा रहा है।"
+              : "The demo AI request limit was reached. Local rule-based guidance is shown instead."
+            : locale === "hi"
+              ? "AI सेवा अभी उपलब्ध नहीं है। स्थानीय नियम-आधारित मार्गदर्शन दिखाया जा रहा है।"
+              : "The AI service is unavailable. Local rule-based guidance is shown instead.";
+        setFallbackNotice(fallbackMessage);
       }
 
-      if (result.ok) {
+      if (result?.ok) {
         setInterpretation(result.interpretation);
+        if (result.interpretation.isFallback) {
+          setFallbackNotice(
+            locale === "hi"
+              ? "AI उपलब्ध नहीं था या अनुरोध सीमित था। सत्यापित स्थानीय नियम-आधारित डेमो परिणाम दिखाया जा रहा है।"
+              : "AI was unavailable or limited. A deterministic local demo result is shown and clearly marked as fallback guidance.",
+          );
+        }
       } else {
         setInterpretation(interpretWithRuleFallback(payload));
       }
     } catch {
-      setError(
+      setFallbackNotice(
         locale === "hi"
-          ? "विश्लेषण पूरा करने में असमर्थ। कृपया पुनः प्रयास करें।"
-          : "Unable to complete diagnostic interpretation. Please try again.",
+          ? "नेटवर्क उपलब्ध नहीं है। स्थानीय नियम-आधारित मार्गदर्शन दिखाया जा रहा है।"
+          : "Network unavailable. Local rule-based guidance is shown instead.",
       );
+      setInterpretation(interpretWithRuleFallback(payload));
     } finally {
       setIsLoading(false);
     }
@@ -217,8 +242,10 @@ export function ClaimIssueInterpreter({
       >
         {locale === "hi"
           ? "यह इंटरप्रेटर सरकारी पोर्टल की टिप्पणियों को सरल भाषा में समझाता है और ईपीएफओ नियमों के अनुसार अगले कदमों का मार्गदर्शन करता है।"
-          : "This interpreter decodes unstructured status text and maps it to verified EPFO scheme guidelines and stakeholder responsibilities."}
+          : "This prototype explains fictional or redacted status text with illustrative scheme guidance. It is independent of EPFO and does not verify a live record."}
       </Callout>
+
+      <PiiWarningBanner detection={blockedPiiDetection} />
 
       <div className={styles.bodyGrid}>
         {/* Left Column: Remark input and presets */}
@@ -242,7 +269,15 @@ export function ClaimIssueInterpreter({
               className={styles.textarea}
               rows={4}
               value={remarkText}
-              onChange={(e) => setRemarkText(e.target.value)}
+              onChange={(e) => {
+                const detection = detectSensitivePii(e.target.value);
+                if (detection.hasPii) {
+                  setBlockedPiiDetection(detection);
+                  return;
+                }
+                setBlockedPiiDetection(detectSensitivePii(""));
+                setRemarkText(e.target.value);
+              }}
               placeholder={
                 locale === "hi"
                   ? "उदा: MEMBER NAME IN BANK KYC DOES NOT MATCH..."
@@ -277,6 +312,12 @@ export function ClaimIssueInterpreter({
           {error ? (
             <div role="alert" className={styles.errorAlert}>
               {error}
+            </div>
+          ) : null}
+
+          {fallbackNotice ? (
+            <div role="status" className={styles.fallbackNotice}>
+              {fallbackNotice}
             </div>
           ) : null}
 

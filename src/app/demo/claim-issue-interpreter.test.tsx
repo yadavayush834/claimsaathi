@@ -6,7 +6,10 @@ import type { DemoPersonaId } from "@/lib/demo/model";
 
 import { ClaimIssueInterpreter } from "./claim-issue-interpreter";
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  vi.restoreAllMocks();
+});
 
 function renderInterpreter(personaId: DemoPersonaId = "imran-returned") {
   const demoCase = demoDataService.loadCase(personaId);
@@ -81,5 +84,41 @@ describe("ClaimIssueInterpreter", () => {
     // Test copy action summary
     fireEvent.click(copyBtn);
     expect(await screen.findByText(/Copied/i)).toBeVisible();
+  });
+
+  it("blocks a sensitive identifier before the AI analysis request", () => {
+    renderInterpreter("imran-returned");
+
+    fireEvent.change(screen.getByLabelText("Portal remark text for analysis"), {
+      target: { value: "My UAN is 109988776655" },
+    });
+
+    expect(screen.getByText("Privacy & Safety Notice")).toBeVisible();
+    expect(
+      screen.getByLabelText("Portal remark text for analysis"),
+    ).not.toHaveValue("My UAN is 109988776655");
+  });
+
+  it("labels rate-limited AI behavior and keeps the local guidance usable", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(
+      new Response(JSON.stringify({ ok: false, error: "rate limited" }), {
+        status: 429,
+        headers: { "Content-Type": "application/json" },
+      }),
+    );
+    renderInterpreter("imran-returned");
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Analyze Remark with AI →" }),
+    );
+
+    expect(
+      await screen.findByText(
+        "The demo AI request limit was reached. Local rule-based guidance is shown instead.",
+      ),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("heading", { name: "Diagnostic Breakdown" }),
+    ).toBeVisible();
   });
 });

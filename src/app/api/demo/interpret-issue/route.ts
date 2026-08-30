@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import type { InterpretationRequest } from "@/lib/ai/interpreter-model";
 import { interpretClaimIssue } from "@/lib/ai/openai-interpreter-service";
+import { detectSensitivePii } from "@/lib/safety/pii-detector";
 
 export async function POST(request: Request) {
   try {
@@ -24,6 +25,17 @@ export async function POST(request: Request) {
         {
           ok: false,
           error: "Please provide a portal remark or status text to interpret.",
+        },
+        { status: 400 },
+      );
+    }
+
+    if (detectSensitivePii(candidate.rawStatusText).hasPii) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error:
+            "Remove sensitive identifiers or credentials. They are not accepted by this demo.",
         },
         { status: 400 },
       );

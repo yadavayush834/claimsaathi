@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Callout } from "@/components/ui/callout";
+import { PiiWarningBanner } from "@/components/ui/pii-warning-banner";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { TextField } from "@/components/ui/text-field";
 import { createMockClaimDraftStore } from "@/lib/demo/mock-claim-draft-store";
@@ -20,6 +21,11 @@ import type {
   MockClaimSubmissionResult,
 } from "@/lib/demo/model";
 import { recordClaimSubmission } from "@/lib/demo/timeline-service";
+import { detectSensitivePii } from "@/lib/safety/pii-detector";
+import {
+  getSafeStorage,
+  isPersistentBrowserStorage,
+} from "@/lib/safety/storage-resilience";
 
 import styles from "./mock-claim-form.module.css";
 
@@ -69,16 +75,27 @@ function createNewDraft(personaId: DemoCase["persona"]["id"]): MockClaimDraft {
 
 function loadInitialDraft(personaId: DemoCase["persona"]["id"]) {
   if (typeof window === "undefined") {
-    return { draft: createNewDraft(personaId), wasRestored: false };
+    return {
+      draft: createNewDraft(personaId),
+      wasRestored: false,
+      isPersisted: false,
+    };
   }
 
-  const restored = createMockClaimDraftStore(window.localStorage).load(
-    personaId,
-  );
+  const storage = getSafeStorage();
+  const restored = createMockClaimDraftStore(storage).load(personaId);
 
   return restored
-    ? { draft: restored, wasRestored: true }
-    : { draft: createNewDraft(personaId), wasRestored: false };
+    ? {
+        draft: restored,
+        wasRestored: true,
+        isPersisted: isPersistentBrowserStorage(storage),
+      }
+    : {
+        draft: createNewDraft(personaId),
+        wasRestored: false,
+        isPersisted: isPersistentBrowserStorage(storage),
+      };
 }
 
 function nextStep(step: MockClaimFormStep): MockClaimFormStep {
@@ -102,7 +119,7 @@ export function MockClaimForm({
   const [initialDraft] = useState(() => loadInitialDraft(demoCase.persona.id));
   const [draft, setDraft] = useState<MockClaimDraft>(initialDraft.draft);
   const [wasRestored] = useState(initialDraft.wasRestored);
-  const [saved, setSaved] = useState(true);
+  const [saved, setSaved] = useState(initialDraft.isPersisted);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
@@ -110,15 +127,44 @@ export function MockClaimForm({
     null,
   );
   const [copied, setCopied] = useState(false);
+  const [blockedPiiDetection, setBlockedPiiDetection] = useState(() =>
+    detectSensitivePii(
+      `${initialDraft.draft.treatmentNeed} ${initialDraft.draft.fictionalCity}`,
+    ),
+  );
+
+  const piiDetection = blockedPiiDetection.hasPii
+    ? blockedPiiDetection
+    : detectSensitivePii(`${draft.treatmentNeed} ${draft.fictionalCity}`);
 
   function updateDraft(patch: Partial<MockClaimDraft>) {
     const nextDraft = { ...draft, ...patch };
+    const nextPiiDetection = detectSensitivePii(
+      `${nextDraft.treatmentNeed} ${nextDraft.fictionalCity}`,
+    );
+
+    if (nextPiiDetection.hasPii) {
+      setBlockedPiiDetection(nextPiiDetection);
+      return;
+    }
+
+    setBlockedPiiDetection(detectSensitivePii(""));
     setDraft(nextDraft);
-    setSaved(createMockClaimDraftStore(window.localStorage).save(nextDraft));
+    const storage = getSafeStorage();
+    const stored = createMockClaimDraftStore(storage).save(nextDraft);
+    setSaved(stored && isPersistentBrowserStorage(storage));
   }
 
   function continueFromNeed(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (piiDetection.hasPii) {
+      setErrors({
+        treatmentNeed:
+          "Remove the sensitive detail before continuing. It was not saved in this demo.",
+      });
+      return;
+    }
+
     const nextErrors: FormErrors = {
       treatmentNeed: draft.treatmentNeed.trim()
         ? undefined
@@ -217,9 +263,7 @@ export function MockClaimForm({
       if (result.ok) {
         setReceipt(result.receipt);
         recordClaimSubmission(result.receipt);
-        createMockClaimDraftStore(window.localStorage).clear(
-          demoCase.persona.id,
-        );
+        createMockClaimDraftStore(getSafeStorage()).clear(demoCase.persona.id);
         onSubmitted?.(result.receipt);
       } else {
         setSubmissionError(result.error);
@@ -381,12 +425,14 @@ export function MockClaimForm({
         <div>
           <span className={styles.draftDot} aria-hidden="true" />
           <strong>
-            {saved ? "Draft saved locally" : "Saving fictional draft…"}
+            {saved ? "Draft saved locally" : "Browser storage unavailable"}
           </strong>
           <small>
             {wasRestored
               ? "Previous progress was restored in this browser."
-              : "Progress is saved after each change."}
+              : saved
+                ? "Progress is saved after each change."
+                : "Changes remain only while this tab stays open."}
           </small>
         </div>
         <StatusBadge tone="info">
@@ -435,12 +481,14 @@ export function MockClaimForm({
           </div>
 
           <div className={styles.fieldGrid}>
+            <PiiWarningBanner detection={piiDetection} />
             <TextField
               id="mock-treatment-need"
               label="Fictional treatment or need"
               hint="Example: Planned outpatient treatment. Do not describe a real condition."
               error={errors.treatmentNeed}
               maxLength={120}
+              autoComplete="off"
               required
               value={draft.treatmentNeed}
               onChange={(event) =>
@@ -453,6 +501,7 @@ export function MockClaimForm({
               hint="Example: Faridabad. This is only used in the demo draft."
               error={errors.fictionalCity}
               maxLength={60}
+              autoComplete="off"
               required
               value={draft.fictionalCity}
               onChange={(event) =>
